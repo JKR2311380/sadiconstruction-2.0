@@ -1,0 +1,1186 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sadiconstruction – Interactive mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #FF6E00;
+      --orange-soft: #FFF0E6;
+      --ink: #111111;
+      --shell: #181C20;
+      --shell-elev: #1F252B;
+      --shell-line: #2A3138;
+      --muted: #5A6570;
+      --line: #DCE0E5;
+      --panel: #FFFFFF;
+      --canvas: #F3F2EF;
+      --phase-a: #3A556C;
+      --phase-b: #2A6B5A;
+      --phase-c: #9A6B22;
+      --critical: #B71C1C;
+      --critical-bg: #FDECEC;
+      --lock: #EBEEF1;
+      --focus: #FF6E00;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: "Work Sans", system-ui, sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: #0B0D0F;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { background: #FF6E0033; }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 232px 1fr;
+      height: 100vh;
+      max-width: 1600px;
+      margin: 0 auto;
+      background: var(--canvas);
+      box-shadow: 0 0 0 1px #000;
+    }
+    .shell {
+      background: var(--shell);
+      color: #C5CBD1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #000;
+    }
+    .shell-brand {
+      display: flex; align-items: center; gap: 10px;
+      padding: 18px 20px; border-bottom: 1px solid var(--shell-line);
+    }
+    .shell-mark {
+      width: 28px; height: 28px; background: var(--orange);
+      display: grid; place-items: center;
+    }
+    .shell-brand strong {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-weight: 400; font-size: 15px; color: #fff;
+    }
+    .shell-nav { padding: 12px 10px; flex: 1; }
+    .shell-nav button {
+      display: flex; width: 100%; align-items: center; gap: 10px;
+      padding: 9px 12px; color: #8B949E; background: transparent;
+      border: 0; border-left: 2px solid transparent; text-align: left;
+      font-size: 13px; font-weight: 500;
+    }
+    .shell-nav button:hover { color: #E8ECF0; background: var(--shell-elev); }
+    .shell-nav button.active {
+      color: #fff; background: var(--shell-elev); border-left-color: var(--orange);
+    }
+    .shell-foot {
+      padding: 14px 16px 18px; border-top: 1px solid var(--shell-line);
+      font-size: 11px; color: #7A848E; line-height: 1.45;
+    }
+    .shell-foot .health { color: #D0D6DC; font-weight: 600; }
+    .shell-user {
+      margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--shell-line);
+      display: flex; gap: 10px; align-items: center;
+    }
+    .avatar {
+      width: 28px; height: 28px; background: #3A424A; color: #fff;
+      display: grid; place-items: center; font-size: 11px; font-weight: 600;
+    }
+
+    .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+    .view { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    .view.active { display: flex; }
+
+    .page-pad { padding: 22px; overflow: auto; flex: 1; }
+    .page-title {
+      margin: 0 0 6px;
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 24px; font-weight: 400;
+    }
+    .page-sub { color: var(--muted); margin: 0 0 18px; font-size: 12px; }
+
+    .ribbon {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center;
+    }
+    .ribbon .chip, .filter-chip {
+      border: 1px solid var(--line); background: #fff; color: var(--ink);
+      padding: 6px 10px; font-size: 12px; font-weight: 500; border-radius: 0;
+    }
+    .ribbon .chip.active, .filter-chip[aria-pressed="true"] {
+      background: var(--shell); border-color: var(--shell); color: #fff;
+    }
+    .search {
+      margin-left: auto; border: 1px solid var(--line); padding: 7px 10px;
+      min-width: 200px; background: #fff;
+    }
+    .card-table {
+      width: 100%; border-collapse: collapse; background: #fff;
+      border: 1px solid var(--line); font-variant-numeric: tabular-nums;
+    }
+    .card-table th {
+      text-align: left; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--muted); background: #ECEEF0; padding: 9px 12px; border-bottom: 1px solid var(--line);
+    }
+    .card-table td {
+      padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: middle;
+    }
+    .card-table tr[data-open] { cursor: pointer; }
+    .card-table tr[data-open]:hover td { background: #F7F8F9; }
+    .pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 4px 7px; border: 1px solid var(--line); display: inline-block;
+    }
+    .pill.accent { border-color: var(--orange); color: var(--orange); background: var(--orange-soft); }
+    .pill.warn { border-color: #C9A227; color: #8A6D00; background: #FFF8E1; }
+    .pill.ok { border-color: #2A6B5A; color: #2A6B5A; background: #E8F5F0; }
+
+    .btn {
+      border: 0; border-radius: 0; padding: 8px 12px; font-size: 12px; font-weight: 600;
+    }
+    .btn-primary { background: var(--shell); color: #fff; }
+    .btn-primary:hover { background: #000; }
+    .btn-secondary { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .btn-secondary:hover { border-color: #B8C0C8; }
+    .btn-danger { background: #fff; color: var(--critical); border: 1px solid #E2A6A6; }
+
+    /* Project chrome */
+    .project-chrome {
+      background: var(--panel); border-bottom: 1px solid var(--line); padding: 14px 22px 0;
+    }
+    .project-row { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .project-row h1 {
+      margin: 0 0 4px; font-family: "DM Serif Display", Georgia, serif;
+      font-size: 22px; font-weight: 400;
+    }
+    .project-meta { color: var(--muted); font-size: 12px; }
+    .pill-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 0; overflow-x: auto; }
+    .tabs button {
+      border: 0; background: transparent; padding: 11px 14px;
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      border-bottom: 2px solid transparent; white-space: nowrap;
+    }
+    .tabs button:hover { color: var(--ink); }
+    .tabs button[aria-selected="true"] {
+      color: var(--ink); border-bottom-color: var(--orange); font-weight: 600;
+    }
+    .back-link {
+      border: 0; background: transparent; color: var(--muted); font-size: 12px;
+      padding: 0; margin-bottom: 8px; font-weight: 500;
+    }
+    .back-link:hover { color: var(--orange); }
+
+    .panel-body { flex: 1; min-height: 0; overflow: auto; padding: 18px 22px; }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px;
+    }
+    .stat {
+      background: #fff; border: 1px solid var(--line); padding: 14px 16px;
+    }
+    .stat .label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+    .stat .value {
+      font-family: "DM Serif Display", Georgia, serif; font-size: 22px;
+    }
+    .stack { display: flex; flex-direction: column; gap: 10px; }
+    .block {
+      background: #fff; border: 1px solid var(--line); padding: 14px 16px;
+    }
+    .block h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; }
+    .block p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    /* Scheduling */
+    .sched-toolbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      flex-wrap: wrap; padding: 10px 22px; background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .toolbar-meta {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+      color: var(--muted); font-size: 12px;
+    }
+    .toolbar-meta strong { color: var(--ink); }
+    .legend { display: inline-flex; gap: 10px; }
+    .legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .legend i { width: 10px; height: 10px; display: inline-block; }
+    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .alert {
+      display: none; margin: 12px 22px 0; padding: 10px 12px;
+      border: 1px solid #E2A6A6; background: var(--critical-bg); color: #6E1818;
+      font-size: 12px; align-items: flex-start; gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert .fix {
+      margin-left: auto; background: transparent; border: 0; color: var(--critical);
+      font-weight: 600; text-decoration: underline; text-underline-offset: 2px;
+    }
+
+    .workspace {
+      flex: 1; min-height: 0;
+      display: grid; grid-template-columns: minmax(440px, 48%) 1fr;
+    }
+    .list-pane, .gantt-pane { overflow: auto; background: #fff; }
+    .list-pane { border-right: 1px solid var(--line); }
+    .sched-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    .sched-table th {
+      position: sticky; top: 0; z-index: 2; background: #ECEEF0;
+      text-align: left; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--muted); padding: 9px 8px; border-bottom: 1px solid var(--line);
+    }
+    .sched-table td {
+      padding: 0 8px; height: 36px; border-bottom: 1px solid var(--line);
+      white-space: nowrap; vertical-align: middle;
+    }
+    .sched-table tr:hover td { background: #F7F8F9; }
+    .sched-table tr.phase td { background: var(--lock); font-weight: 600; }
+    .sched-table tr.summary td { background: #F7F8FA; font-weight: 500; }
+    .sched-table tr.critical td { background: var(--critical-bg); }
+    .sched-table tr.selected td { box-shadow: inset 3px 0 0 var(--orange); }
+    .sched-table tr.dimmed { opacity: 0.35; }
+    .name-cell { display: flex; align-items: center; gap: 8px; min-width: 220px; }
+    .twist {
+      width: 18px; height: 18px; border: 0; background: transparent; color: var(--muted);
+      padding: 0; flex-shrink: 0; font-size: 10px;
+    }
+    .twist[aria-expanded="false"] { transform: rotate(-90deg); }
+    .lock-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted);
+      border: 1px solid #C9CED4; padding: 1px 5px;
+    }
+    .phase-dot { width: 8px; height: 8px; flex-shrink: 0; }
+    .indent-1 { padding-left: 8px !important; }
+    .indent-2 { padding-left: 26px !important; }
+    .crit { font-size: 10px; font-weight: 700; color: var(--critical); letter-spacing: 0.04em; }
+    .muted-cell { color: var(--muted); }
+    .dur-input {
+      width: 52px; border: 1px solid transparent; background: transparent;
+      padding: 4px 6px; font-variant-numeric: tabular-nums;
+    }
+    .dur-input:hover, .dur-input:focus {
+      border-color: var(--line); background: #fff; outline: none;
+    }
+    .pred-btn {
+      border: 1px solid transparent; background: transparent; padding: 3px 6px;
+      color: var(--ink); text-align: left;
+    }
+    .pred-btn:hover { border-color: var(--line); background: #fff; }
+
+    .gantt-head {
+      position: sticky; top: 0; z-index: 2;
+      display: grid; grid-template-columns: repeat(12, minmax(44px, 1fr));
+      background: #ECEEF0; border-bottom: 1px solid var(--line);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .gantt-head span {
+      padding: 9px 4px; text-align: center; border-right: 1px solid var(--line);
+    }
+    .gantt-row {
+      height: 36px; border-bottom: 1px solid var(--line); position: relative;
+      background-image: repeating-linear-gradient(
+        to right, transparent 0, transparent calc(100% / 12 - 1px),
+        var(--line) calc(100% / 12 - 1px), var(--line) calc(100% / 12)
+      );
+    }
+    .gantt-row.selected { background-color: #FFF4EB; }
+    .bar {
+      position: absolute; top: 10px; height: 16px;
+      border: 1px solid rgba(0,0,0,0.12); cursor: default;
+    }
+    .bar.a { background: var(--phase-a); }
+    .bar.b { background: var(--phase-b); }
+    .bar.c { background: var(--phase-c); }
+    .bar.sum { opacity: 0.28; height: 8px; top: 14px; border: 0; }
+    .bar.critical { box-shadow: inset 0 0 0 2px var(--critical); border-color: var(--critical); }
+    .bar.loe {
+      background: repeating-linear-gradient(-45deg, var(--phase-a), var(--phase-a) 4px, #5A7388 4px, #5A7388 8px);
+      opacity: 0.55;
+    }
+
+    .status-strip {
+      display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+      padding: 8px 22px; background: #fff; border-top: 1px solid var(--line);
+      font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums;
+    }
+    .status-strip b { color: var(--ink); font-weight: 600; }
+
+    /* Modal */
+    dialog {
+      border: 1px solid var(--line); border-radius: 0; padding: 0;
+      width: min(420px, 92vw); background: #fff;
+    }
+    dialog::backdrop { background: rgba(17,17,17,0.45); }
+    .modal-h {
+      padding: 14px 16px; border-bottom: 1px solid var(--line);
+      font-size: 15px; font-weight: 600;
+    }
+    .modal-b { padding: 16px; display: grid; gap: 12px; }
+    .field label {
+      display: block; font-size: 11px; font-weight: 600; color: var(--muted);
+      margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .field input, .field select {
+      width: 100%; border: 1px solid var(--line); padding: 8px 10px; background: #fff;
+    }
+    .modal-f {
+      padding: 12px 16px; border-top: 1px solid var(--line);
+      display: flex; justify-content: flex-end; gap: 8px;
+    }
+
+    .toast {
+      position: fixed; bottom: 20px; right: 20px; z-index: 50;
+      background: var(--shell); color: #fff; padding: 10px 14px;
+      font-size: 12px; max-width: 320px; display: none;
+    }
+    .toast.show { display: block; }
+
+    .doc-note {
+      max-width: 1600px; margin: 0 auto; padding: 6px 14px;
+      font-size: 11px; color: #8A939C;
+    }
+    .doc-note a { color: #C5CBD1; }
+
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .workspace { grid-template-columns: 1fr; }
+      .list-pane { max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    THESIS: Navigable Operate prototype of Sadiconstruction shell + Clearwater project tabs + interactive Scheduling on static data.
+    OWN-WORLD: Charcoal shell, orange accent, rectangular controls, Work Sans + DM Serif titles, phase colors, critical red.
+    STORY: Browse projects, open Clearwater, move across tabs, edit schedule network with local CPM on static seed.
+    FIRST VIEWPORT: Projects directory or Scheduling split board depending on route hash.
+    FORM: Static SPA mock · seed mockup-interactive-20260914
+    FINISH: prototype for review; not production app
+  -->
+  <p class="doc-note">
+    Interactive static mock · hash routes ·
+    <a href="../Siteflow.md">Siteflow</a> ·
+    <a href="../Userflow.md">Userflow</a> ·
+    <a href="../PRD.md">PRD</a>
+  </p>
+
+  <div class="app">
+    <aside class="shell">
+      <div class="shell-brand">
+        <div class="shell-mark" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11 L7 2 L12 11 Z" stroke="#111" stroke-width="1.5"/></svg>
+        </div>
+        <strong>Sadiconstruction</strong>
+      </div>
+      <nav class="shell-nav" id="shellNav">
+        <button type="button" data-shell="projects" class="active">Projects</button>
+        <button type="button" data-shell="reports">Reports</button>
+        <button type="button" data-shell="contractors">Contractors</button>
+        <button type="button" data-shell="settings">Settings</button>
+      </nav>
+      <div class="shell-foot">
+        Portfolio health
+        <div class="health">6 active · 1 delayed</div>
+        <div class="shell-user">
+          <div class="avatar">EJ</div>
+          <div>
+            <div style="color:#E8ECF0;font-weight:600">Emhil Joseph</div>
+            Project Manager
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <!-- PROJECTS LIST -->
+      <section class="view active" id="view-projects" data-view="projects">
+        <div class="page-pad">
+          <h1 class="page-title">Projects</h1>
+          <p class="page-sub">Directory aesthetic · static portfolio for the mock</p>
+          <div class="ribbon" id="stageRibbon">
+            <button type="button" class="chip active" data-stage="all">All</button>
+            <button type="button" class="chip" data-stage="Active">Active</button>
+            <button type="button" class="chip" data-stage="Delayed">Delayed</button>
+            <button type="button" class="chip" data-stage="Planning">Planning</button>
+            <button type="button" class="chip" data-stage="On Hold">On Hold</button>
+            <button type="button" class="chip" data-stage="Completed">Completed</button>
+            <input class="search" id="projectSearch" type="search" placeholder="Search projects…" />
+          </div>
+          <table class="card-table" id="projectTable">
+            <thead>
+              <tr>
+                <th>Project</th><th>ID</th><th>Stage</th><th>Priority</th><th>Progress</th><th>Expenditure</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="view" id="view-reports" data-view="reports">
+        <div class="page-pad">
+          <h1 class="page-title">Reports</h1>
+          <p class="page-sub">Inbox-style project mail · static samples</p>
+          <table class="card-table">
+            <thead><tr><th>From</th><th>Subject</th><th>Type</th><th>Received</th></tr></thead>
+            <tbody>
+              <tr><td>Site Safety</td><td>Incident report – trench edge barrier</td><td><span class="pill warn">Incident</span></td><td>Sep 12, 2026</td></tr>
+              <tr><td>Logistics</td><td>Material delivery – rebar lot R-204</td><td><span class="pill ok">Delivery</span></td><td>Sep 11, 2026</td></tr>
+              <tr><td>QA/QC</td><td>Concrete pour checklist – Level 1</td><td><span class="pill">Project</span></td><td>Sep 10, 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CONTRACTORS -->
+      <section class="view" id="view-contractors" data-view="contractors">
+        <div class="page-pad">
+          <h1 class="page-title">Contractors</h1>
+          <p class="page-sub">Registry · static</p>
+          <table class="card-table">
+            <thead><tr><th>Contractor</th><th>Specialty</th><th>Certifications</th><th>Current</th></tr></thead>
+            <tbody>
+              <tr><td>Northpeak Earthworks</td><td>Site / excavation</td><td>ISO 45001</td><td>Clearwater</td></tr>
+              <tr><td>Meridian Concrete Co.</td><td>Structural concrete</td><td>ACI, PCAB</td><td>Clearwater</td></tr>
+              <tr><td>Halo Temporary Works</td><td>Facilities / safety</td><td>DOLE</td><td>–</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="view-settings" data-view="settings">
+        <div class="page-pad">
+          <h1 class="page-title">Settings</h1>
+          <p class="page-sub">Static preferences for the mock</p>
+          <div class="stack" style="max-width:420px">
+            <label class="block" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+              <span><strong>Dark mode</strong><br /><span style="color:var(--muted);font-size:12px">Documented in product IA; not wired in this mock</span></span>
+              <input type="checkbox" disabled />
+            </label>
+            <div class="block">
+              <h3>Schedule defaults</h3>
+              <p>Global calendar: 5-day week · Retained Logic only · nested summaries under BOQ phases allowed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECT DETAIL -->
+      <section class="view" id="view-project" data-view="project">
+        <header class="project-chrome">
+          <button type="button" class="back-link" id="backToProjects">← All projects</button>
+          <div class="project-row">
+            <div>
+              <h1 id="projName">Clearwater Medical Center</h1>
+              <div class="project-meta" id="projMeta">PRJ-2024-008</div>
+            </div>
+            <div class="pill-row" id="projPills"></div>
+          </div>
+          <div class="tabs" role="tablist" id="projectTabs">
+            <button type="button" role="tab" data-tab="overview">Overview</button>
+            <button type="button" role="tab" data-tab="personnel">Key Personnel</button>
+            <button type="button" role="tab" data-tab="documents">Documents</button>
+            <button type="button" role="tab" data-tab="boq">Bill of Quantities</button>
+            <button type="button" role="tab" data-tab="scheduling" aria-selected="true">Scheduling</button>
+          </div>
+        </header>
+
+        <div class="panel-body hidden" id="tab-overview"></div>
+        <div class="panel-body hidden" id="tab-personnel"></div>
+        <div class="panel-body hidden" id="tab-documents"></div>
+        <div class="panel-body hidden" id="tab-boq"></div>
+
+        <div id="tab-scheduling" class="view active" style="display:flex;flex-direction:column;flex:1;min-height:0;padding:0">
+          <div class="sched-toolbar">
+            <div class="toolbar-meta">
+              <span><strong>Retained Logic</strong> · Global calendar · 5-day</span>
+              <span class="legend">
+                <span><i style="background:var(--phase-a)"></i>A</span>
+                <span><i style="background:var(--phase-b)"></i>B</span>
+                <span><i style="background:var(--phase-c)"></i>C</span>
+                <span><i style="background:var(--critical)"></i>Critical</span>
+              </span>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="filter-chip" id="filterCritical" aria-pressed="false">Critical only</button>
+              <button type="button" class="btn btn-secondary" id="btnDemoCycle">Simulate cycle</button>
+              <button type="button" class="btn btn-secondary" id="btnAddSummary">+ Nested summary</button>
+              <button type="button" class="btn btn-primary" id="btnAddActivity">+ Activity</button>
+            </div>
+          </div>
+          <div class="alert" id="cycleAlert" role="alert">
+            <div><strong>CPM halted.</strong> Cycle detected. Edit predecessors to resume.</div>
+            <button type="button" class="fix" id="fixCycle">Fix network</button>
+          </div>
+          <div class="workspace">
+            <section class="list-pane">
+              <table class="sched-table">
+                <thead>
+                  <tr>
+                    <th>WBS / Name</th><th>Dur</th><th>Pred</th><th>ES</th><th>EF</th><th>TF</th><th>Crit</th>
+                  </tr>
+                </thead>
+                <tbody id="schedBody"></tbody>
+              </table>
+            </section>
+            <section class="gantt-pane">
+              <div class="gantt-head" id="ganttHead"></div>
+              <div id="ganttRows"></div>
+            </section>
+          </div>
+          <footer class="status-strip" id="statusStrip"></footer>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <dialog id="addDialog">
+    <div class="modal-h" id="addDialogTitle">Add activity</div>
+    <div class="modal-b">
+      <div class="field">
+        <label for="addParent">Under</label>
+        <select id="addParent"></select>
+      </div>
+      <div class="field">
+        <label for="addName">Name</label>
+        <input id="addName" type="text" placeholder="Activity name" />
+      </div>
+      <div class="field" id="addDurField">
+        <label for="addDur">Duration (working days)</label>
+        <input id="addDur" type="number" min="0" value="5" />
+      </div>
+    </div>
+    <div class="modal-f">
+      <button type="button" class="btn btn-secondary" id="addCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="addConfirm">Add</button>
+    </div>
+  </dialog>
+
+  <dialog id="predDialog">
+    <div class="modal-h">Edit predecessors</div>
+    <div class="modal-b">
+      <p style="margin:0;color:var(--muted);font-size:12px" id="predTargetLabel"></p>
+      <div class="field">
+        <label for="predSelect">Predecessor</label>
+        <select id="predSelect"></select>
+      </div>
+      <div class="field">
+        <label for="predType">Type</label>
+        <select id="predType">
+          <option value="FS">FS</option>
+          <option value="SS">SS</option>
+          <option value="FF">FF</option>
+          <option value="SF">SF</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-f">
+      <button type="button" class="btn btn-danger" id="predClear">Clear all</button>
+      <button type="button" class="btn btn-secondary" id="predCancel">Cancel</button>
+      <button type="button" class="btn btn-primary" id="predAdd">Add link</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ========== Static seed data ========== */
+    const PROJECTS = [
+      { id: "PRJ-2024-008", name: "Clearwater Medical Center", client: "HealthFirst Systems – Plano, TX", stage: "Active", priority: "High", progress: 34, spend: "₱142.4M", budget: "₱395.1M", updated: "Aug 28, 2026" },
+      { id: "PRJ-2024-011", name: "Harbor View Residences", client: "Vista Land – Cebu", stage: "Active", priority: "Medium", progress: 58, spend: "₱89.2M", budget: "₱210.0M", updated: "Sep 2, 2026" },
+      { id: "PRJ-2023-044", name: "North Hub Warehouse", client: "LogiCorp", stage: "Delayed", priority: "High", progress: 71, spend: "₱56.0M", budget: "₱72.5M", updated: "Sep 8, 2026" },
+      { id: "PRJ-2025-002", name: "Riverfront Clinic Fit-out", client: "MedGroup", stage: "Planning", priority: "Low", progress: 8, spend: "₱2.1M", budget: "₱48.0M", updated: "Sep 1, 2026" },
+      { id: "PRJ-2022-019", name: "City Hall Annex", client: "LGU Partner", stage: "Completed", priority: "Medium", progress: 100, spend: "₱118.0M", budget: "₱120.0M", updated: "Mar 14, 2026" },
+      { id: "PRJ-2024-021", name: "Eastside School Expansion", client: "DepEd Partner", stage: "On Hold", priority: "Medium", progress: 22, spend: "₱18.4M", budget: "₱95.0M", updated: "Jul 20, 2026" },
+    ];
+
+    const PERSONNEL = [
+      { name: "Emhil Joseph", role: "Project Manager", start: "2025-11-01" },
+      { name: "Lara Cruz", role: "Site Engineer", start: "2026-01-15" },
+      { name: "Marco Dela Peña", role: "Safety Officer", start: "2026-01-15" },
+      { name: "Nina Santos", role: "Quantity Surveyor", start: "2025-12-01" },
+      { name: "Owen Reyes", role: "Document Controller", start: "2026-02-01" },
+      { name: "Priya Tan", role: "Scheduler", start: "2026-03-01" },
+      { name: "Quinn Lim", role: "QA/QC", start: "2026-04-01" },
+    ];
+
+    const DOCUMENTS = [
+      { name: "Structural plans – Rev C", type: "Engineering", updated: "Aug 12, 2026" },
+      { name: "Building permit BP-8821", type: "Permit", updated: "Jul 02, 2026" },
+      { name: "Safety plan SP-04", type: "HSE", updated: "Aug 20, 2026" },
+      { name: "Approved BOQ PDF", type: "Commercial", updated: "Aug 28, 2026" },
+    ];
+
+    const BOQ = [
+      { part: "A", title: "General Requirements & Preliminaries", total: "₱13,843,422.00", items: [
+        { code: "A.1", desc: "Mobilization & Demobilization", unit: "lot", qty: "1.00", amount: "₱1,835,414.00" },
+        { code: "A.2", desc: "Temporary Facilities & Site Office", unit: "lot", qty: "1.00", amount: "₱834,391.00" },
+        { code: "A.3", desc: "Project Signage & Safety Barricades", unit: "lot", qty: "1.00", amount: "₱345,159.00" },
+        { code: "A.4", desc: "Project Management & Supervision", unit: "mo", qty: "18.00", amount: "₱10,828,458.00" },
+      ]},
+      { part: "B", title: "Site Works & Earthworks", total: "₱9,619,035.00", items: [
+        { code: "B.1", desc: "Site Clearing & Grubbing", unit: "m²", qty: "9,027.00", amount: "₱767,295.00" },
+        { code: "B.2", desc: "Excavation Works (Bulk)", unit: "m³", qty: "15,176.00", amount: "₱4,856,320.00" },
+        { code: "B.3", desc: "Backfilling & Compaction", unit: "m³", qty: "4,298.00", amount: "₱1,283,440.00" },
+        { code: "B.4", desc: "Gravel Fill Bedding (100mm)", unit: "m³", qty: "1,689.00", amount: "₱2,449,050.00" },
+        { code: "B.5", desc: "Dewatering Works", unit: "lot", qty: "1.00", amount: "₱262,930.00" },
+      ]},
+      { part: "C", title: "Concrete Works", total: "₱135,527,300.00", items: [
+        { code: "C", desc: "Concrete Works (package aggregate)", unit: "lot", qty: "1.00", amount: "₱135,527,300.00" },
+      ]},
+    ];
+
+    /** Schedule nodes – leaves participate in CPM; phases/summaries/LOE roll up */
+    let schedule = [
+      { id: "A", name: "A – General Requirements", kind: "phase", phase: "a", parent: null, locked: true, open: true },
+      { id: "A.1", name: "A.1 Mobilization & Demobilization", kind: "leaf", phase: "a", parent: "A", dur: 10, preds: [] },
+      { id: "A.2", name: "A.2 Temporary Facilities", kind: "leaf", phase: "a", parent: "A", dur: 15, preds: [{ id: "A.1", type: "FS" }] },
+      { id: "A.3", name: "A.3 Signage & Barricades", kind: "leaf", phase: "a", parent: "A", dur: 5, preds: [{ id: "A.1", type: "FS" }] },
+      { id: "A.4", name: "A.4 Supervision (LOE)", kind: "loe", phase: "a", parent: "A", dur: 0, preds: [], spanStart: "A.1", spanEnd: "C" },
+      { id: "B", name: "B – Site Works & Earthworks", kind: "phase", phase: "b", parent: null, locked: true, open: true },
+      { id: "B.0", name: "B.0 Earthworks package", kind: "summary", phase: "b", parent: "B", open: true },
+      { id: "B.1", name: "B.1 Site Clearing & Grubbing", kind: "leaf", phase: "b", parent: "B.0", dur: 12, preds: [{ id: "A.2", type: "FS" }, { id: "A.3", type: "FS" }] },
+      { id: "B.2", name: "B.2 Excavation Works (Bulk)", kind: "leaf", phase: "b", parent: "B.0", dur: 45, preds: [{ id: "B.1", type: "FS" }] },
+      { id: "B.3", name: "B.3 Backfilling & Compaction", kind: "leaf", phase: "b", parent: "B.0", dur: 20, preds: [{ id: "B.2", type: "FS" }] },
+      { id: "B.4", name: "B.4 Gravel Fill Bedding", kind: "leaf", phase: "b", parent: "B.0", dur: 10, preds: [{ id: "B.3", type: "FS" }] },
+      { id: "B.5", name: "B.5 Dewatering Works", kind: "leaf", phase: "b", parent: "B.0", dur: 20, preds: [{ id: "B.1", type: "FS" }] },
+      { id: "C", name: "C – Concrete Works", kind: "phase", phase: "c", parent: null, locked: true, open: true },
+      { id: "C.pkg", name: "C Concrete package (aggregate)", kind: "leaf", phase: "c", parent: "C", dur: 120, preds: [{ id: "B.4", type: "FS" }, { id: "B.5", type: "FS" }] },
+    ];
+
+    let selectedId = "A.1";
+    let criticalOnly = false;
+    let cycleBroken = false;
+    let addMode = "leaf";
+    let predEditId = null;
+    let currentProjectId = "PRJ-2024-008";
+    let stageFilter = "all";
+
+    /* ========== Simple FS CPM ========== */
+    function leaves() {
+      return schedule.filter((n) => n.kind === "leaf");
+    }
+
+    function runCpm() {
+      const nodes = leaves();
+      const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+      const metrics = {};
+      const succs = Object.fromEntries(nodes.map((n) => [n.id, []]));
+      for (const n of nodes) {
+        for (const p of n.preds || []) {
+          if (succs[p.id]) succs[p.id].push(n.id);
+        }
+      }
+      const indeg = Object.fromEntries(nodes.map((n) => [n.id, (n.preds || []).filter((p) => byId[p.id]).length]));
+      const q = nodes.filter((n) => indeg[n.id] === 0).map((n) => n.id);
+      const order = [];
+      while (q.length) {
+        const u = q.shift();
+        order.push(u);
+        for (const v of succs[u]) {
+          indeg[v]--;
+          if (indeg[v] === 0) q.push(v);
+        }
+      }
+      if (order.length !== nodes.length) {
+        return { ok: false, cycle: true, metrics: {}, projectDur: 0, criticalPath: [] };
+      }
+      const ES = {}, EF = {};
+      for (const id of order) {
+        const n = byId[id];
+        const preds = (n.preds || []).filter((p) => byId[p.id]);
+        ES[id] = preds.length ? Math.max(...preds.map((p) => EF[p.id])) : 0;
+        EF[id] = ES[id] + (n.dur || 0);
+      }
+      const projectDur = Math.max(0, ...Object.values(EF));
+      const LS = {}, LF = {}, TF = {};
+      for (const id of [...order].reverse()) {
+        const next = succs[id];
+        LF[id] = next.length ? Math.min(...next.map((s) => LS[s])) : projectDur;
+        LS[id] = LF[id] - (byId[id].dur || 0);
+        TF[id] = LS[id] - ES[id];
+      }
+      for (const id of order) {
+        metrics[id] = { ES: ES[id], EF: EF[id], LS: LS[id], LF: LF[id], TF: TF[id], critical: TF[id] === 0 };
+      }
+      const criticalPath = order.filter((id) => metrics[id].critical);
+      return { ok: true, cycle: false, metrics, projectDur, criticalPath };
+    }
+
+    function rollupMetrics(cpm) {
+      const out = { ...cpm.metrics };
+      for (const n of schedule) {
+        if (n.kind === "leaf") continue;
+        if (n.kind === "loe") {
+          const a = out[n.spanStart];
+          const b = out[n.spanEnd] || out["C.pkg"];
+          if (a && b) out[n.id] = { ES: a.ES, EF: b.EF, LS: a.ES, LF: b.EF, TF: null, critical: false };
+          continue;
+        }
+        const kids = descendantLeaves(n.id);
+        if (!kids.length) {
+          out[n.id] = { ES: 0, EF: 0, LS: 0, LF: 0, TF: null, critical: false };
+          continue;
+        }
+        const es = Math.min(...kids.map((k) => out[k.id]?.ES ?? 0));
+        const ef = Math.max(...kids.map((k) => out[k.id]?.EF ?? 0));
+        out[n.id] = { ES: es, EF: ef, LS: es, LF: ef, TF: null, critical: false };
+      }
+      return out;
+    }
+
+    function descendantLeaves(id) {
+      const kids = schedule.filter((n) => n.parent === id);
+      let leavesAcc = [];
+      for (const k of kids) {
+        if (k.kind === "leaf") leavesAcc.push(k);
+        else leavesAcc = leavesAcc.concat(descendantLeaves(k.id));
+      }
+      return leavesAcc;
+    }
+
+    function isVisible(node) {
+      if (!node.parent) return true;
+      const parent = schedule.find((n) => n.id === node.parent);
+      if (!parent) return true;
+      if (parent.open === false) return false;
+      return isVisible(parent);
+    }
+
+    /* ========== Rendering ========== */
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function setShell(name) {
+      document.querySelectorAll("#shellNav button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.shell === name);
+      });
+      document.querySelectorAll(".main > .view").forEach((v) => v.classList.remove("active"));
+      if (name === "projects") {
+        document.getElementById("view-projects").classList.add("active");
+        location.hash = "#/projects";
+      } else if (name === "reports") {
+        document.getElementById("view-reports").classList.add("active");
+        location.hash = "#/reports";
+      } else if (name === "contractors") {
+        document.getElementById("view-contractors").classList.add("active");
+        location.hash = "#/contractors";
+      } else if (name === "settings") {
+        document.getElementById("view-settings").classList.add("active");
+        location.hash = "#/settings";
+      }
+    }
+
+    function openProject(id, tab = "scheduling") {
+      currentProjectId = id;
+      const p = PROJECTS.find((x) => x.id === id);
+      document.querySelectorAll(".main > .view").forEach((v) => v.classList.remove("active"));
+      document.getElementById("view-project").classList.add("active");
+      document.querySelectorAll("#shellNav button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.shell === "projects");
+      });
+      document.getElementById("projName").textContent = p.name;
+      document.getElementById("projMeta").textContent = `${p.id} · ${p.client} · Updated ${p.updated}`;
+      document.getElementById("projPills").innerHTML = `
+        <span class="pill accent">${p.stage}</span>
+        <span class="pill">${p.priority} priority</span>
+        <span class="pill">Live</span>`;
+      renderOverview(p);
+      renderPersonnel();
+      renderDocuments();
+      renderBoq();
+      setTab(tab);
+      location.hash = `#/project/${id}/${tab}`;
+    }
+
+    function setTab(tab) {
+      document.querySelectorAll("#projectTabs button").forEach((b) => {
+        b.setAttribute("aria-selected", String(b.dataset.tab === tab));
+      });
+      ["overview", "personnel", "documents", "boq", "scheduling"].forEach((t) => {
+        const el = document.getElementById(`tab-${t}`);
+        if (t === "scheduling") {
+          el.classList.toggle("hidden", tab !== t);
+          el.style.display = tab === t ? "flex" : "none";
+        } else {
+          el.classList.toggle("hidden", tab !== t);
+        }
+      });
+      if (tab === "scheduling") renderSchedule();
+      location.hash = `#/project/${currentProjectId}/${tab}`;
+    }
+
+    function renderProjects() {
+      const q = document.getElementById("projectSearch").value.trim().toLowerCase();
+      const tbody = document.querySelector("#projectTable tbody");
+      tbody.innerHTML = "";
+      PROJECTS.filter((p) => {
+        if (stageFilter !== "all" && p.stage !== stageFilter) return false;
+        if (q && !(`${p.name} ${p.id} ${p.client}`).toLowerCase().includes(q)) return false;
+        return true;
+      }).forEach((p) => {
+        const tr = document.createElement("tr");
+        tr.dataset.open = p.id;
+        tr.innerHTML = `
+          <td><strong>${p.name}</strong><div style="color:var(--muted);font-size:11px">${p.client}</div></td>
+          <td>${p.id}</td>
+          <td><span class="pill ${p.stage === "Delayed" ? "warn" : p.stage === "Active" ? "accent" : ""}">${p.stage}</span></td>
+          <td>${p.priority}</td>
+          <td>${p.progress}%</td>
+          <td>${p.spend} <span style="color:var(--muted)">/ ${p.budget}</span></td>`;
+        tr.addEventListener("click", () => openProject(p.id));
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderOverview(p) {
+      document.getElementById("tab-overview").innerHTML = `
+        <div class="stat-grid">
+          <div class="stat"><div class="label">Budget</div><div class="value">${p.budget}</div></div>
+          <div class="stat"><div class="label">Expenditure</div><div class="value">${p.spend}</div></div>
+          <div class="stat"><div class="label">Personnel</div><div class="value">${PERSONNEL.length}</div></div>
+          <div class="stat"><div class="label">Completion</div><div class="value">${p.progress}%</div></div>
+        </div>
+        <div class="block">
+          <h3>Overview</h3>
+          <p>Static mock for ${p.name}. Use Scheduling to explore the CPM board; BOQ remains view-only.</p>
+        </div>`;
+    }
+
+    function renderPersonnel() {
+      document.getElementById("tab-personnel").innerHTML = `
+        <table class="card-table">
+          <thead><tr><th>Name</th><th>Role</th><th>Start</th></tr></thead>
+          <tbody>${PERSONNEL.map((x) => `<tr><td>${x.name}</td><td>${x.role}</td><td>${x.start}</td></tr>`).join("")}</tbody>
+        </table>`;
+    }
+
+    function renderDocuments() {
+      document.getElementById("tab-documents").innerHTML = `
+        <table class="card-table">
+          <thead><tr><th>Document</th><th>Type</th><th>Updated</th></tr></thead>
+          <tbody>${DOCUMENTS.map((x) => `<tr><td>${x.name}</td><td>${x.type}</td><td>${x.updated}</td></tr>`).join("")}</tbody>
+        </table>`;
+    }
+
+    function renderBoq() {
+      const rows = BOQ.map((part) => `
+        <tr style="background:var(--lock);font-weight:600">
+          <td colspan="4">Part ${part.part} – ${part.title}</td>
+          <td style="text-align:right">${part.total}</td>
+        </tr>
+        ${part.items.map((i) => `
+          <tr>
+            <td>${i.code}</td><td>${i.desc}</td><td>${i.unit}</td><td>${i.qty}</td>
+            <td style="text-align:right">${i.amount}</td>
+          </tr>`).join("")}
+      `).join("");
+      document.getElementById("tab-boq").innerHTML = `
+        <div style="margin-bottom:10px;color:var(--muted);font-size:12px">View-only · Grand total <strong style="color:var(--ink)">₱395,105,259.00</strong></div>
+        <table class="card-table">
+          <thead><tr><th>Item</th><th>Description</th><th>Unit</th><th>Qty</th><th>Amount</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function renderSchedule() {
+      const cpm = runCpm();
+      cycleBroken = cpm.cycle;
+      document.getElementById("cycleAlert").classList.toggle("show", cpm.cycle);
+      const metrics = cpm.ok ? rollupMetrics(cpm) : {};
+      const body = document.getElementById("schedBody");
+      const gantt = document.getElementById("ganttRows");
+      body.innerHTML = "";
+      gantt.innerHTML = "";
+
+      const head = document.getElementById("ganttHead");
+      head.innerHTML = Array.from({ length: 12 }, (_, i) => `<span>W${i + 1}${i === 11 ? "+" : ""}</span>`).join("");
+
+      const projectDur = cpm.projectDur || 232;
+      const visible = schedule.filter(isVisible);
+
+      for (const n of visible) {
+        if (criticalOnly && n.kind === "leaf" && metrics[n.id] && !metrics[n.id].critical) continue;
+        if (criticalOnly && n.kind !== "leaf" && n.kind !== "phase") {
+          const dl = descendantLeaves(n.id);
+          if (!dl.some((k) => metrics[k.id]?.critical)) continue;
+        }
+
+        const m = metrics[n.id] || {};
+        const depth = n.parent === null ? 0 : schedule.find((x) => x.id === n.parent)?.kind === "summary" || schedule.find((x) => x.id === n.parent)?.kind === "phase"
+          ? (n.parent && schedule.find((x) => x.id === n.parent)?.parent ? 2 : 1)
+          : 1;
+        const indentClass = n.parent ? (schedule.find((x) => x.id === n.parent)?.parent ? "indent-2" : "indent-1") : "";
+        const tr = document.createElement("tr");
+        tr.dataset.id = n.id;
+        if (n.kind === "phase") tr.classList.add("phase");
+        if (n.kind === "summary") tr.classList.add("summary");
+        if (m.critical) tr.classList.add("critical");
+        if (selectedId === n.id) tr.classList.add("selected");
+
+        const hasKids = schedule.some((x) => x.parent === n.id);
+        const twist = hasKids
+          ? `<button type="button" class="twist" data-toggle="${n.id}" aria-expanded="${n.open !== false}">▾</button>`
+          : `<span style="width:18px;display:inline-block"></span>`;
+
+        const predLabel = (n.preds || []).map((p) => `${p.id} ${p.type}`).join(", ") || "–";
+        const durCell = n.kind === "leaf"
+          ? `<input class="dur-input" data-dur="${n.id}" type="number" min="0" value="${n.dur}" />`
+          : n.kind === "loe" ? `<span class="muted-cell">hammock</span>` : `<span class="muted-cell">–</span>`;
+
+        const predCell = n.kind === "leaf"
+          ? `<button type="button" class="pred-btn" data-pred="${n.id}">${predLabel}</button>`
+          : `<span class="muted-cell">${n.kind === "loe" ? "SS/FF span" : "–"}</span>`;
+
+        tr.innerHTML = `
+          <td class="${indentClass}">
+            <div class="name-cell">
+              ${twist}
+              <i class="phase-dot" style="background:var(--phase-${n.phase})"></i>
+              ${n.name}
+              ${n.locked ? '<span class="lock-tag">LOCKED</span>' : ""}
+            </div>
+          </td>
+          <td>${durCell}</td>
+          <td>${predCell}</td>
+          <td>${m.ES ?? "–"}</td>
+          <td>${m.EF ?? "–"}</td>
+          <td>${m.TF == null ? '<span class="muted-cell">–</span>' : m.TF}</td>
+          <td>${m.critical ? '<span class="crit">YES</span>' : '<span class="muted-cell">–</span>'}</td>`;
+        body.appendChild(tr);
+
+        const row = document.createElement("div");
+        row.className = "gantt-row" + (selectedId === n.id ? " selected" : "");
+        row.dataset.id = n.id;
+        if (m.EF != null && m.ES != null && projectDur > 0) {
+          const left = (m.ES / projectDur) * 100;
+          const width = Math.max(((m.EF - m.ES) / projectDur) * 100, n.kind === "leaf" ? 0.8 : 0.4);
+          const bar = document.createElement("div");
+          bar.className = `bar ${n.phase}` +
+            (n.kind !== "leaf" && n.kind !== "loe" ? " sum" : "") +
+            (n.kind === "loe" ? " loe sum" : "") +
+            (m.critical && !cpm.cycle ? " critical" : "");
+          bar.style.left = `${left}%`;
+          bar.style.width = `${width}%`;
+          bar.title = `${n.name}: ${m.ES}–${m.EF}`;
+          row.appendChild(bar);
+        }
+        gantt.appendChild(row);
+      }
+
+      const path = cpm.criticalPath || [];
+      document.getElementById("statusStrip").innerHTML = cpm.cycle
+        ? `<span><b>Invalid network</b> – fix cycle to recalculate</span>`
+        : `
+          <span>Project duration <b>${cpm.projectDur} working days</b></span>
+          <span>Critical path <b>${path.join(" → ") || "–"}</b></span>
+          <span style="margin-left:auto">Static CPM in-browser · synthetic Clearwater data</span>`;
+
+      // bind row interactions
+      body.querySelectorAll("tr").forEach((tr) => {
+        tr.addEventListener("click", (e) => {
+          if (e.target.closest(".twist, .dur-input, .pred-btn")) return;
+          selectedId = tr.dataset.id;
+          renderSchedule();
+        });
+      });
+      body.querySelectorAll(".twist").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const node = schedule.find((n) => n.id === btn.dataset.toggle);
+          node.open = node.open === false;
+          renderSchedule();
+        });
+      });
+      body.querySelectorAll(".dur-input").forEach((input) => {
+        input.addEventListener("change", () => {
+          const node = schedule.find((n) => n.id === input.dataset.dur);
+          node.dur = Math.max(0, Number(input.value) || 0);
+          toast(`Duration updated · CPM recalculated`);
+          renderSchedule();
+        });
+        input.addEventListener("click", (e) => e.stopPropagation());
+      });
+      body.querySelectorAll(".pred-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openPredDialog(btn.dataset.pred);
+        });
+      });
+    }
+
+    function openPredDialog(id) {
+      predEditId = id;
+      const node = schedule.find((n) => n.id === id);
+      document.getElementById("predTargetLabel").textContent = `Links into ${node.name}`;
+      const sel = document.getElementById("predSelect");
+      sel.innerHTML = leaves()
+        .filter((n) => n.id !== id)
+        .map((n) => `<option value="${n.id}">${n.id} – ${n.name.replace(/^[\w.]+\s/, "")}</option>`)
+        .join("");
+      document.getElementById("predDialog").showModal();
+    }
+
+    function fillAddParentOptions() {
+      const sel = document.getElementById("addParent");
+      const parents = schedule.filter((n) => n.kind === "phase" || n.kind === "summary");
+      sel.innerHTML = parents.map((n) => `<option value="${n.id}">${n.name}</option>`).join("");
+    }
+
+    /* ========== Routing ========== */
+    function routeFromHash() {
+      const h = location.hash.replace(/^#\/?/, "") || "projects";
+      const parts = h.split("/");
+      if (parts[0] === "project" && parts[1]) {
+        openProject(parts[1], parts[2] || "scheduling");
+      } else if (["projects", "reports", "contractors", "settings"].includes(parts[0])) {
+        setShell(parts[0]);
+      } else {
+        setShell("projects");
+      }
+    }
+
+    /* ========== Wire UI ========== */
+    document.getElementById("shellNav").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-shell]");
+      if (!btn) return;
+      setShell(btn.dataset.shell);
+    });
+
+    document.getElementById("stageRibbon").addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      stageFilter = chip.dataset.stage;
+      document.querySelectorAll("#stageRibbon .chip").forEach((c) => c.classList.toggle("active", c === chip));
+      renderProjects();
+    });
+    document.getElementById("projectSearch").addEventListener("input", renderProjects);
+    document.getElementById("backToProjects").addEventListener("click", () => setShell("projects"));
+
+    document.getElementById("projectTabs").addEventListener("click", (e) => {
+      const tab = e.target.closest("button[data-tab]");
+      if (!tab) return;
+      setTab(tab.dataset.tab);
+    });
+
+    document.getElementById("filterCritical").addEventListener("click", () => {
+      criticalOnly = !criticalOnly;
+      document.getElementById("filterCritical").setAttribute("aria-pressed", String(criticalOnly));
+      renderSchedule();
+    });
+
+    document.getElementById("btnDemoCycle").addEventListener("click", () => {
+      const b3 = schedule.find((n) => n.id === "B.3");
+      b3.preds = [{ id: "B.2", type: "FS" }, { id: "B.4", type: "FS" }];
+      const b2 = schedule.find((n) => n.id === "B.2");
+      // create cycle B.2 -> B.3 -> B.2 via forcing B.2 to depend on B.3
+      b2.preds = [{ id: "B.3", type: "FS" }];
+      toast("Simulated cycle B.2 ↔ B.3");
+      renderSchedule();
+    });
+
+    document.getElementById("fixCycle").addEventListener("click", () => {
+      schedule.find((n) => n.id === "B.2").preds = [{ id: "B.1", type: "FS" }];
+      schedule.find((n) => n.id === "B.3").preds = [{ id: "B.2", type: "FS" }];
+      toast("Network restored");
+      renderSchedule();
+    });
+
+    document.getElementById("btnAddActivity").addEventListener("click", () => {
+      addMode = "leaf";
+      document.getElementById("addDialogTitle").textContent = "Add activity";
+      document.getElementById("addDurField").classList.remove("hidden");
+      fillAddParentOptions();
+      document.getElementById("addName").value = "";
+      document.getElementById("addDur").value = "5";
+      document.getElementById("addDialog").showModal();
+    });
+
+    document.getElementById("btnAddSummary").addEventListener("click", () => {
+      addMode = "summary";
+      document.getElementById("addDialogTitle").textContent = "Add nested summary";
+      document.getElementById("addDurField").classList.add("hidden");
+      fillAddParentOptions();
+      document.getElementById("addParent").innerHTML = schedule
+        .filter((n) => n.kind === "phase")
+        .map((n) => `<option value="${n.id}">${n.name}</option>`).join("");
+      document.getElementById("addName").value = "";
+      document.getElementById("addDialog").showModal();
+    });
+
+    document.getElementById("addCancel").addEventListener("click", () => document.getElementById("addDialog").close());
+    document.getElementById("addConfirm").addEventListener("click", () => {
+      const parentId = document.getElementById("addParent").value;
+      const name = document.getElementById("addName").value.trim() || (addMode === "summary" ? "New summary" : "New activity");
+      const parent = schedule.find((n) => n.id === parentId);
+      const id = `${parentId}.${Date.now().toString(36).slice(-4)}`;
+      const node = {
+        id,
+        name: `${id} ${name}`,
+        kind: addMode === "summary" ? "summary" : "leaf",
+        phase: parent.phase,
+        parent: parentId,
+        open: true,
+        dur: addMode === "leaf" ? Number(document.getElementById("addDur").value) || 0 : undefined,
+        preds: addMode === "leaf" ? [] : undefined,
+      };
+      const parentIndex = schedule.findIndex((n) => n.id === parentId);
+      let insertAt = parentIndex + 1;
+      while (insertAt < schedule.length && schedule[insertAt].parent === parentId) insertAt++;
+      // insert after last descendant
+      const isDesc = (nid) => {
+        let cur = schedule.find((n) => n.id === nid);
+        while (cur?.parent) {
+          if (cur.parent === parentId) return true;
+          cur = schedule.find((n) => n.id === cur.parent);
+        }
+        return false;
+      };
+      insertAt = parentIndex + 1;
+      while (insertAt < schedule.length && (schedule[insertAt].parent === parentId || isDesc(schedule[insertAt].id))) insertAt++;
+      schedule.splice(insertAt, 0, node);
+      if (parent.kind === "phase" || parent.kind === "summary") parent.open = true;
+      document.getElementById("addDialog").close();
+      selectedId = id;
+      toast(addMode === "summary" ? "Summary added" : "Activity added · set predecessors to link network");
+      renderSchedule();
+    });
+
+    document.getElementById("predCancel").addEventListener("click", () => document.getElementById("predDialog").close());
+    document.getElementById("predClear").addEventListener("click", () => {
+      schedule.find((n) => n.id === predEditId).preds = [];
+      document.getElementById("predDialog").close();
+      toast("Predecessors cleared");
+      renderSchedule();
+    });
+    document.getElementById("predAdd").addEventListener("click", () => {
+      const node = schedule.find((n) => n.id === predEditId);
+      const pid = document.getElementById("predSelect").value;
+      const type = document.getElementById("predType").value;
+      node.preds = node.preds || [];
+      if (!node.preds.some((p) => p.id === pid)) node.preds.push({ id: pid, type });
+      document.getElementById("predDialog").close();
+      toast("Predecessor link added");
+      renderSchedule();
+    });
+
+    window.addEventListener("hashchange", routeFromHash);
+    renderProjects();
+    routeFromHash();
+  </script>
+</body>
+</html>
