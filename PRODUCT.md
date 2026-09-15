@@ -40,10 +40,11 @@ Authenticated shell → Projects → project detail tabs (Overview, Key Personne
 ## Brand Commitments
 
 - Name: Sadiconstruction / SADICON MANAGEMENT
-- Accent orange `#FF6E00`; dark CTA `#181C20`; text `#111111`
-- Rectangular controls (`rounded-none`)
-- Display: DM Serif Display for brand/project titles; Work Sans for UI
-- Construction / directory aesthetic for authenticated surfaces (see product BOQ mock and landing)
+- Visual identity is **not** locked to the first mockup (orange `#FF6E00`, charcoal, sharp rectangles, DM Serif / Work Sans, construction-directory chrome). Those are incumbent evidence and anti-reference for a replacement world.
+- First surface for the new world: **landing** (access / brand). Authenticated Operate screens inherit that world; they do not keep a second identity.
+- The Diazo Hang / hanging-print experiment is discarded: paper clips, kraft bands, grain, issue-stamps, collage, and scrapbook materials are anti-reference. The product must read as CPM software a PM would put on a meeting screen.
+- Motion and interaction may be playful (orchestrated UI, calculated path, state choreography). Visual identity may not: no toy chrome, dark-neon, high-school collage, or physical-artefact cosplay.
+- A finished redesign fails if: it could be any SaaS PM tool; it is still the old charcoal-orange mockup in new clothes; it reads as a craft project; a Project Manager would not trust it in front of stakeholders.
 
 ## Evidence on Hand
 

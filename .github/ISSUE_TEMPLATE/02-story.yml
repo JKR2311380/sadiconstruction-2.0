@@ -1,0 +1,39 @@
+name: Story
+description: Implementable story with testable acceptance criteria
+title: "[Story] "
+labels: ["story"]
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: Parent epic
+      placeholder: E6 — CPM Engine
+    validations:
+      required: true
+  - type: textarea
+    id: user_story
+    attributes:
+      label: User story
+      description: As a … I want … so that …
+    validations:
+      required: true
+  - type: textarea
+    id: specs
+    attributes:
+      label: Spec pointers
+      description: Userflow steps, seams (e.g. features/scheduling/engine)
+      value: |
+        - docs/Userflow.md
+        - Seam:
+  - type: textarea
+    id: do_not_touch
+    attributes:
+      label: Do not touch
+  - type: textarea
+    id: ac
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+    validations:
+      required: true

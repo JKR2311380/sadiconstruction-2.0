@@ -16,6 +16,7 @@ E6 CPM Engine (pure module)
 E7 Scheduling UI (tree + Gantt)
 E8 Documents (Storage)
 E9 Contractors / Reports / Settings  ← later
+E10 CI/CD                            ← specified; not implemented
 ```
 
 ---
@@ -134,6 +135,21 @@ E9 Contractors / Reports / Settings  ← later
 | T9.4 | Settings / Dark Mode | |
 | T9.5 | LOE UI designation | Engine already skips flag |
 | T9.6 | Baseline snapshots | Post-foundation |
+
+---
+
+## E10 — CI/CD (specified, not implemented)
+
+Contract: [`CI-CD.md`](CI-CD.md). Do not add `.github/workflows/*` until these tickets are pulled.
+
+| ID | Ticket | Acceptance |
+|----|--------|------------|
+| T10.1 | CI workflow | PR + default-branch: `npm ci`, lint, typecheck, build; Node pinned; lockfile cache |
+| T10.2 | Required checks | Default branch protection requires the CI workflow after it has a green run |
+| T10.3 | CD preview / production | Only after a host is chosen (D8). Deploy `dist/` artifact; secrets in GitHub Environments |
+| T10.4 | Engine tests in CI | After T6.6; add the test job — do not invent a failing `npm test` before the script exists |
+
+**Do not start T10.3** while hosting is local-only.
 
 ---
 

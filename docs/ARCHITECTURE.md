@@ -31,7 +31,7 @@ UI never imports Supabase clients or engine internals. Adapters never import Rea
 - **Schema:** DATA-MODEL is the physical guess. Additive columns are cheap; rename in an ADR. UI should key off domain fields, not CSS or route names.
 - **Auth:** capabilities (`can('editSchedule')`) not `role === 'planner'` scattered in JSX. Adding a role is a matrix row (ADR 0005).
 - **Persistence:** swap `src/data/mock` for `src/data/supabase` behind the same function names. Stores hold UI + session; server truth later moves to a query cache without renaming features.
-- **Hosting:** local Vite now (D8). The app is a static build; any host that serves `dist/` works.
+- **Hosting:** local Vite now (D8). The app is a static build; any host that serves `dist/` works. The CI/CD *contract* is [`CI-CD.md`](CI-CD.md); GitHub Actions are not implemented yet.
 - **CPM rules:** Retained Logic / one calendar are ADRs. New modes (Progress Override, extra calendars) are new engine flags with tests — not a fork of the UI tree.
 
 ## Prototype vs later
@@ -52,3 +52,4 @@ UI never imports Supabase clients or engine internals. Adapters never import Rea
 | File placement | `FILE-STRUCTURE.md` |
 | Client state | `STATE_MANAGEMENT.md` |
 | Visual world | `DESIGN.md` · `UI_UX_GUIDELINES.md` |
+| CI/CD contract | `CI-CD.md` |

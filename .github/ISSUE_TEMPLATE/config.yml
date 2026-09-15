@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Open decisions
+    url: https://github.com/JKR2311380/sadiconstruction-2.0/blob/ideation/docs/OPEN-DECISIONS.md
+    about: Human blockers — do not invent answers in tickets

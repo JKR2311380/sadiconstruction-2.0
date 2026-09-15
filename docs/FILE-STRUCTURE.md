@@ -19,6 +19,7 @@ sadiconstruction-2.0/
 │   ├── DATA-MODEL.md
 │   ├── FILE-STRUCTURE.md      # this file
 │   ├── TICKETS.md
+│   ├── CI-CD.md               # pipeline contract; no Actions yet
 │   ├── OPEN-DECISIONS.md
 │   ├── REPO-STATUS.md
 │   ├── adr/
@@ -100,6 +101,7 @@ Expanded research (Linear epic grain, GitHub templates, deeper tree): [`research
 | Seams / pivot | `docs/ARCHITECTURE.md` |
 | Client state | `docs/STATE_MANAGEMENT.md` |
 | Apply DESIGN.md | `docs/UI_UX_GUIDELINES.md` |
+| CI/CD (specified) | `docs/CI-CD.md` |
 | Build order | `docs/TICKETS.md` |
 | Code today | `docs/REPO-STATUS.md` |
 

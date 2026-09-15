@@ -1,0 +1,42 @@
+name: Epic
+description: Outcome-scoped epic (no acceptance criteria here)
+title: "[Epic] "
+labels: ["epic"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: Outcomes
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+  - type: textarea
+    id: docs
+    attributes:
+      label: Governing docs
+      description: Links to PRD / Siteflow / Userflow / ERD / ADR
+      value: |
+        - docs/PRD.md
+        - docs/TICKETS.md
+  - type: textarea
+    id: children
+    attributes:
+      label: Child stories
+      value: |
+        - [ ]
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of done
+      options:
+        - label: All children Done
+        - label: Demo path recorded (actor + URL)

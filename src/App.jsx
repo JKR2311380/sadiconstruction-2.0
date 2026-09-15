@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import { ThemeProvider } from "next-themes"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
-import LandingPage from "./LandingPage"
+import { LandingGate } from "@/features/landing/LandingGate"
 import { LoginPage } from "@/features/auth/LoginPage"
 import { RequestAccessPage } from "@/features/auth/RequestAccessPage"
 import { AppShell } from "@/features/shell/AppShell"
@@ -19,7 +19,7 @@ export default function App() {
       <TooltipProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingGate />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/request-access" element={<RequestAccessPage />} />
             <Route element={<ProtectedRoute />}>

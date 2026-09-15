@@ -36,6 +36,7 @@ src/
 | Data | localStorage | `src/data` adapters → Postgres |
 | Documents | Metadata only | Storage bucket, 50 MB cap already in UI |
 | CPM cache | None (D5) | Optional columns if first-paint hurts |
+| CI/CD | Spec only (`docs/CI-CD.md`) | GitHub Actions when E10 is pulled |
 
 ## Agent conventions
 
