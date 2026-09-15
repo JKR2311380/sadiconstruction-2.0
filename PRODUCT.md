@@ -35,7 +35,7 @@ Authenticated shell → Projects → project detail tabs (Overview, Key Personne
 
 **Out:** Editable BOQ from Scheduling; Project Libre / MSPDI import; multi-calendar; Progress Override toggle; resource leveling; cost-loaded CPM.
 
-**Undecided:** Full ERD/schema (separate doc later).
+**Schema:** [`docs/ERD.md`](docs/ERD.md) · [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md). Closed choices: [`docs/OPEN-DECISIONS.md`](docs/OPEN-DECISIONS.md).
 
 ## Brand Commitments
 
@@ -48,8 +48,10 @@ Authenticated shell → Projects → project detail tabs (Overview, Key Personne
 ## Evidence on Hand
 
 - [`CONTEXT.md`](CONTEXT.md), [`IDEA.md`](IDEA.md), [`docs/PRD.md`](docs/PRD.md), [`docs/Siteflow.md`](docs/Siteflow.md), [`docs/Userflow.md`](docs/Userflow.md)
+- [`docs/ERD.md`](docs/ERD.md), [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md), [`docs/TICKETS.md`](docs/TICKETS.md), [`docs/FILE-STRUCTURE.md`](docs/FILE-STRUCTURE.md)
+- [`docs/OPEN-DECISIONS.md`](docs/OPEN-DECISIONS.md) — human blockers only
 - Clearwater Medical Center mock BOQ (PRJ-2024-008)
-- Research: `docs/research/2026-09-14-deep-research-cpm-scheduling.md`
+- Research: `docs/research/2026-09-14-deep-research-cpm-scheduling.md`, `docs/research/2026-09-15-free-tier-supabase-architecture.md`
 - Incumbent UI: `src/LandingPage.jsx`, `docs/mockups/scheduling-clearwater.html`
 
 ## Product Principles

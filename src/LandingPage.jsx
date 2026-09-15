@@ -1,9 +1,7 @@
-import React from 'react';
+import { Link } from "react-router-dom"
+import craneBg from "./assets/crane_bg.jpg"
 
-// Optional: Uncomment if using a local asset in src/assets/crane-bg.jpg
-import craneBg from './assets/crane_bg.jpg';
-
-export default function LandingPage({ onNavigateToLogin }) {
+export default function LandingPage() {
   const heroImage = "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=2000&q=80";
 
   return (
@@ -23,18 +21,18 @@ export default function LandingPage({ onNavigateToLogin }) {
           </nav>
           
           <div className="flex items-center gap-6">
-            <button 
-              onClick={onNavigateToLogin}
-              className="font-['Work_Sans'] text-[14px] font-medium text-[#111111] hover:underline cursor-pointer"
+            <Link
+              to="/login"
+              className="font-['Work_Sans'] text-[14px] font-medium text-[#111111] hover:underline"
             >
               Log in
-            </button>
-            <button 
-              onClick={onNavigateToLogin}
-              className="bg-[#181C20] text-white font-['Work_Sans'] text-[14px] font-medium px-5 py-2 rounded-none hover:bg-black transition-colors cursor-pointer"
+            </Link>
+            <Link
+              to="/request-access"
+              className="bg-[#181C20] px-5 py-2 font-['Work_Sans'] text-[14px] font-medium text-white transition-colors hover:bg-black"
             >
               Get Access
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -75,18 +73,18 @@ export default function LandingPage({ onNavigateToLogin }) {
 
             {/* Work Sans 14px Rectangular Buttons */}
             <div className="mt-8 flex items-center gap-4">
-              <button 
-                onClick={onNavigateToLogin}
-                className="bg-[#181C20] text-white px-6 py-3 rounded-none font-['Work_Sans'] text-[14px] font-medium hover:bg-black transition-colors cursor-pointer shadow-sm"
+              <Link
+                to="/request-access"
+                className="bg-[#181C20] px-6 py-3 font-['Work_Sans'] text-[14px] font-medium text-white shadow-sm transition-colors hover:bg-black"
               >
                 Request Access
-              </button>
-              <button 
-                onClick={onNavigateToLogin}
-                className="bg-black/5 hover:bg-black/10 text-[#111111] px-6 py-3 rounded-none font-['Work_Sans'] text-[14px] font-medium border border-black/10 transition-colors cursor-pointer flex items-center gap-2"
+              </Link>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 border border-black/10 bg-black/5 px-6 py-3 font-['Work_Sans'] text-[14px] font-medium text-[#111111] transition-colors hover:bg-black/10"
               >
-                Sign Up <span>&rarr;</span>
-              </button>
+                Sign in <span>&rarr;</span>
+              </Link>
             </div>
 
           </div>

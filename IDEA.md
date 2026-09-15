@@ -1,7 +1,9 @@
 # IDEA — Critical-path Scheduling from BOQ
 
-> Status: foundation docs drafted · Clearwater Medical Center (PRJ-2024-008)  
+> Status: foundation solidified 2026-09-15 · Clearwater Medical Center (PRJ-2024-008)  
 > Foundation: [`docs/PRD.md`](docs/PRD.md) · [`docs/Siteflow.md`](docs/Siteflow.md) · [`docs/Userflow.md`](docs/Userflow.md)  
+> Schema / build: [`docs/ERD.md`](docs/ERD.md) · [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md) · [`docs/TICKETS.md`](docs/TICKETS.md) · [`docs/FILE-STRUCTURE.md`](docs/FILE-STRUCTURE.md)  
+> Closed choices: [`docs/OPEN-DECISIONS.md`](docs/OPEN-DECISIONS.md)  
 > Related: [`CONTEXT.md`](CONTEXT.md) · [`docs/research/2026-09-14-deep-research-cpm-scheduling.md`](docs/research/2026-09-14-deep-research-cpm-scheduling.md) · [`docs/projectlibre-cpm-research.md`](docs/projectlibre-cpm-research.md)
 
 ## One-liner
@@ -32,7 +34,7 @@ PERT three-point math may help derive a single duration; the engine itself stays
 |-------|----------|
 | Reference | Project Libre / OpenProj CPM behavior + MSPDI field semantics (for understanding only) |
 | Engine | First-party JS/TS CPM in the Vite/React app (or shared module) — formulas we own |
-| Persistence | Supabase (conceptual; schema in a later ERD) |
+| Persistence | Supabase Free — see [`docs/ERD.md`](docs/ERD.md) / [`docs/DATA-MODEL.md`](docs/DATA-MODEL.md) |
 | UI | Scheduling tab: activity tree + Gantt, phase-colored, critical highlight |
 
 ## Functions & features
