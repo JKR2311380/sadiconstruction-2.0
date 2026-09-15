@@ -1,0 +1,5 @@
+{
+  "prompt": "A designed desktop website first viewport, landscape, of Sadiconstruction's landing page as an issued-for-construction CAD drawing cover sheet. STRUCTURE: full-bleed plot sheet with a strict black title-block border. Bottom-right title block: SADICONSTRUCTION, ACCESS-001, CLEARWATER MEDICAL CENTER PRJ-2024-008, ISSUED FOR CONSTRUCTION. Primary action is a red Request Access stamp. Center: key plan of BOQ phases with a red revision cloud on Longest Path. No crane photos, no orange, no fake stats.",
+  "model": "cursor-generate-image",
+  "aspect": "16:9"
+}

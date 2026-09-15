@@ -1,0 +1,5 @@
+{
+  "prompt": "High-fidelity desktop website landing page mockup, 16:9, the category-standard SaaS marketing page executed straight, no irony. Product name SADICONSTRUCTION. LAYOUT: 1) White #FFFFFF page. Top nav: wordmark left; links Product, Scheduling, Docs; right 'Sign in' ghost button and blue #2563EB 'Try now' button. 2) Hero: left column headline 'Schedule on the same WBS as cost' and a short paragraph about BOQ phases locking the programme; two CTAs Sign in and Try now. 3) Right: a laptop or browser-frame screenshot of a Gantt chart for Clearwater Medical Center PRJ-2024-008. 4) Below the fold start: three equal feature cards (Critical path, Float, Locked phases). Looks like Linear / modern PM SaaS. Clean grid, Inter-like sans, blue accent. No construction photography, no cranes, no scrapbook, no paper clips. This is the familiar competitor-like path, not a distinctive art direction.",
+  "model": "cursor-generate-image",
+  "aspect": "16:9"
+}

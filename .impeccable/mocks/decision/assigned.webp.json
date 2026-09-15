@@ -1,0 +1,5 @@
+{
+  "prompt": "A designed desktop website first viewport, landscape, of Sadiconstruction's landing page as a physical A0 construction programme taped to a planning-office wall, photographed as a UI not a poster. STRUCTURE: no website header, no card grid, no browser chrome. The entire screen IS one backlit plotter print. Top title block strip: left SADICONSTRUCTION in condensed industrial sans, center CLEARWATER MEDICAL CENTER PRJ-2024-008, right an issue-stamp button reading Request Access. Below the title block a calendar timescale running off both edges. Left stub column lists BOQ phases. Longest Path bars fully inked china-marker red; other bars in shadow. Real UI text only. No fake KPIs.",
+  "model": "cursor-generate-image",
+  "aspect": "16:9"
+}

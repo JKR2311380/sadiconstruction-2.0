@@ -1,0 +1,101 @@
+{
+  "regions": [
+    {
+      "id": "grid-ground",
+      "kind": "texture",
+      "grid": "A2:A3",
+      "note": "Clean patch of the dark perspective grid with no building, labels, or controls."
+    },
+    {
+      "id": "massing",
+      "kind": "plate",
+      "grid": "B1:I7",
+      "note": "Schematic isometric 4D massing of Clearwater: white floor plates, teal glazed volumes, vermilion Longest Path spine, leader lines to callouts. No UI type."
+    },
+    {
+      "id": "wordmark",
+      "kind": "text",
+      "grid": "A0:C0",
+      "note": "S mark plus SADICONSTRUCTION wordmark, condensed grotesque caps."
+    },
+    {
+      "id": "project-meta",
+      "kind": "text",
+      "grid": "D0:G0",
+      "note": "Clearwater Medical Center · PRJ-2024-008 · SYNTHETIC"
+    },
+    {
+      "id": "sign-in",
+      "kind": "control",
+      "grid": "I0:I0",
+      "snap": false,
+      "note": "Sign in text button."
+    },
+    {
+      "id": "try-now",
+      "kind": "control",
+      "grid": "J0:J0",
+      "note": "Try now filled red button with arrow."
+    },
+    {
+      "id": "callout-a1180",
+      "kind": "text",
+      "grid": "B3:C4",
+      "note": "A1180 / Structural steel callout on the left."
+    },
+    {
+      "id": "callout-a1240",
+      "kind": "text",
+      "grid": "I2:J4",
+      "snap": false,
+      "note": "A1240 / Envelope callout on the right."
+    },
+    {
+      "id": "play",
+      "kind": "control",
+      "grid": "A8:A8",
+      "note": "Circular play button on the programme slider."
+    },
+    {
+      "id": "programme-label",
+      "kind": "text",
+      "grid": "B8:C8",
+      "note": "PROGRAMME label above the week track."
+    },
+    {
+      "id": "slider-track",
+      "kind": "control",
+      "grid": "B8:F8",
+      "note": "Grey programme timeline track from W12 toward the playhead."
+    },
+    {
+      "id": "playhead",
+      "kind": "control",
+      "grid": "F8:G8",
+      "note": "Red W22 playhead tick on the programme slider."
+    },
+    {
+      "id": "legend",
+      "kind": "text",
+      "grid": "G8:J8",
+      "snap": false,
+      "note": "Preliminaries, Site Works, Concrete, Superstructure with phase dots."
+    },
+    {
+      "id": "week-scale",
+      "kind": "text",
+      "grid": "B8:J9",
+      "snap": false,
+      "box": [0.10, 0.86, 0.80, 0.06],
+      "note": "W12 W14 W16 W18 W20 W22 W24 W26 W28 week-scale numerals."
+    },
+    {
+      "id": "caption",
+      "kind": "text",
+      "grid": "D9:G9",
+      "snap": false,
+      "box": [0.28, 0.92, 0.44, 0.06],
+      "note": "Longest Path 312d · BOQ phases lock the sequence"
+    }
+  ]
+}

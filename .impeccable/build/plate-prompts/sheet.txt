@@ -1,0 +1,1 @@
+﻿Full-bleed diazo programme sheet, two-column Gantt bars and kraft bands, no UI type.

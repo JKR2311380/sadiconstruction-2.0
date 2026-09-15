@@ -1,0 +1,982 @@
+{
+  "tool": "comp-diff",
+  "version": 1,
+  "createdAt": "2026-09-15T20:52:26.205Z",
+  "label": "hero",
+  "comp": ".impeccable/mocks/landing-c.webp",
+  "build": ".impeccable/review/hero-repro.png",
+  "spec": ".impeccable/build/spec.json",
+  "compSize": "1280x720",
+  "buildSize": "2560x1440",
+  "align": "top",
+  "overall": 0.4498,
+  "verdict": "contradicted",
+  "scores": {
+    "overall": 0.4498,
+    "structure": 0.4896,
+    "color": 0.614,
+    "colorIntersection": 0.2081,
+    "paletteMatch": 0.8326,
+    "detail": 0.3296,
+    "detailRaw": 0.3713,
+    "detailAdded": 0.0833,
+    "bands": 0.2833
+  },
+  "palette": {
+    "comp": [
+      {
+        "hex": "#ccaa77",
+        "coverage": 0.675
+      },
+      {
+        "hex": "#96784f",
+        "coverage": 0.1117
+      },
+      {
+        "hex": "#3c2b15",
+        "coverage": 0.0977
+      },
+      {
+        "hex": "#ab7e46",
+        "coverage": 0.045
+      },
+      {
+        "hex": "#684d28",
+        "coverage": 0.0417
+      },
+      {
+        "hex": "#21210e",
+        "coverage": 0.029
+      }
+    ],
+    "build": [
+      {
+        "hex": "#f5d8af",
+        "coverage": 0.7714
+      },
+      {
+        "hex": "#f8f8f7",
+        "coverage": 0.0798
+      },
+      {
+        "hex": "#d0aa77",
+        "coverage": 0.0754
+      },
+      {
+        "hex": "#a57e4c",
+        "coverage": 0.0373
+      },
+      {
+        "hex": "#97815e",
+        "coverage": 0.0219
+      },
+      {
+        "hex": "#20160c",
+        "coverage": 0.0142
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "room",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1,
+      "kind": "plate",
+      "score": {
+        "overall": 0.437,
+        "structure": 0.4525,
+        "color": 0.5874,
+        "colorIntersection": 0.1757,
+        "paletteMatch": 0.809,
+        "detail": 0.3524,
+        "detailRaw": 0.3785,
+        "detailAdded": 0.0521,
+        "bands": 0.6036
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 720
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 1230,
+          "h": 565
+        }
+      }
+    },
+    {
+      "id": "wire",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 0.1,
+      "kind": "plate",
+      "score": {
+        "overall": 0.323,
+        "structure": 0.5006,
+        "color": 0.6451,
+        "colorIntersection": 0.4734,
+        "paletteMatch": 0.7376,
+        "detail": 0.1377,
+        "detailRaw": 0.3408,
+        "detailAdded": 0.4063,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 72
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 72
+        }
+      }
+    },
+    {
+      "id": "clip-1",
+      "x": 0,
+      "y": 0,
+      "w": 0.3,
+      "h": 0.2,
+      "kind": "plate",
+      "score": {
+        "overall": 0.2487,
+        "structure": 0.4507,
+        "color": 0.5726,
+        "colorIntersection": 0.302,
+        "paletteMatch": 0.7183,
+        "detail": 0.0431,
+        "detailRaw": 0.1472,
+        "detailAdded": 0.2083,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 384,
+          "h": 144
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 384,
+          "h": 47
+        }
+      }
+    },
+    {
+      "id": "clip-2",
+      "x": 0.3,
+      "y": 0,
+      "w": 0.1,
+      "h": 0.1,
+      "kind": "plate",
+      "score": {
+        "overall": 0.291,
+        "structure": 0.3862,
+        "color": 0.5477,
+        "colorIntersection": 0.2778,
+        "paletteMatch": 0.693,
+        "detail": 0.1698,
+        "detailRaw": 0.3104,
+        "detailAdded": 0.2813,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 11,
+          "w": 128,
+          "h": 61
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 72
+        }
+      }
+    },
+    {
+      "id": "clip-3",
+      "x": 0.6,
+      "y": 0,
+      "w": 0.2,
+      "h": 0.1,
+      "kind": "plate",
+      "score": {
+        "overall": 0.3482,
+        "structure": 0.4789,
+        "color": 0.7788,
+        "colorIntersection": 0.5399,
+        "paletteMatch": 0.9074,
+        "detail": 0.1157,
+        "detailRaw": 0.2875,
+        "detailAdded": 0.3438,
+        "bands": 0.2971
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 11,
+          "w": 256,
+          "h": 61
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 256,
+          "h": 72
+        }
+      }
+    },
+    {
+      "id": "clip-4",
+      "x": 0.8,
+      "y": 0,
+      "w": 0.2,
+      "h": 0.2,
+      "kind": "plate",
+      "score": {
+        "overall": 0.3395,
+        "structure": 0.5233,
+        "color": 0.4853,
+        "colorIntersection": 0.1234,
+        "paletteMatch": 0.6802,
+        "detail": 0.2232,
+        "detailRaw": 0.2805,
+        "detailAdded": 0.1146,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 256,
+          "h": 144
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 206,
+          "h": 47
+        }
+      }
+    },
+    {
+      "id": "sheet",
+      "x": 0,
+      "y": 0.1,
+      "w": 1,
+      "h": 0.9,
+      "kind": "plate",
+      "score": {
+        "overall": 0.3945,
+        "structure": 0.4881,
+        "color": 0.5362,
+        "colorIntersection": 0.1237,
+        "paletteMatch": 0.7583,
+        "detail": 0.2805,
+        "detailRaw": 0.3013,
+        "detailAdded": 0.0417,
+        "bands": 0.5
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 648
+        },
+        "build": {
+          "x": 0,
+          "y": 104,
+          "w": 1199,
+          "h": 389
+        }
+      }
+    },
+    {
+      "id": "diazo-grain",
+      "x": 0.5,
+      "y": 0.7,
+      "w": 0.1,
+      "h": 0.1,
+      "kind": "texture",
+      "score": {
+        "overall": 0.4231,
+        "structure": 0.8068,
+        "color": 0.7427,
+        "colorIntersection": 0.4067,
+        "paletteMatch": 0.9236,
+        "detail": 0.0842,
+        "detailRaw": 0.1363,
+        "detailAdded": 0.1042,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 67
+        },
+        "build": {
+          "x": 0,
+          "y": 59,
+          "w": 128,
+          "h": 2
+        }
+      }
+    },
+    {
+      "id": "title-left",
+      "x": 0.0656,
+      "y": 0.1,
+      "w": 0.1922,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.2714,
+        "structure": 0.4409,
+        "color": 0.0266,
+        "colorIntersection": 0,
+        "paletteMatch": 0.0409,
+        "detail": 0.0287,
+        "detailRaw": 0.0287,
+        "detailAdded": 0,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 10,
+          "y": 0,
+          "w": 228,
+          "h": 71
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "location-left",
+      "x": 0,
+      "y": 0.2,
+      "w": 0.0563,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.3515,
+        "structure": 0.293,
+        "color": 0.5386,
+        "colorIntersection": 0.0679,
+        "paletteMatch": 0.7921,
+        "detail": 0.0692,
+        "detailRaw": 0.3036,
+        "detailAdded": 0.4688,
+        "bands": 0.6
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 60,
+          "y": 0,
+          "w": 12,
+          "h": 72
+        },
+        "build": {
+          "x": 0,
+          "y": 32,
+          "w": 72,
+          "h": 25
+        }
+      }
+    },
+    {
+      "id": "phase-2-band",
+      "x": 0.2,
+      "y": 0.2,
+      "w": 0.4,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.4658,
+        "structure": 0.5943,
+        "color": 0.3923,
+        "colorIntersection": 0.1265,
+        "paletteMatch": 0.5354,
+        "detail": 0.1374,
+        "detailRaw": 0.2103,
+        "detailAdded": 0.1458,
+        "bands": 0.5
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 72
+        },
+        "build": {
+          "x": 0,
+          "y": 32,
+          "w": 512,
+          "h": 40
+        }
+      }
+    },
+    {
+      "id": "longest-path-kicker",
+      "x": 0,
+      "y": 0.3,
+      "w": 0.0563,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.2654,
+        "structure": 0.3893,
+        "color": 0,
+        "colorIntersection": 0,
+        "paletteMatch": 0,
+        "detail": 0.0719,
+        "detailRaw": 0.0719,
+        "detailAdded": 0,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 60,
+          "y": 0,
+          "w": 12,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "week-scale-left",
+      "x": 0.2,
+      "y": 0.3,
+      "w": 0.3328,
+      "h": 0.0333,
+      "kind": "text",
+      "score": {
+        "overall": 0.4761,
+        "structure": 0.7371,
+        "color": 0.1932,
+        "colorIntersection": 0.0243,
+        "paletteMatch": 0.2842,
+        "detail": 0.1287,
+        "detailRaw": 0.1391,
+        "detailAdded": 0.0208,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 420,
+          "h": 48
+        },
+        "build": {
+          "x": 361,
+          "y": 0,
+          "w": 20,
+          "h": 48
+        }
+      }
+    },
+    {
+      "id": "activity-ids-left",
+      "x": 0,
+      "y": 0.4,
+      "w": 0.0516,
+      "h": 0.3,
+      "kind": "text",
+      "score": {
+        "overall": 0.3441,
+        "structure": 0.3162,
+        "color": 0.4279,
+        "colorIntersection": 0.0236,
+        "paletteMatch": 0.6457,
+        "detail": 0.1265,
+        "detailRaw": 0.1838,
+        "detailAdded": 0.1146,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 57,
+          "y": 0,
+          "w": 9,
+          "h": 216
+        },
+        "build": {
+          "x": 0,
+          "y": 168,
+          "w": 66,
+          "h": 25
+        }
+      }
+    },
+    {
+      "id": "near-critical",
+      "x": 0,
+      "y": 0.7,
+      "w": 0.0516,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.2324,
+        "structure": 0.3006,
+        "color": 0.0527,
+        "colorIntersection": 0.0008,
+        "paletteMatch": 0.0807,
+        "detail": 0.0595,
+        "detailRaw": 0.1168,
+        "detailAdded": 0.1146,
+        "bands": 0.6
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 56,
+          "y": 0,
+          "w": 10,
+          "h": 72
+        },
+        "build": {
+          "x": 0,
+          "y": 60,
+          "w": 66,
+          "h": 1
+        }
+      }
+    },
+    {
+      "id": "programme-notes",
+      "x": 0.0656,
+      "y": 0.8,
+      "w": 0.2344,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.2843,
+        "structure": 0.4375,
+        "color": 0.0862,
+        "colorIntersection": 0,
+        "paletteMatch": 0.1326,
+        "detail": 0.0266,
+        "detailRaw": 0.0266,
+        "detailAdded": 0,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 5,
+          "y": 2,
+          "w": 295,
+          "h": 70
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "print-meta-left",
+      "x": 0.4234,
+      "y": 0.8,
+      "w": 0.1031,
+      "h": 0.0417,
+      "kind": "text",
+      "score": {
+        "overall": 0.4202,
+        "structure": 0.6394,
+        "color": 0.2312,
+        "colorIntersection": 0.0013,
+        "paletteMatch": 0.355,
+        "detail": 0.0177,
+        "detailRaw": 0.0177,
+        "detailAdded": 0,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 2,
+          "w": 132,
+          "h": 31
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "wordmark",
+      "x": 0,
+      "y": 0.9,
+      "w": 0.4,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.3335,
+        "structure": 0.5274,
+        "color": 0.0435,
+        "colorIntersection": 0,
+        "paletteMatch": 0.0669,
+        "detail": 0.1264,
+        "detailRaw": 0.1264,
+        "detailAdded": 0,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "title-right",
+      "x": 0.6,
+      "y": 0.1,
+      "w": 0.1359,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.3783,
+        "structure": 0.6015,
+        "color": 0.1325,
+        "colorIntersection": 0,
+        "paletteMatch": 0.2038,
+        "detail": 0.0295,
+        "detailRaw": 0.0295,
+        "detailAdded": 0,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 163,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "sign-in",
+      "x": 0.9,
+      "y": 0.1,
+      "w": 0.1,
+      "h": 0.1,
+      "kind": "control",
+      "score": {
+        "overall": 0.2819,
+        "structure": 0.5764,
+        "color": 0,
+        "colorIntersection": 0,
+        "paletteMatch": 0,
+        "detail": 0.1124,
+        "detailRaw": 0.1124,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 126,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "location-right",
+      "x": 0.6,
+      "y": 0.2,
+      "w": 0.1,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.4629,
+        "structure": 0.5463,
+        "color": 0.5258,
+        "colorIntersection": 0.1484,
+        "paletteMatch": 0.729,
+        "detail": 0.156,
+        "detailRaw": 0.2185,
+        "detailAdded": 0.125,
+        "bands": 0.3491
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 72
+        },
+        "build": {
+          "x": 0,
+          "y": 32,
+          "w": 128,
+          "h": 40
+        }
+      }
+    },
+    {
+      "id": "phase-3-band",
+      "x": 0.7,
+      "y": 0.2083,
+      "w": 0.2484,
+      "h": 0.0917,
+      "kind": "text",
+      "score": {
+        "overall": 0.3196,
+        "structure": 0.4545,
+        "color": 0.1034,
+        "colorIntersection": 0.0631,
+        "paletteMatch": 0.1252,
+        "detail": 0.1764,
+        "detailRaw": 0.2389,
+        "detailAdded": 0.125,
+        "bands": 0.4
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 311,
+          "h": 66
+        },
+        "build": {
+          "x": 0,
+          "y": 26,
+          "w": 303,
+          "h": 40
+        }
+      }
+    },
+    {
+      "id": "activity-kicker-right",
+      "x": 0.6375,
+      "y": 0.3,
+      "w": 0.0625,
+      "h": 0.0333,
+      "kind": "text",
+      "score": {
+        "overall": 0.4983,
+        "structure": 0.5269,
+        "color": 0.5054,
+        "colorIntersection": 0.1073,
+        "paletteMatch": 0.7197,
+        "detail": 0.3365,
+        "detailRaw": 0.347,
+        "detailAdded": 0.0208,
+        "bands": 0.58
+      },
+      "verdict": "drift",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 80,
+          "h": 36
+        },
+        "build": {
+          "x": 0,
+          "y": 0,
+          "w": 80,
+          "h": 48
+        }
+      }
+    },
+    {
+      "id": "week-scale-right",
+      "x": 0.9531,
+      "y": 0.3,
+      "w": 0.0469,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.3463,
+        "structure": 0.415,
+        "color": 0,
+        "colorIntersection": 0,
+        "paletteMatch": 0,
+        "detail": 0.2586,
+        "detailRaw": 0.2586,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 11,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "activity-ids-right",
+      "x": 0.6,
+      "y": 0.5083,
+      "w": 0.0281,
+      "h": 0.0667,
+      "kind": "text",
+      "score": {
+        "overall": 0.483,
+        "structure": 0.722,
+        "color": 0.2817,
+        "colorIntersection": 0.0313,
+        "paletteMatch": 0.4165,
+        "detail": 0.0771,
+        "detailRaw": 0.098,
+        "detailAdded": 0.0417,
+        "bands": 0.4
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 32,
+          "h": 43
+        },
+        "build": {
+          "x": 21,
+          "y": 0,
+          "w": 2,
+          "h": 48
+        }
+      }
+    },
+    {
+      "id": "print-meta-right",
+      "x": 0.9594,
+      "y": 0.8,
+      "w": 0.0406,
+      "h": 0.1,
+      "kind": "text",
+      "score": {
+        "overall": 0.304,
+        "structure": 0.3437,
+        "color": 0,
+        "colorIntersection": 0,
+        "paletteMatch": 0,
+        "detail": 0.2144,
+        "detailRaw": 0.2144,
+        "detailAdded": 0,
+        "bands": 1
+      },
+      "verdict": "contradicted",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 9,
+          "h": 72
+        },
+        "build": null
+      }
+    },
+    {
+      "id": "request-access",
+      "x": 0.8,
+      "y": 0.9,
+      "w": 0.2,
+      "h": 0.1,
+      "kind": "control",
+      "score": {
+        "overall": 0.1901,
+        "structure": 0.3828,
+        "color": 0,
+        "colorIntersection": 0,
+        "paletteMatch": 0,
+        "detail": 0.0891,
+        "detailRaw": 0.0891,
+        "detailAdded": 0,
+        "bands": 0
+      },
+      "verdict": "missing",
+      "inkBox": {
+        "comp": {
+          "x": 0,
+          "y": 0,
+          "w": 256,
+          "h": 72
+        },
+        "build": null
+      }
+    }
+  ],
+  "files": {
+    "sideBySide": "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/side-by-side.png",
+    "heatmap": "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/heatmap.png",
+    "regionFiles": [
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/room.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/wire.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/clip-1.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/clip-2.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/clip-3.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/clip-4.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/sheet.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/diazo-grain.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/title-left.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/location-left.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/phase-2-band.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/longest-path-kicker.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/week-scale-left.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/activity-ids-left.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/near-critical.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/programme-notes.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/print-meta-left.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/wordmark.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/title-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/sign-in.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/location-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/phase-3-band.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/activity-kicker-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/week-scale-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/activity-ids-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/print-meta-right.png",
+      "C:/Users/Sanji/Documents/Projects/sadiconstruction-2.0/.impeccable/review/diff/hero/regions/request-access.png"
+    ]
+  }
+}

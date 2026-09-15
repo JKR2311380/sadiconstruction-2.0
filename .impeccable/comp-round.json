@@ -1,0 +1,20 @@
+{
+  "title": "Stage fill locked",
+  "question": "Stage fill is the approved first viewport. Close this board — the page will be built from that comp.",
+  "options": [
+    {
+      "id": "proceed",
+      "label": "Build Stage fill",
+      "thesis": "The isometric massing owns the viewport; chrome above, slider below.",
+      "palette": ["#1B1E23", "#F4F6F8", "#4A7A8C", "#B42318"],
+      "materials": ["schematic massing", "time slider", "OSD chrome"],
+      "viewport": "Approved composition A at .impeccable/mocks/landing-4d-a.png",
+      "risk": "None — this is a confirmation, not a new choice.",
+      "comp": ".impeccable/mocks/landing-4d-a.png"
+    }
+  ],
+  "buildPath": {
+    "value": "comp",
+    "toggle": false
+  }
+}

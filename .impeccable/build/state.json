@@ -1,0 +1,117 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-15T21:39:26.673Z",
+  "comp": ".impeccable/mocks/landing-4d-a.png",
+  "direction": "0d52830e",
+  "breakpoint": "1280x720",
+  "artifact": null,
+  "phase": "plates",
+  "phases": {
+    "comps": {
+      "status": "closed",
+      "openedAt": "2026-09-15T21:39:26.673Z",
+      "closedAt": "2026-09-15T21:49:45.163Z",
+      "attempts": 4,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "6 comps, 1 approved",
+        "approved": ".impeccable/mocks/landing-4d-a.png",
+        "at": "2026-09-15T21:49:45.162Z"
+      },
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-15T21:49:45.302Z",
+      "closedAt": "2026-09-15T21:51:46.590Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "15 regions, 2 plates, 8 text regions measured",
+        "at": "2026-09-15T21:51:46.590Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "open",
+      "openedAt": "2026-09-15T21:51:46.590Z",
+      "closedAt": null,
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": false,
+        "reasons": [
+          "plate assets/plates/massing.png is 1280px wide; the comp region is 1024px and a shipping plate needs at least 1536px. Regenerate at asset size, do not crop the comp.",
+          "plate assets/plates/massing.png: structure 20% against the comp region massing: the composition of the plate is not the region's (different subject, orientation, or crop); regenerate with comp-spec.mjs --crop massing as the reference image",
+          "plate assets/plates/massing.png: scores 36% against the comp region massing (structure 20%, color 26%, detail 47%); regenerate with the crop as --ref and the comp-spec plate prompt"
+        ],
+        "summary": "2/2 plates",
+        "at": "2026-09-15T21:53:05.955Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "sections": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "plates": {
+    "grid-ground": {
+      "status": "ok",
+      "score": 0.6401,
+      "size": "1152x864"
+    },
+    "massing": {
+      "status": "ok",
+      "score": 0.3568,
+      "size": "1280x720"
+    }
+  }
+}

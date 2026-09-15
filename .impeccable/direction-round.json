@@ -1,0 +1,156 @@
+{
+  "title": "Choose the visual world",
+  "question": "Second re-roll. Your steer is the lead: SaaS product landing + Curved Crease as the system (reading Grease as Crease). Lock it, take the roll, or re-roll.",
+  "options": [
+    {
+      "id": "crease-saas",
+      "label": "Crease Landing",
+      "kicker": "YOUR STEER",
+      "lineage": "SaaS product landing wearing a curved-crease deployable shell",
+      "thesis": "The page is a normal product landing whose law is one compass arc: Longest Path creases the Clearwater programme from a flat plan into a rigid shell.",
+      "palette": ["#F4EFE6", "#2C2A26", "#6E6A62", "#B42318"],
+      "materials": ["smooth deployable sheet", "compass arc", "graphite shadow"],
+      "viewport": "Nav, headline, Sign in and Try now in the usual SaaS places; the product proof is a Clearwater Gantt that folds along one charcoal Longest-Path arc — not a scrapbook, not a login wall.",
+      "risk": "Reads as architecture-school paper if the SaaS chrome fails, or as generic SaaS if the crease is only decoration.",
+      "raised": [
+        {
+          "from": "challenger-silk",
+          "raise": "Overlapping activities are named joint states (FS/SS), not color-only chords."
+        },
+        {
+          "from": "challenger-arcade",
+          "raise": "The fold snaps in computation steps, not a mushy ease."
+        },
+        {
+          "from": "challenger-phosphor",
+          "raise": "Longest Path days print as computed output on the sheet, not a marketing KPI."
+        },
+        {
+          "from": "challenger-torn",
+          "raise": "Prior programme issues stay reachable as opened layers, not torn collage."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/r2-crease-saas.png"
+    },
+    {
+      "id": "assigned",
+      "label": "Machine HMI",
+      "kicker": "THE ROLL",
+      "lineage": "CNC mill readout and industrial cycle-start panel",
+      "thesis": "The landing is a machine panel: Clearwater’s path as a calibrated readout, Try now as cycle-start.",
+      "palette": ["#141714", "#D5DDD0", "#3D5A3A", "#C9A227"],
+      "materials": ["matte panel", "segment readout", "cycle key"],
+      "viewport": "Industrial chrome, large Longest Path 312d readout, a compact Gantt as the toolpath, Sign in and Try now as panel keys.",
+      "risk": "Reads as factory-floor hardware, not construction CPM, if the activities fail to stay BOQ-phased.",
+      "comp": ".impeccable/mocks/decision/r2-cnc.png"
+    },
+    {
+      "id": "challenger-cyclorama",
+      "label": "Cyclorama Dawn",
+      "verdict": "competitive",
+      "lineage": "theater cyclorama passing from black night through cobalt and rose into day",
+      "thesis": "CPM states are lighting cues: empty is night, calculating is first light, valid is day; the programme stands in front of the dawn.",
+      "palette": ["#0A0C10", "#1E3A6E", "#C97B7B", "#F4F1EA"],
+      "materials": ["cyc wash", "horizon band", "cue stencil"],
+      "viewport": "Horizon bands behind a Clearwater programme; Sign in and Try now as cue keys labeled NIGHT / DAY.",
+      "case": "Holds product clarity as empty / calculating / valid; a theater cyc does not identify a construction PM.",
+      "risk": "Reads as a performing-arts site if the programme is not the actor.",
+      "comp": ".impeccable/mocks/decision/r2-cyclorama.png",
+      "hero": "https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn.webp"
+    },
+    {
+      "id": "challenger-silk",
+      "label": "Color Chord Canopy",
+      "verdict": "declined",
+      "lineage": "translucent silk banners overlapping in a courtyard",
+      "thesis": "Concurrent activities as passing color chords.",
+      "palette": ["#F7F4EE", "#2C1E6E", "#9B2D4A", "#D4A017"],
+      "materials": ["translucent silk", "tension cables", "sun-white paving"],
+      "viewport": "Silk lanes crossing a bright field, overlaps labeled as FS/SS.",
+      "case": "A courtyard canopy does not identify a planning office, and silk reads as lifestyle craft.",
+      "risk": "Reads as a fashion or architecture biennale.",
+      "kept": "Overlap as a named joint state, not color alone.",
+      "hero": "https://impeccable.style/worlds/cards/generative-art-computational-color-chord-counterpoint-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/generative-art-computational-color-chord-counterpoint.webp"
+    },
+    {
+      "id": "challenger-arcade",
+      "label": "Arcade Cabinet",
+      "verdict": "declined",
+      "lineage": "pixel-art CRT arcade glow",
+      "thesis": "The programme as a 240-line playfield.",
+      "palette": ["#0A0A0A", "#E8E050", "#D43B2C", "#2A6B9B"],
+      "materials": ["fat pixels", "scanlines", "phosphor bloom"],
+      "viewport": "Score-bar chrome, tile-grid Gantt, Try now as START.",
+      "case": "Toy chrome is banned, and an arcade does not identify a stakeholder meeting.",
+      "risk": "Reads as a game, not CPM software.",
+      "kept": "Motion snaps in whole computation steps.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow.webp"
+    },
+    {
+      "id": "challenger-phosphor",
+      "label": "Midnight Terminal",
+      "verdict": "declined",
+      "lineage": "green-phosphor machine-room terminal",
+      "thesis": "The engine prints the path as a live transcript.",
+      "palette": ["#071208", "#3DFF6A", "#1A3D22"],
+      "materials": ["P1 phosphor", "scanline glass", "blinking cursor"],
+      "viewport": "80-column CPM log, Try now as a command.",
+      "case": "Dark-neon and hacker chrome fail the meeting-screen test.",
+      "risk": "Reads as a retro developer toy.",
+      "kept": "Longest Path prints as computed output.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-phosphor-terminal-midnight-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-phosphor-terminal-midnight.webp"
+    },
+    {
+      "id": "challenger-torn",
+      "label": "Flyer Wall",
+      "verdict": "declined",
+      "lineage": "club flyers stapled over flyers",
+      "thesis": "Programme issues stacked as torn layers.",
+      "palette": ["#F2E24A", "#111111", "#E23B8C"],
+      "materials": ["photocopy stock", "staple holes", "torn strips"],
+      "viewport": "A wall of sheets, the top one Clearwater.",
+      "case": "This is the scrapbook this project already refused.",
+      "risk": "Reads as a high-school collage.",
+      "kept": "Prior issues stay reachable as opened layers.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-torn-flyer-photocopy-wall-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/posters-covers-sleeves-torn-flyer-photocopy-wall.webp"
+    },
+    {
+      "id": "challenger-memphis",
+      "label": "Memphis Showroom",
+      "verdict": "declined",
+      "lineage": "Memphis Milano candy geometry",
+      "thesis": "The landing as cheerful colliding furniture.",
+      "palette": ["#F4B8C5", "#A8E6CF", "#F7E36D", "#111111"],
+      "materials": ["terrazzo speckle", "squiggle laminate", "candy blocks"],
+      "viewport": "Chunky blocks arguing on a speckled floor.",
+      "case": "Toy geometry fails stakeholder trust and the anti-scrapbook brief.",
+      "risk": "Reads as a design-meme poster.",
+      "kept": "Short spring on the fold only, never pattern-as-identity.",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-memphis-showroom-morning-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/design-canon-memphis-showroom-morning.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "SaaS product landing",
+    "thesis": "The same landing skeleton without the crease: nav, headline, product screenshot, Sign in and Try now.",
+    "palette": ["#FFFFFF", "#0F172A", "#2563EB"],
+    "materials": ["clean grid", "app screenshot", "blue CTA"],
+    "viewport": "Marketing header, hero copy left, Gantt right, three feature cards.",
+    "risk": "Indistinguishable from Linear-for-construction by design.",
+    "comp": ".impeccable/mocks/decision/canon.png"
+  },
+  "steer": true
+}

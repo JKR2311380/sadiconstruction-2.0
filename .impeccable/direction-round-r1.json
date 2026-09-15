@@ -1,0 +1,126 @@
+{
+  "title": "Choose the visual world",
+  "question": "Re-roll steered toward Akari: paper that holds light. Lock one, steer, or roll again. Gravity-rain garden and the single-hue toy program left this hand: they fail the stakeholder-trust test.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Diazo Hang",
+      "kicker": "THE ROLL",
+      "lineage": "Translucent diazo prints clipped to a wire in a print room",
+      "thesis": "The landing is a hang of Clearwater sheets backlit by the window: paper holds the light, Longest Path is the print that goes fully translucent, Request Access means you may unclip a copy.",
+      "palette": ["#E8D9A8", "#2A241C", "#C45A12", "#F4EFE0"],
+      "materials": ["diazo film", "bulldog clips", "window light"],
+      "viewport": "A dim print room, a wire of hanging translucent programmes across the viewport, the Clearwater sheet glowing, SADICONSTRUCTION on a level title rail, Request Access as a vermilion unclip-stamp.",
+      "risk": "Sepia drawing-hang is a construction-website cliché if the sheets read as decoration instead of issued prints.",
+      "raised": [
+        {
+          "from": "challenger-brine",
+          "raise": "Each hanging sheet wears a kraft band: BOQ phase, working days, float remaining."
+        },
+        {
+          "from": "challenger-toy-hue",
+          "raise": "Print-room amber floods every surface; the only white is light through the film."
+        },
+        {
+          "from": "challenger-ikeda",
+          "raise": "The glowing sheet is dense with linework; Longest Path is a one-frame inversion of that field."
+        },
+        {
+          "from": "challenger-oscilloscope",
+          "raise": "Time is an etched graticule behind the hang; bars are measured against it, not placed by eye."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/assigned-r1.webp"
+    },
+    {
+      "id": "model-pick",
+      "label": "Planning Lightbox",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "A planner’s light table stacked with tracing overlays",
+      "thesis": "Access is being invited to the light table: BOQ on the bottom sheet, the network traced over it, Longest Path the overlay that actually catches the bulb.",
+      "palette": ["#F3E6C8", "#2C2418", "#B8431A", "#6B8F9C"],
+      "materials": ["tracing paper", "lightbox glow", "drafting dots"],
+      "viewport": "Top-down light table filling the screen, stacked overlays slightly offset, vermilion Request Access stamp on the table edge, Clearwater phase names readable through the paper.",
+      "risk": "The architect-website default: a glowing drawing table as hero.",
+      "comp": ".impeccable/mocks/decision/model-pick-r1.webp"
+    },
+    {
+      "id": "challenger-jcard",
+      "label": "Folded J-Card",
+      "verdict": "competitive",
+      "lineage": "photocopied cassette j-cards that unfold panel by panel",
+      "thesis": "The landing is a folded issued sheet: the cover is the project, unfolding reveals the programme, the spine is the activity list.",
+      "palette": ["#E7E2D6", "#2B2B2B", "#6E6E6E", "#1A1A1A"],
+      "materials": ["photocopy stock", "one ink weight", "paper fold"],
+      "viewport": "A gray photocopy cover filling the first viewport, Sadiconstruction in cramped ink, a small crosshatched key plan, numbered spine of leaf activities; the fold peek shows the Longest Path inside.",
+      "case": "Holds product clarity: unfolding is how drawings are actually read, and the inside can be the path. Loses audience identification: bedroom-tape photocopy is not a planning office until the fold is trusted.",
+      "risk": "Reads as a zine, not an internal construction platform, if the photocopy grit outranks the issued sheet.",
+      "comp": ".impeccable/mocks/decision/challenger-jcard.webp",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-dungeon-tape-jcard-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/posters-covers-sleeves-dungeon-tape-jcard.webp"
+    },
+    {
+      "id": "challenger-brine",
+      "label": "Pickling Brine Calendar",
+      "verdict": "declined",
+      "lineage": "seasonal jars maturing on a shelf",
+      "thesis": "Projects as jars; working days as brine time; float as cloudiness.",
+      "palette": ["#F4EFE6", "#C45C4A", "#6A7F4E", "#8B5A2B"],
+      "materials": ["jar glass", "kraft labels", "brine haze"],
+      "viewport": "A shelf of labeled jars; Clearwater is the batch in front.",
+      "case": "A kitchen calendar does not identify this planning office, and jars hide BOQ as WBS.",
+      "risk": "Culinary theater a PM would not put in front of stakeholders.",
+      "kept": "Each sheet banded with phase, working days, and float.",
+      "hero": "https://impeccable.style/worlds/cards/food-fermentation-culinary-theater-pickling-brine-calendar-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/food-fermentation-culinary-theater-pickling-brine-calendar.webp"
+    },
+    {
+      "id": "challenger-ikeda",
+      "label": "Datamatics Field",
+      "verdict": "declined",
+      "lineage": "Ryoji Ikeda black-and-white data sublime",
+      "thesis": "The network as a barcode wall; Longest Path as a full-frame inversion.",
+      "palette": ["#000000", "#FFFFFF"],
+      "materials": ["pixel bars", "monospace numerics", "frame inversion"],
+      "viewport": "A wall of vertical bars with Clearwater metrics in the margin.",
+      "case": "Media-art density does not identify a construction PM, and a barcode hides the BOQ phases.",
+      "risk": "Cold strobe is the opposite of the paper-and-light steer.",
+      "kept": "The glowing sheet is dense with linework; Longest Path inverts that field once.",
+      "hero": "https://impeccable.style/worlds/cards/ikeda-datamatics-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/ikeda-datamatics.webp"
+    },
+    {
+      "id": "challenger-oscilloscope",
+      "label": "Signal Bench",
+      "verdict": "declined",
+      "lineage": "CRT oscilloscope on a lab bench",
+      "thesis": "Calendar as timebase; the programme as a triggered phosphor trace.",
+      "palette": ["#0A0E0A", "#3DFF6B", "#8A8F84", "#E0A020"],
+      "materials": ["phosphor glass", "etched graticule", "detented knobs"],
+      "viewport": "One graticule, Clearwater’s path locked still by the trigger.",
+      "case": "A lab instrument does not identify this office, and a trace-Gantt hides that cost phases own the rows.",
+      "risk": "Dark phosphor reads as the neon-instrument anti-goal.",
+      "kept": "Time as an etched graticule everything is measured against.",
+      "hero": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "Construction marketing landing",
+    "thesis": "What this category ships: site hero, orange banner, serif tagline, fake stats, request access.",
+    "palette": ["#FFFFFF", "#111111", "#FF6E00", "#181C20"],
+    "materials": ["crane photography", "orange header", "stats bar"],
+    "viewport": "Full-bleed site photo, left copy panel, Get Access on charcoal, four KPI tiles along the bottom.",
+    "risk": "Indistinguishable from the current landing and every contractor brochure site.",
+    "comp": ".impeccable/mocks/decision/canon.webp"
+  },
+  "steer": true
+}

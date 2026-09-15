@@ -1,0 +1,1 @@
+Mirror-tiled from a clean 32x32 patch at (96,2) of .impeccable/build/crops/diazo-grain.png (raw crop of region F7). Seamless kraft diazo paper grain, palette #dcba88 / #ccaa77, no type, no bars, no vignette. 2x2 mirror tile repeated to 640x360. Not a generated image.
