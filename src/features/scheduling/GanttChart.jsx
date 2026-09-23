@@ -12,13 +12,13 @@ export function GanttChart({
   const span = Math.max(projectDurationDays, 1)
 
   return (
-    <section className="overflow-auto bg-card">
+    <section className="overflow-auto">
       <div
-        className="sticky top-0 z-2 grid border-b border-border bg-[#ECEEF0] text-center text-[10px] font-bold tracking-wide text-muted-foreground uppercase"
-        style={{ gridTemplateColumns: `repeat(${weeks}, minmax(44px, 1fr))` }}
+        className="sticky top-0 z-2 grid bg-muted/40 text-center text-[10px] font-bold tracking-wide text-muted-foreground uppercase"
+        style={{ gridTemplateColumns: `repeat(${weeks}, minmax(52px, 1fr))` }}
       >
         {Array.from({ length: weeks }, (_, i) => (
-          <span key={i} className="border-r border-border px-1 py-2">
+          <span key={i} className="border-r border-border px-1 py-2.5">
             W{i + 1}
             {i === weeks - 1 ? "+" : ""}
           </span>
@@ -34,9 +34,9 @@ export function GanttChart({
           bar = (
             <div
               className={cn(
-                "absolute top-2.5 h-4 border border-black/12",
-                node.kind !== "leaf" && "top-3.5 h-2 border-0 opacity-30",
-                node.isLoe && "top-3.5 h-2 opacity-55 [background:repeating-linear-gradient(-45deg,var(--phase-a),var(--phase-a)_4px,#5A7388_4px,#5A7388_8px)]",
+                "absolute top-3 h-5 border border-black/12",
+                node.kind !== "leaf" && "top-4 h-2.5 border-0 opacity-30",
+                node.isLoe && "top-4 h-2.5 opacity-55 [background:repeating-linear-gradient(-45deg,var(--phase-a),var(--phase-a)_4px,#5A7388_4px,#5A7388_8px)]",
                 critical && "border-destructive shadow-[inset_0_0_0_2px_var(--color-destructive)]",
               )}
               style={{
@@ -52,7 +52,7 @@ export function GanttChart({
           <div
             key={node.id}
             className={cn(
-              "relative h-9 border-b border-border",
+              "relative h-11 border-b border-border",
               selectedId === node.id && "bg-accent",
             )}
             style={{

@@ -76,6 +76,21 @@ body:has(.formwork-root) {
   transform: none;
 }
 
+.formwork-app-nav {
+  position: absolute;
+  top: 0.85rem;
+  right: 1.1rem;
+  display: flex;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.formwork-app-nav .formwork-action {
+  min-height: 2.35rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.95rem;
+}
+
 .formwork-wordmark {
   position: absolute;
   left: 1.1rem;
@@ -281,6 +296,12 @@ body:has(.formwork-root) {
     bottom: auto;
     top: 0.85rem;
     letter-spacing: 0.2em;
+    max-width: calc(100% - 11.5rem);
+  }
+
+  .formwork-app-nav {
+    top: 0.7rem;
+    right: 0.75rem;
   }
 
   .formwork-staff {

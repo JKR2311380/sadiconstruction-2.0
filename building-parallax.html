@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courtyard Massing — Depth-Layered Three.js</title>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #3a3a3c; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #hud {
+      position: fixed; left: 16px; bottom: 16px; z-index: 2;
+      font: 12px/1.45 Segoe UI, Helvetica, Arial, sans-serif;
+      color: #eee; background: rgba(20,20,22,0.55);
+      padding: 10px 12px; border: 1px solid #555; pointer-events: none;
+    }
+    #hud b { color: #e85a3c; }
+    #hud small { display: block; color: #bbb; margin-top: 2px; }
+    #views {
+      position: fixed; right: 16px; top: 16px; z-index: 2; display: flex; gap: 6px;
+    }
+    #views button {
+      font: 12px/1 Segoe UI, Helvetica, Arial, sans-serif;
+      padding: 7px 10px; border: 1px solid #666; background: #2a2a2c;
+      cursor: pointer; color: #eee;
+    }
+    #views button.active { background: #e85a3c; border-color: #e85a3c; color: #fff; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.2/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="hud">
+    Reference massing &nbsp;·&nbsp; 1 grid = 1 unit
+    <small><b>FG</b> tower / terraces &nbsp;·&nbsp; <b>MG</b> spine / court &nbsp;·&nbsp; <b>BG</b> rear bar</small>
+  </div>
+  <div id="views">
+    <button data-view="iso" class="active">Iso</button>
+    <button data-view="front">Front</button>
+    <button data-view="back">Back</button>
+    <button data-view="top">Top</button>
+  </div>
+
+  <script type="module">
+    /**
+     * Faithful rebuild from the four-view sheet.
+     *
+     * Plan (Top): up = −Z back, down = +Z front, right = +X.
+     *   Left  = stepped L-terrace (reads as layered slabs in Back View).
+     *   Center = cube village + 2×2 pool just north of the spine.
+     *   Right  = long N–S white bar, then the orange tower.
+     *   Spine  = Z-jog: west run, front jog, long south run, back jog, into tower.
+     *
+     * Front: path is the mid-height datum; village sits on it; two glass bays; tower +X.
+     * Back:  tower on the left; tall white next to it; village; layered terraces on the right.
+     * Iso:   camera from +X +Y +Z.
+     */
+
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x3a3a3c);
+
+    const camera = new THREE.PerspectiveCamera(26, innerWidth / innerHeight, 0.1, 180);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.maxPolarAngle = Math.PI * 0.49;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.64));
+    scene.add(new THREE.HemisphereLight(0xf4f4f2, 0x6a6a6c, 0.38));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.28);
+    sun.position.set(-11, 18, 9);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.near = 4;
+    sun.shadow.camera.far = 55;
+    sun.shadow.camera.left = -20;
+    sun.shadow.camera.right = 20;
+    sun.shadow.camera.top = 14;
+    sun.shadow.camera.bottom = -14;
+    sun.shadow.bias = -0.00035;
+    scene.add(sun);
+
+    const matWhite = new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 0.8, metalness: 0.02 });
+    const matOrange = new THREE.MeshStandardMaterial({ color: 0xe85a3c, roughness: 0.52, metalness: 0.06 });
+    const matCyan = new THREE.MeshStandardMaterial({
+      color: 0x5ec4c6, roughness: 0.2, metalness: 0.04,
+      transparent: true, opacity: 0.7, depthWrite: false,
+    });
+    const matBase = new THREE.MeshStandardMaterial({ color: 0x2a2a2c, roughness: 0.92, metalness: 0.04 });
+    const matPlant = new THREE.MeshStandardMaterial({ color: 0x2c4a38, roughness: 0.9, metalness: 0 });
+
+    const groupForeground = new THREE.Group();
+    const groupMiddleground = new THREE.Group();
+    const groupBackground = new THREE.Group();
+    groupForeground.name = "groupForeground";
+    groupMiddleground.name = "groupMiddleground";
+    groupBackground.name = "groupBackground";
+    scene.add(groupForeground, groupMiddleground, groupBackground);
+
+    const G = { fg: groupForeground, mg: groupMiddleground, bg: groupBackground };
+    const M = { w: matWhite, o: matOrange, c: matCyan, b: matBase, p: matPlant };
+
+    function add(g, m, w, h, d, x, y, z, name) {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), M[m]);
+      mesh.position.set(x, y + h / 2, z);
+      mesh.castShadow = m !== "b";
+      mesh.receiveShadow = true;
+      if (name) mesh.name = name;
+      G[g].add(mesh);
+      return mesh;
+    }
+
+    const S = 1.0;          // one storey
+    const PY = 1.38;        // spine soffit — sits on 1-storey, cuts 2-storey
+    const PH = 0.72;
+    const PW = 0.72;
+
+    /* ---- podium ------------------------------------------------------ */
+    add("fg", "b", 22.4, 0.18, 12.0, 0.6, -0.18, 0.1, "podium");
+
+    /* ---- FOREGROUND: left terraces + tower + front glass ------------- */
+    // Stepped L on −X. Front: descending terraces. Back: 3 stacked slabs on the right.
+    add("fg", "w", 8.8, 0.7, 3.8, -5.5, 0, -3.25);
+    add("fg", "w", 7.4, 0.7, 3.1, -5.9, 0.7, -2.55);
+    add("fg", "w", 5.8, 0.7, 2.5, -6.3, 1.4, -1.85);
+    add("fg", "w", 3.2, 0.55, 2.0, -7.4, 0, 1.45);
+    add("fg", "w", 2.6, 0.7, 1.8, -6.9, 0, 2.75);
+    add("fg", "w", 2.0, 0.9, 1.6, -6.3, 0, 3.75);
+
+    // Orange tower — Front right, Back left, Iso near-right.
+    add("fg", "o", 2.7, 4.95, 3.6, 9.15, 0, 0.35, "orange-tower");
+
+    /* ---- MIDDLEGROUND: spine, village, pool, glass ------------------- */
+
+    // Z-shaped orange spine (Top + Iso).
+    add("mg", "o", 3.6, PH, PW, -3.7, PY, 0.75, "path-west");
+    add("mg", "o", PW, PH, 1.6, -1.95, PY, 1.45, "path-jog-s");
+    add("mg", "o", 6.2, PH, PW, 1.1, PY, 2.15, "path-south");
+    add("mg", "o", PW, PH, 1.75, 4.15, PY, 1.35, "path-jog-n");
+    add("mg", "o", 3.4, PH, PW, 6.0, PY, 0.5, "path-east");
+
+    // 2×2 courtyard pool — just north of the long south run.
+    add("mg", "c", 2.2, 0.07, 2.2, -0.15, 0.02, 0.55, "pool");
+    add("mg", "c", 1.0, 0.03, 1.0, -0.7, 0.08, 1.1);
+    add("mg", "c", 1.0, 0.03, 1.0, 0.4, 0.08, 1.1);
+    add("mg", "c", 1.0, 0.03, 1.0, -0.7, 0.08, 0.0);
+    add("mg", "c", 1.0, 0.03, 1.0, 0.4, 0.08, 0.0);
+
+    // Cube village around / on the spine (Front View centre cluster).
+    add("mg", "w", 1.7, 2.05, 1.6, -2.35, 0, 1.85);
+    add("mg", "w", 1.5, 2.05, 1.5, -0.55, 0, 2.15);
+    add("mg", "w", 1.4, 2.05, 1.4, 1.05, 0, 2.05);
+    add("mg", "w", 1.4, 1.0, 1.4, -3.45, 0, 1.75);
+    add("mg", "w", 1.3, 1.0, 1.3, 2.45, 0, 2.25);
+    add("mg", "w", 1.8, 1.0, 1.7, -1.55, 0, 0.15);
+    add("mg", "w", 1.6, 2.05, 1.6, 0.25, 0, -0.15);
+    add("mg", "w", 1.5, 2.05, 1.5, 1.85, 0, 0.05);
+    add("mg", "w", 1.3, 1.0, 1.3, 3.15, 0, 0.25);
+    add("mg", "w", 1.4, 1.55, 1.4, -2.85, 0, -0.35);
+
+    // Cubes sitting on the village (the pile above the path).
+    add("mg", "w", 1.15, 0.85, 1.15, -2.0, 2.05, 1.9);
+    add("mg", "w", 1.05, 0.85, 1.05, -0.45, 2.05, 2.1);
+    add("mg", "w", 1.1, 0.7, 1.1, 1.15, 2.05, 2.05);
+    add("mg", "w", 1.0, 0.75, 1.0, 0.15, 2.05, -0.2);
+    add("mg", "w", 1.05, 0.7, 1.05, 1.75, 2.05, 0.0);
+    add("mg", "w", 0.9, 0.55, 0.9, -1.9, 2.9, 1.85);
+
+    // Front glass bays (Front View, two cyan rectangles by the tower).
+    add("mg", "c", 1.4, 1.85, 1.45, 3.45, 0, 2.35, "glass-a");
+    add("mg", "c", 1.4, 1.85, 1.45, 4.9, 0, 2.35, "glass-b");
+
+    // Court glass (Top / Iso cyan volumes).
+    add("mg", "c", 1.7, 1.45, 1.5, 1.55, 0, -1.55, "glass-court");
+    add("mg", "c", 1.3, 1.25, 1.2, 3.25, 0, -0.85, "glass-east");
+
+    add("mg", "p", 0.34, 0.1, 0.34, -2.0, 2.9, 1.9);
+    add("mg", "p", 0.34, 0.1, 0.34, -0.45, 2.9, 2.1);
+    add("mg", "p", 0.34, 0.1, 0.34, 1.75, 2.75, 0.0);
+    add("mg", "p", 0.34, 0.1, 0.34, 0.15, 0.09, 0.55);
+
+    /* ---- BACKGROUND: long N–S bar + rear village --------------------- */
+
+    // Long white bar on the right of the court (Top View vertical slab).
+    add("bg", "w", 2.2, 1.55, 4.0, 6.2, 0, 0.35, "east-bar");
+    add("bg", "w", 2.2, 2.95, 2.6, 6.2, 0, -2.75, "east-bar-tall");
+
+    // Rear / north village (Back View tall stacks beside the tower).
+    add("bg", "w", 2.3, 2.85, 2.2, -3.35, 0, -3.55);         // tall white next to tower in Back View
+    add("bg", "w", 2.0, 2.15, 2.0, -1.15, 0, -3.45);
+    add("bg", "w", 1.7, 2.85, 1.8, 0.65, 0, -3.25);
+    add("bg", "w", 1.6, 1.55, 1.6, 2.35, 0, -3.55);
+    add("bg", "w", 1.5, 2.15, 1.5, -2.15, 0, -1.85);
+    add("bg", "w", 1.4, 1.55, 1.4, 0.15, 0, -1.95);
+    add("bg", "w", 1.8, 1.0, 1.7, 2.55, 0, -2.15);
+    add("bg", "w", 1.2, 0.8, 1.2, -1.2, 2.15, -3.35);
+    add("bg", "w", 1.15, 0.75, 1.15, 0.55, 2.85, -3.15);
+
+    add("bg", "c", 1.8, 1.55, 1.5, 1.35, 0, -2.65, "glass-rear");
+
+    add("bg", "p", 0.34, 0.1, 0.34, -1.2, 2.95, -3.35);
+    add("bg", "p", 0.34, 0.1, 0.34, 0.55, 3.6, -3.15);
+
+    /* ---- views ------------------------------------------------------- */
+    function setView(name) {
+      const presets = {
+        iso:   { pos: [19.5, 14.8, 16.8], target: [0.4, 1.5, 0.1], fov: 26 },
+        front: { pos: [0.8, 3.6, 32], target: [0.8, 2.0, 0], fov: 18 },
+        back:  { pos: [0.8, 3.6, -32], target: [0.8, 2.0, 0], fov: 18 },
+        top:   { pos: [0.6, 34, 0.02], target: [0.6, 0, 0], fov: 22 },
+      };
+      const p = presets[name];
+      camera.fov = p.fov;
+      camera.position.set(...p.pos);
+      camera.updateProjectionMatrix();
+      controls.target.set(...p.target);
+      controls.update();
+      document.querySelectorAll("#views button").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.view === name);
+      });
+    }
+
+    document.querySelectorAll("#views button").forEach((btn) => {
+      btn.addEventListener("click", () => setView(btn.dataset.view));
+    });
+
+    const requested = new URLSearchParams(location.search).get("view");
+    setView(["iso", "front", "back", "top"].includes(requested) ? requested : "iso");
+
+    window.parallaxGroups = { groupForeground, groupMiddleground, groupBackground };
+
+    addEventListener("resize", () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+</body>
+</html>

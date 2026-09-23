@@ -27,7 +27,7 @@
 | `id` | uuid PK | = `auth.users.id` |
 | `email` | text unique | |
 | `full_name` | text | |
-| `role` | text | `admin` \| `planner` \| `project_manager` \| `viewer` |
+| `role` | text | `admin` \| `planner` (default `planner` on Sign-up) |
 | `is_active` | boolean | default true |
 | `created_at` / `updated_at` | timestamptz | |
 
@@ -163,8 +163,10 @@ Check `predecessor_id <> successor_id`. Unique `(predecessor_id, successor_id, d
 | `byte_size` | bigint | enforce ≤ **50 MB** Free global max; prefer tighter per-bucket |
 | `uploaded_by` | uuid FK | |
 | `created_at` | timestamptz | |
+| `updated_at` | timestamptz | |
+| `deleted_at` | timestamptz null | soft-delete only |
 
-Bucket suggestion: `project-documents` (private); path `{project_id}/{doc_id}`.
+Bucket: `project-documents` (private); path `{project_id}/{doc_id}`.
 
 ### `project_personnel`
 
@@ -172,9 +174,11 @@ Bucket suggestion: `project-documents` (private); path `{project_id}/{doc_id}`.
 |--------|------|-------|
 | `id` | uuid PK | |
 | `project_id` | uuid FK | |
-| `staff_id` | uuid FK → profiles | |
+| `staff_id` | uuid FK → profiles | **null**; roster is free-text, not a Staff Member list |
+| `name` | text | required |
 | `title` | text | role on this project |
 | `start_date` | date null | |
+| `end_date` | date null | |
 
 ### `contractors` / `contractor_certs` / `contractor_projects`
 

@@ -4,27 +4,27 @@ slug: "src-landingpage-tsx"
 primary_target: "src/LandingPage.tsx"
 related_targets:
   - "route:/"
-  - "src/features/landing/formwork/"
+  - "src/features/landing/"
 ---
 
 # Landing — `/`
 
-Mode: Persuade. Audience: screened Planner / PM arriving at an internal product. Job: understand that BOQ phases own time and Longest Path is computed here, then Sign in or Request access after the pour sequence closes.
+Mode: Persuade. Audience: Planner / PM arriving at an internal product. Job: see that BOQ phases own time and Longest Path is computed here, then Sign up. No founder/about block.
 
-Proof: procedural formwork tower as a 4D stand-in for Clearwater Medical Center PRJ-2024-008 (labeled synthetic). Constraints: no fake org KPIs; no crane-hero; no scrapbook; no dark-neon; no task-list narration; no CTAs until handover; glass is form-release oil over the live model, not a card grid.
+Proof: live-looking Clearwater specimens (directory, locked BOQ phases, Scheduling tree + Gantt) labeled synthetic. Contained campus massing is an artefact, not the pitch. Constraints: no fake org KPIs; no crane-hero; no scrapbook; no dark-neon; no about/creator; no scroll-scrubbed 3D; no 7-beat manifesto overlay.
 
-Chosen: Formwork pour sequence (seed `43a6eb62`, grounded #3). Brief-pinned R3F building + scroll construction kept. Raises: concurrent pours; residual completed mass; storey commits; critical names at billing scale; irreversible pour.
+Chosen: Acoustic-Tech world retained. User-pinned IA from critique close: hero → app proof → feature objects → Sign up.
 
 ## Direction contract
 
-THESIS: Scroll pours a tower the way a programme is built — form, pour, strip, rise — and Longest Path is the load-bearing line. Refuses hero-header-footer SaaS and the incumbent charcoal-orange directory.
+THESIS: A visitor sees the product first — directory, locked BOQ phases, Longest Path on the Gantt — then Sign up. Refuses a full-viewport 3D manifesto and the SaaS feature-card grid.
 
-OWN-WORLD: Dawn-pour concrete and plywood formwork; wet form-oil plates; oxide on the critical spine; Big Shoulders Display for storey names; Azeret Mono only on measurements; no neon, no orange brand, no serif editorial.
+OWN-WORLD: Late-night acoustic room. Espresso ground, amber only when a control is active, latte type, heavy frost. The meeting screen is paper Operate chrome sitting on that table. Campus meshes stay white / oxide / cyan. Big Shoulders Display for the offer; Azeret Mono only on measurements.
 
-STORY: The bill owns the ground. Logic cages the void. Criticality is computed here. Float can be stripped. The next storey waits. Then you enter.
+STORY: The bill owns the clock. You can see it on the meeting screen. Criticality is computed here. Then you enter.
 
-FIRST VIEWPORT: Fixed WebGL site. Vertical stencil wordmark. Survey staff. One huge storey name overlapping the pit. One oil plate of copy. No nav bar, no Sign in.
+FIRST VIEWPORT: DOM-only hero. Headline names the mechanism. One-sentence who/what. Wordmark and Sign in / Sign up. Primary Sign up. Secondary scrolls to the proof — the canvas is not behind this pane.
 
-FORM: Concrete pour sequence / formwork (grounded #3, seed `43a6eb62`). Signature interaction: scroll scrubs form→pour→strip on the live model.
+FORM: Acoustic-Tech, user-pinned IA (critique 2026-09-20). Signature interaction: proof tabs (Directory / BOQ / Scheduling) switch the meeting screen. Campus auto-assembles once in a contained frame. No programme stepper, no pips.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

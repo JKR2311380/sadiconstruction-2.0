@@ -19,72 +19,121 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { ConfirmDialog } from "@/components/ConfirmDialog"
+import { getDocumentUrl, isSupabaseConfigured, MAX_DOCUMENT_BYTES } from "@/data/documents"
 import { can } from "@/lib/permissions"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
 
-const MAX_BYTES = 50 * 1024 * 1024
+const EMPTY_DOCS = []
 
 export function DocumentsPanel({ projectId }) {
   const role = useSessionStore((state) => state.staff?.role)
-  const docs = useWorkspaceStore((state) =>
-    (state.documentsByProject[projectId] || []).filter((doc) => !doc.deletedAt),
-  )
+  const allDocs = useWorkspaceStore((state) => state.documentsByProject[projectId] ?? EMPTY_DOCS)
+  const docs = allDocs.filter((doc) => !doc.deletedAt)
   const addDocument = useWorkspaceStore((state) => state.addDocument)
   const removeDocument = useWorkspaceStore((state) => state.removeDocument)
   const [open, setOpen] = useState(false)
+  const [pending, setPending] = useState(false)
   const [title, setTitle] = useState("")
   const [contentType, setContentType] = useState("Engineering")
-  const [byteSize, setByteSize] = useState(0)
+  const [file, setFile] = useState(null)
+  const [pendingArchive, setPendingArchive] = useState(null)
 
-  function handleFile(event) {
-    const file = event.target.files?.[0]
-    if (!file) return
-    if (file.size > MAX_BYTES) {
-      toast.error("File exceeds the 50 MB Free-tier maximum.")
-      return
-    }
-    setTitle((current) => current || file.name)
-    setByteSize(file.size)
-  }
-
-  function handleAdd(event) {
-    event.preventDefault()
-    addDocument(projectId, { title, contentType, byteSize })
-    toast.success("Document recorded (metadata only in this prototype)")
-    setOpen(false)
+  function resetForm() {
     setTitle("")
     setContentType("Engineering")
-    setByteSize(0)
+    setFile(null)
+  }
+
+  function handleFile(event) {
+    const next = event.target.files?.[0]
+    if (!next) return
+    if (next.size > MAX_DOCUMENT_BYTES) {
+      toast.error("File exceeds the 50 MB Free-tier maximum.")
+      event.target.value = ""
+      return
+    }
+    setFile(next)
+    setTitle((current) => current || next.name)
+  }
+
+  async function handleAdd(event) {
+    event.preventDefault()
+    if (!file) {
+      toast.error("Choose a file to upload.")
+      return
+    }
+    setPending(true)
+    try {
+      await addDocument(projectId, { title, contentType, file })
+      toast.success(
+        isSupabaseConfigured
+          ? "Document uploaded"
+          : "Document recorded locally (set VITE_SUPABASE_* to store bytes)",
+      )
+      setOpen(false)
+      resetForm()
+    } catch (error) {
+      toast.error(error.message || "Upload failed.")
+    } finally {
+      setPending(false)
+    }
+  }
+
+  async function handleDownload(doc) {
+    if (!isSupabaseConfigured || !doc.storagePath) {
+      toast.error("No stored file in this mock session.")
+      return
+    }
+    try {
+      const url = await getDocumentUrl(doc)
+      if (!url) {
+        toast.error("Could not open this document.")
+        return
+      }
+      window.open(url, "_blank", "noopener,noreferrer")
+    } catch (error) {
+      toast.error(error.message || "Could not open this document.")
+    }
+  }
+
+  async function handleArchive(doc) {
+    try {
+      await removeDocument(projectId, doc.id)
+      toast.success("Document archived")
+    } catch (error) {
+      toast.error(error.message || "Could not archive this document.")
+    }
   }
 
   return (
     <div className="flex flex-col gap-3">
       {can(role, "uploadDocuments") ? (
         <div className="flex justify-end">
-          <Button type="button" variant="secondary" className="rounded-none" onClick={() => setOpen(true)}>
+          <Button type="button" onClick={() => setOpen(true)}>
             Upload document
           </Button>
         </div>
       ) : null}
 
       {docs.length === 0 ? (
-        <Empty className="rounded-none border border-dashed border-border">
+        <Empty>
           <EmptyHeader>
             <EmptyTitle>No documents on this Project</EmptyTitle>
             <EmptyDescription>
-              Metadata is stored locally. Bytes will go to Storage when the backend is wired. Max 50 MB per file.
+              Files go to private Storage at {"{project_id}/{doc_id}"}. Max 50 MB per file.
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (
-        <Table className="border border-border bg-card text-[13px]">
+        <Table className="text-[13px]">
           <TableHeader>
-            <TableRow className="bg-[#ECEEF0] hover:bg-[#ECEEF0]">
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Document</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Type</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Updated</TableHead>
-              {can(role, "uploadDocuments") ? <TableHead className="w-24" /> : null}
+            <TableRow>
+              <TableHead>Document</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Updated</TableHead>
+              {can(role, "uploadDocuments") ? <TableHead className="w-40" /> : null}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -94,16 +143,21 @@ export function DocumentsPanel({ projectId }) {
                 <TableCell>{doc.contentType}</TableCell>
                 <TableCell>{doc.updatedAt}</TableCell>
                 {can(role, "uploadDocuments") ? (
-                  <TableCell>
+                  <TableCell className="text-right">
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="rounded-none text-destructive"
-                      onClick={() => {
-                        removeDocument(projectId, doc.id)
-                        toast.success("Document archived")
-                      }}
+                      onClick={() => void handleDownload(doc)}
+                    >
+                      Open
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive"
+                      onClick={() => setPendingArchive(doc)}
                     >
                       Archive
                     </Button>
@@ -115,38 +169,62 @@ export function DocumentsPanel({ projectId }) {
         </Table>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="rounded-none sm:max-w-md">
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next)
+          if (!next) resetForm()
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Upload document</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleAdd} className="flex flex-col gap-4">
+          <form onSubmit={(event) => void handleAdd(event)} className="flex flex-col gap-4">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="doc-file">File</FieldLabel>
-                <Input id="doc-file" type="file" onChange={handleFile} className="rounded-none" />
-                <FieldDescription>Prototype keeps name and size only. 50 MB cap.</FieldDescription>
+                <Input id="doc-file" type="file" required onChange={handleFile} />
+                <FieldDescription>Private bucket. 50 MB cap.</FieldDescription>
               </Field>
               <Field>
                 <FieldLabel htmlFor="doc-title">Title</FieldLabel>
-                <Input id="doc-title" value={title} onChange={(event) => setTitle(event.target.value)} required className="rounded-none" />
+                <Input id="doc-title" value={title} onChange={(event) => setTitle(event.target.value)} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="doc-type">Type</FieldLabel>
-                <Input id="doc-type" value={contentType} onChange={(event) => setContentType(event.target.value)} className="rounded-none" />
+                <Input id="doc-type" value={contentType} onChange={(event) => setContentType(event.target.value)} />
               </Field>
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-none" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="secondary" className="rounded-none">
-                Save
+              <Button type="submit" disabled={pending || !file}>
+                {pending ? "Uploading…" : "Upload"}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={Boolean(pendingArchive)}
+        onOpenChange={(next) => {
+          if (!next) setPendingArchive(null)
+        }}
+        title="Archive this document?"
+        description={
+          pendingArchive
+            ? `${pendingArchive.title} will be soft-deleted from this Project. The stored file is not restored from this screen.`
+            : ""
+        }
+        confirmLabel="Archive"
+        onConfirm={() => {
+          if (pendingArchive) void handleArchive(pendingArchive)
+          setPendingArchive(null)
+        }}
+      />
     </div>
   )
 }

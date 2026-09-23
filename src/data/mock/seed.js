@@ -1,6 +1,6 @@
 /** Demo seed — synthetic, labeled as such in the chrome. */
 
-export const DEMO_PASSWORD = "demo"
+export const DEMO_PASSWORD = "demo123"
 
 export const PH_HOLIDAYS_2026 = [
   { date: "2026-01-01", type: "holiday", name: "New Year's Day" },
@@ -44,6 +44,7 @@ export const STAFF = [
     password: DEMO_PASSWORD,
     fullName: "Amina Solis",
     role: "admin",
+    isActive: true,
   },
   {
     id: "staff-planner",
@@ -51,20 +52,7 @@ export const STAFF = [
     password: DEMO_PASSWORD,
     fullName: "Priya Tan",
     role: "planner",
-  },
-  {
-    id: "staff-pm",
-    email: "pm@sadicon.local",
-    password: DEMO_PASSWORD,
-    fullName: "Emhil Joseph",
-    role: "project_manager",
-  },
-  {
-    id: "staff-viewer",
-    email: "viewer@sadicon.local",
-    password: DEMO_PASSWORD,
-    fullName: "Rico Valdez",
-    role: "viewer",
+    isActive: true,
   },
 ]
 
@@ -180,19 +168,6 @@ export const PROJECTS = [
   },
 ]
 
-export const ACCESS_REQUESTS = [
-  {
-    id: "ar-1",
-    email: "guest.mendez@contractor.ph",
-    fullName: "Liza Mendez",
-    companyNote: "QS from Meridian Concrete — needs viewer access for Clearwater.",
-    status: "pending",
-    createdAt: "2026-09-12T08:10:00.000Z",
-    reviewedBy: null,
-    reviewedAt: null,
-  },
-]
-
 const PHASE_A = "boq-phase-a"
 const PHASE_B = "boq-phase-b"
 const PHASE_C = "boq-phase-c"
@@ -277,7 +252,7 @@ export const BOQ_BY_PROJECT = {
 
 export const PERSONNEL_BY_PROJECT = {
   [CLEARWATER_ID]: [
-    { id: "per-1", staffId: "staff-pm", name: "Emhil Joseph", title: "Project Manager", startDate: "2025-11-01" },
+    { id: "per-1", staffId: null, name: "Emhil Joseph", title: "Project Manager", startDate: "2025-11-01" },
     { id: "per-2", staffId: null, name: "Lara Cruz", title: "Site Engineer", startDate: "2026-01-15" },
     { id: "per-3", staffId: null, name: "Marco Dela Peña", title: "Safety Officer", startDate: "2026-01-15" },
     { id: "per-4", staffId: null, name: "Nina Santos", title: "Quantity Surveyor", startDate: "2025-12-01" },
@@ -295,18 +270,6 @@ export const DOCUMENTS_BY_PROJECT = {
     { id: "doc-4", title: "Approved BOQ PDF", contentType: "Commercial", byteSize: 2_400_000, updatedAt: "2026-08-28", deletedAt: null },
   ],
 }
-
-export const CONTRACTORS = [
-  { id: "co-1", name: "Northpeak Earthworks", specialty: "Site / excavation", certifications: "ISO 45001", currentProject: "Clearwater" },
-  { id: "co-2", name: "Meridian Concrete Co.", specialty: "Structural concrete", certifications: "ACI, PCAB", currentProject: "Clearwater" },
-  { id: "co-3", name: "Halo Temporary Works", specialty: "Facilities / safety", certifications: "DOLE", currentProject: "—" },
-]
-
-export const REPORTS = [
-  { id: "rep-1", from: "Site Safety", subject: "Incident report – trench edge barrier", type: "Incident", received: "2026-09-12" },
-  { id: "rep-2", from: "Logistics", subject: "Material delivery – rebar lot R-204", type: "Delivery", received: "2026-09-11" },
-  { id: "rep-3", from: "QA/QC", subject: "Concrete pour checklist – Level 1", type: "Project", received: "2026-09-10" },
-]
 
 function node(partial) {
   return {
@@ -376,14 +339,11 @@ export const PROJECT_IDS = {
 
 export function createSeedState() {
   return {
-    accessRequests: structuredClone(ACCESS_REQUESTS),
     projects: structuredClone(PROJECTS),
     boqByProject: structuredClone(BOQ_BY_PROJECT),
     personnelByProject: structuredClone(PERSONNEL_BY_PROJECT),
     documentsByProject: structuredClone(DOCUMENTS_BY_PROJECT),
     scheduleByProject: structuredClone(SCHEDULE_BY_PROJECT),
-    contractors: structuredClone(CONTRACTORS),
-    reports: structuredClone(REPORTS),
     settings: { darkMode: false },
   }
 }
