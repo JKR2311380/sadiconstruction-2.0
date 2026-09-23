@@ -66,7 +66,7 @@ Mode: **Persuade**. Lives in `src/features/landing/sitemark/` (tokens in `sitema
 - **Controls:** 2px ink/steel border, 2px radius; primary = ink fill. Hover adds an inset ring (weight, not glow). Segmented toggles, never pills.
 - **Motion:** `--sm-ease-enter` / `--sm-ease-swap`. Hero phases hold 2.1s with 0.55s expo camera cuts; Product demos 1.2–2.0s GSAP; Engine once on scroll; Roles figure clip crossfade 300ms then content/micros 200ms. `prefers-reduced-motion` = resting frames.
 - **Critical representation:** ink bar with a lime core; float = hollow outline plus dashed tail.
-- **Roles figure:** Kenney Mini Characters CC0 (`public/models/worker.glb`, see `public/models/CREDITS.md`). Lazy-loaded when Roles nears the viewport. SVG `Mascot` remains the fallback. Site Mark authored tablet / board / amber hard-hat props. Capability micros replace bullet lists.
+- **Roles figure:** Kenney Mini Characters CC0 (`public/models/worker.glb`, see `public/models/CREDITS.md`). Lazy-loaded when Roles nears the viewport. Bind-pose R3F figure + Site Mark authored hard-hat / tablet / board (mark accent on prop only). SVG `Mascot` remains the fallback. Capability micros replace bullet lists.
 
 ## Provenance
 

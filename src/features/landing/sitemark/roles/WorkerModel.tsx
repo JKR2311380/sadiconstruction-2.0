@@ -1,93 +1,92 @@
 /**
  * Roles figure — Kenney Mini Characters (CC0), see public/models/CREDITS.md.
- * Quaternius Worker was the preferred source but is API-gated on poly.pizza.
+ *
+ * Keep Kenney materials (remap-to-flat broke this skin). Role difference = props +
+ * slight root yaw from ROLE_LOOKS. No AnimationMixer (clips corrupt the bind).
  */
-import { useEffect, useMemo, useRef } from "react"
-import { useFrame } from "@react-three/fiber"
-import { useAnimations, useGLTF } from "@react-three/drei"
-import * as THREE from "three"
-import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js"
+import { useEffect, useRef } from "react"
+import { useFrame, useThree } from "@react-three/fiber"
+import { useGLTF } from "@react-three/drei"
+import type { Group, Mesh } from "three"
 import type { RoleId } from "../Mascot"
+import { PROP_OFFSETS, ROLE_LOOKS, SITE_PALETTE, type RolePropId } from "./roleLook"
 
-const MODEL = "/models/worker.glb"
-
-const CLIPS: Record<RoleId, string> = {
-  planner: "holding-both",
-  pm: "emote-yes",
-}
+const MODEL = "/models/worker.glb?v=textured"
+const MORPH_S = 0.3
+const ALL_PROPS: RolePropId[] = ["hardhat", "tablet", "board"]
 
 function HardHat() {
   return (
     <group>
-      <mesh castShadow>
-        <cylinderGeometry args={[0.22, 0.24, 0.14, 16]} />
-        <meshStandardMaterial color="#E2A33B" roughness={0.55} />
+      <mesh castShadow position={[0, 0.05, 0]}>
+        <cylinderGeometry args={[0.14, 0.16, 0.09, 16]} />
+        <meshStandardMaterial color={SITE_PALETTE.amber} roughness={0.55} />
       </mesh>
-      <mesh position={[0, -0.02, 0.15]} castShadow>
-        <boxGeometry args={[0.36, 0.04, 0.16]} />
-        <meshStandardMaterial color="#E2A33B" roughness={0.55} />
+      <mesh position={[0, 0.01, 0.09]} castShadow>
+        <boxGeometry args={[0.24, 0.025, 0.1]} />
+        <meshStandardMaterial color={SITE_PALETTE.amber} roughness={0.55} />
       </mesh>
       <mesh position={[0, 0.1, 0]}>
-        <boxGeometry args={[0.08, 0.1, 0.05]} />
-        <meshStandardMaterial color="#0E1210" roughness={0.8} />
+        <boxGeometry args={[0.05, 0.06, 0.03]} />
+        <meshStandardMaterial color={SITE_PALETTE.ink} roughness={0.8} />
       </mesh>
     </group>
   )
 }
 
-function Tablet() {
+function Tablet({ accent }: { accent: string }) {
   return (
-    <group position={[0.28, 0.4, 0.35]} rotation={[-1.0, 0.1, 0.15]}>
+    <group>
       <mesh castShadow>
-        <boxGeometry args={[0.32, 0.02, 0.42]} />
-        <meshStandardMaterial color="#EEF1F0" roughness={0.7} />
+        <boxGeometry args={[0.2, 0.014, 0.26]} />
+        <meshStandardMaterial color={SITE_PALETTE.paper} roughness={0.7} />
       </mesh>
-      <mesh position={[0, 0.012, 0]}>
-        <boxGeometry args={[0.28, 0.005, 0.36]} />
-        <meshStandardMaterial color="#CAD6DD" roughness={0.85} />
+      <mesh position={[0, 0.009, 0]}>
+        <boxGeometry args={[0.17, 0.004, 0.22]} />
+        <meshStandardMaterial color={SITE_PALETTE.steelSoft} roughness={0.85} />
       </mesh>
-      <mesh position={[-0.05, 0.016, 0.08]}>
-        <boxGeometry args={[0.14, 0.008, 0.035]} />
-        <meshStandardMaterial color="#0E1210" />
+      <mesh position={[-0.03, 0.012, 0.05]}>
+        <boxGeometry args={[0.09, 0.006, 0.022]} />
+        <meshStandardMaterial color={SITE_PALETTE.ink} />
       </mesh>
-      <mesh position={[0.02, 0.016, 0.02]}>
-        <boxGeometry args={[0.18, 0.008, 0.035]} />
-        <meshStandardMaterial color="#0E1210" />
+      <mesh position={[0.01, 0.012, 0.01]}>
+        <boxGeometry args={[0.11, 0.006, 0.022]} />
+        <meshStandardMaterial color={SITE_PALETTE.ink} />
       </mesh>
-      <mesh position={[-0.02, 0.018, -0.05]}>
-        <boxGeometry args={[0.16, 0.01, 0.035]} />
-        <meshStandardMaterial color="#D4FF4A" />
+      <mesh position={[-0.01, 0.013, -0.04]}>
+        <boxGeometry args={[0.1, 0.008, 0.024]} />
+        <meshStandardMaterial color={accent} />
       </mesh>
     </group>
   )
 }
 
-function Board() {
+function Board({ accent }: { accent: string }) {
   return (
-    <group position={[0.72, 0.25, 0.12]} rotation={[0, -0.4, 0]}>
-      <mesh position={[0, -0.4, 0]} castShadow>
-        <cylinderGeometry args={[0.025, 0.025, 0.85, 8]} />
-        <meshStandardMaterial color="#3E5A6C" roughness={0.7} />
+    <group>
+      <mesh position={[0, -0.28, 0]} castShadow>
+        <cylinderGeometry args={[0.018, 0.018, 0.6, 8]} />
+        <meshStandardMaterial color={SITE_PALETTE.steel} roughness={0.7} />
       </mesh>
-      <mesh position={[0.1, -0.4, 0]} castShadow>
-        <cylinderGeometry args={[0.025, 0.025, 0.85, 8]} />
-        <meshStandardMaterial color="#3E5A6C" roughness={0.7} />
+      <mesh position={[0.08, -0.28, 0]} castShadow>
+        <cylinderGeometry args={[0.018, 0.018, 0.6, 8]} />
+        <meshStandardMaterial color={SITE_PALETTE.steel} roughness={0.7} />
       </mesh>
-      <mesh position={[0.05, 0.2, 0]} castShadow>
-        <boxGeometry args={[0.5, 0.38, 0.035]} />
-        <meshStandardMaterial color="#EEF1F0" roughness={0.8} />
+      <mesh position={[0.04, 0.12, 0]} castShadow>
+        <boxGeometry args={[0.36, 0.28, 0.028]} />
+        <meshStandardMaterial color={SITE_PALETTE.paper} roughness={0.8} />
       </mesh>
-      <mesh position={[-0.06, 0.24, 0.02]}>
-        <boxGeometry args={[0.1, 0.025, 0.012]} />
-        <meshStandardMaterial color="#D4FF4A" />
+      <mesh position={[-0.05, 0.16, 0.016]}>
+        <boxGeometry args={[0.07, 0.018, 0.01]} />
+        <meshStandardMaterial color={accent} />
       </mesh>
-      <mesh position={[0.04, 0.16, 0.02]}>
-        <boxGeometry args={[0.14, 0.025, 0.012]} />
-        <meshStandardMaterial color="#D4FF4A" />
+      <mesh position={[0.03, 0.1, 0.016]}>
+        <boxGeometry args={[0.1, 0.018, 0.01]} />
+        <meshStandardMaterial color={accent} />
       </mesh>
-      <mesh position={[0.12, 0.08, 0.02]}>
-        <boxGeometry args={[0.1, 0.025, 0.012]} />
-        <meshStandardMaterial color="#D4FF4A" />
+      <mesh position={[0.08, 0.04, 0.016]}>
+        <boxGeometry args={[0.07, 0.018, 0.01]} />
+        <meshStandardMaterial color={accent} />
       </mesh>
     </group>
   )
@@ -102,60 +101,92 @@ export function WorkerModel({
   reduced: boolean
   onReady?: () => void
 }) {
-  const group = useRef<THREE.Group>(null)
-  const { scene, animations } = useGLTF(MODEL, false, true)
-  const clone = useMemo(() => cloneSkinned(scene) as THREE.Object3D, [scene])
-  const { actions, mixer } = useAnimations(animations, group)
-  const fade = reduced ? 0 : 0.3
+  const look = ROLE_LOOKS[role]
+  const root = useRef<Group>(null)
+  const propRefs = useRef<Partial<Record<RolePropId, Group | null>>>({})
+  const morph = useRef(1)
+  const activeProps = useRef(new Set(look.props))
+  const prevRole = useRef(role)
   const readyOnce = useRef(false)
+  const { scene } = useGLTF(MODEL, false, true)
+  const invalidate = useThree((s) => s.invalidate)
 
   useEffect(() => {
-    clone.traverse((o) => {
-      if ((o as THREE.Mesh).isMesh) {
-        o.castShadow = true
-        o.receiveShadow = true
+    scene.position.set(0, 0, 0)
+    scene.rotation.set(0, 0, 0)
+    scene.scale.set(1, 1, 1)
+    scene.traverse((o) => {
+      const mesh = o as Mesh
+      if (mesh.isMesh) {
+        mesh.frustumCulled = false
+        mesh.castShadow = true
+        mesh.receiveShadow = true
       }
     })
     if (!readyOnce.current) {
       readyOnce.current = true
       onReady?.()
     }
-  }, [clone, onReady])
+    invalidate()
+  }, [scene, onReady, invalidate])
 
   useEffect(() => {
-    const clipName = CLIPS[role]
-    const next = actions[clipName] ?? actions.idle
-    if (!next) return
-    Object.values(actions).forEach((a) => {
-      if (a && a !== next) a.fadeOut(fade)
-    })
-    next.reset().fadeIn(fade).play()
-    if (reduced) {
-      next.paused = true
-      next.time = Math.min(0.2, next.getClip().duration || 0.2)
-    } else {
-      next.paused = false
-      next.setLoop(THREE.LoopOnce, 1)
-      next.clampWhenFinished = true
+    if (prevRole.current !== role) {
+      morph.current = reduced ? 1 : 0
+      prevRole.current = role
     }
-    return () => {
-      next.fadeOut(fade)
-    }
-  }, [actions, role, reduced, fade])
+    activeProps.current = new Set(look.props)
+    invalidate()
+  }, [look.props, role, reduced, invalidate])
 
   useFrame((_, dt) => {
-    if (!reduced) mixer?.update(dt)
+    if (!reduced && morph.current < 1) {
+      morph.current = Math.min(1, morph.current + dt / MORPH_S)
+    } else if (reduced) {
+      morph.current = 1
+    }
+
+    const g = root.current
+    if (g) {
+      g.position.set(...look.root.position)
+      g.rotation.set(...look.root.rotation)
+      g.scale.setScalar(look.scale)
+    }
+
+    const t = morph.current
+    for (const id of ALL_PROPS) {
+      const node = propRefs.current[id]
+      if (!node) continue
+      const on = activeProps.current.has(id)
+      const show = id === "hardhat" ? 1 : on ? t : 1 - t
+      node.visible = show > 0.04
+      node.scale.setScalar(0.85 + 0.15 * show)
+      const offset = PROP_OFFSETS[id]
+      node.position.set(...offset.position)
+      node.rotation.set(...offset.rotation)
+    }
   })
 
   return (
-    <group ref={group} position={[0, -1.05, 0]} rotation={[0, -0.25, 0]} scale={1.15}>
-      <primitive object={clone} />
-      {/* Hat as scene sibling — Kenney head bone scale makes portal hats tiny */}
-      <group position={[0, 1.42, 0.06]}>
-        <HardHat />
-      </group>
-      {role === "planner" && <Tablet />}
-      {role === "pm" && <Board />}
+    <group ref={root} position={look.root.position} rotation={look.root.rotation} scale={look.scale}>
+      <primitive object={scene} />
+      {ALL_PROPS.map((id) => {
+        const offset = PROP_OFFSETS[id]
+        return (
+          <group
+            key={id}
+            ref={(el) => {
+              propRefs.current[id] = el
+            }}
+            position={offset.position}
+            rotation={offset.rotation}
+          >
+            {id === "hardhat" && <HardHat />}
+            {id === "tablet" && <Tablet accent={SITE_PALETTE.mark} />}
+            {id === "board" && <Board accent={SITE_PALETTE.mark} />}
+          </group>
+        )
+      })}
     </group>
   )
 }
