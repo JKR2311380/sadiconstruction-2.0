@@ -34,8 +34,8 @@ export const PHASES: Phase[] = [
   },
 ]
 
-export const PHASE_HOLD_MS = 3600
-export const CAMERA_CUT_S = 0.8
+export const PHASE_HOLD_MS = 2100
+export const CAMERA_CUT_S = 0.55
 
 export function phaseIndex(id: PhaseId): number {
   return PHASES.findIndex((phase) => phase.id === id)

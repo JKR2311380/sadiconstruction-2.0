@@ -75,13 +75,13 @@ function glazing(w: number, d: number, cx: number, cz: number, y0: number, sill:
 function useMaterials() {
   return useMemo(
     () => ({
-      mass: new THREE.MeshStandardMaterial({ color: "#DCE2DF", roughness: 0.95 }),
-      slab: new THREE.MeshStandardMaterial({ color: "#F5F7F6", roughness: 0.9 }),
-      column: new THREE.MeshStandardMaterial({ color: "#A9B4AF", roughness: 0.85 }),
-      core: new THREE.MeshStandardMaterial({ color: "#D6DDDA", roughness: 0.9 }),
-      panel: new THREE.MeshStandardMaterial({ color: "#EDF0EF", roughness: 0.8 }),
-      glass: new THREE.MeshStandardMaterial({ color: "#6F8580", roughness: 0.25, metalness: 0.15 }),
-      plant: new THREE.MeshStandardMaterial({ color: "#B8C2BE", roughness: 0.8 }),
+      mass: new THREE.MeshStandardMaterial({ color: "#C8CFCB", roughness: 0.95 }),
+      slab: new THREE.MeshStandardMaterial({ color: "#D6DAD6", roughness: 0.9 }),
+      column: new THREE.MeshStandardMaterial({ color: "#3E5A6C", roughness: 0.55, metalness: 0.35 }),
+      core: new THREE.MeshStandardMaterial({ color: "#BCC3BF", roughness: 0.85 }),
+      panel: new THREE.MeshStandardMaterial({ color: "#E8EEF0", roughness: 0.75 }),
+      glass: new THREE.MeshStandardMaterial({ color: "#5A7385", roughness: 0.2, metalness: 0.35 }),
+      plant: new THREE.MeshStandardMaterial({ color: "#4A6575", roughness: 0.65, metalness: 0.25 }),
     }),
     [],
   )
@@ -101,7 +101,7 @@ function Layer({ visible, children }: { visible: boolean; children: ReactNode })
     }
     const now = state.clock.getElapsedTime()
     if (shownAt.current === null) shownAt.current = now
-    const t = Math.min(1, (now - shownAt.current) / 0.7)
+    const t = Math.min(1, (now - shownAt.current) / 0.45)
     group.position.y = (1 - expoOut(t)) * 0.9
     if (t < 1) state.invalidate()
   })

@@ -1,27 +1,19 @@
 import { useRef, useState, type KeyboardEvent } from "react"
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
-import { Mascot, type RoleId } from "./Mascot"
+import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion"
+import { type RoleId } from "./Mascot"
+import { RoleFigure } from "./roles/RoleFigure"
+import { RoleMicros } from "./roles/RoleMicros"
 
-const ROLES: Array<{ id: RoleId; label: string; heading: string; points: string[] }> = [
+const ROLES: Array<{ id: RoleId; label: string; heading: string }> = [
   {
     id: "planner",
     label: "Planner",
     heading: "You build the network.",
-    points: [
-      "Nest summaries and activities under the locked BOQ phase roots.",
-      "Link finish-to-start, start-to-start, finish-to-finish or start-to-finish, with lag.",
-      "Every edit recalculates dates, float and the Longest Path.",
-    ],
   },
   {
     id: "pm",
     label: "Project Manager",
     heading: "You read the spine.",
-    points: [
-      "See the Longest Path on the same WBS the bill was approved on.",
-      "Know which phase a slip lands in, in working days.",
-      "Put the schedule on the meeting screen without exporting it.",
-    ],
   },
 ]
 
@@ -29,6 +21,8 @@ export function RolesToggle() {
   const reduced = useReducedMotion() ?? false
   const [role, setRole] = useState<RoleId>("planner")
   const tabs = useRef<Array<HTMLButtonElement | null>>([])
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const near = useInView(sectionRef, { margin: "280px 0px", once: true })
   const current = ROLES.find((r) => r.id === role)!
 
   const onKey = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
@@ -40,9 +34,9 @@ export function RolesToggle() {
   }
 
   return (
-    <div className="sm-roles">
+    <div ref={sectionRef} className="sm-roles">
       <div className="sm-roles__figure">
-        <Mascot role={role} reduced={reduced} />
+        <RoleFigure role={role} reduced={reduced} near={near} />
       </div>
 
       <div className="sm-roles__content">
@@ -77,13 +71,9 @@ export function RolesToggle() {
               exit={{ opacity: 0, y: -6, transition: { duration: reduced ? 0 : 0.12 } }}
             >
               <h3 className="sm-roles__heading">{current.heading}</h3>
-              <ul className="sm-roles__points">
-                {current.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
             </motion.div>
           </AnimatePresence>
+          <RoleMicros role={role} reduced={reduced} />
         </div>
       </div>
     </div>

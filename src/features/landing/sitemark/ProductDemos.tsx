@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react"
+import { useMemo, useRef, useState, type ReactNode } from "react"
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion"
-import gsap from "gsap"
-import { useGSAP } from "@gsap/react"
 import { Lock, MousePointer2 } from "lucide-react"
 import { ACTIVITIES, computeNetwork } from "./network"
-
-gsap.registerPlugin(useGSAP)
+import { useDemoTimeline, type DemoPlayProps } from "./useDemoTimeline"
 
 type ModuleId = "projects" | "boq" | "scheduling"
 
@@ -15,32 +12,7 @@ const MODULES: Array<{ id: ModuleId; name: string; line: string }> = [
   { id: "scheduling", name: "Scheduling", line: "Activities nest under those roots. The engine finds the Longest Path." },
 ]
 
-const EASE = "expo.out"
-
-interface DemoProps {
-  play: boolean
-  reduced: boolean
-}
-
-/** Builds a paused timeline on mount (from-states render immediately) and plays it once `play` flips. */
-function useDemoTimeline(
-  scope: RefObject<HTMLDivElement | null>,
-  { play, reduced }: DemoProps,
-  build: (tl: gsap.core.Timeline) => void,
-) {
-  const tl = useRef<gsap.core.Timeline | null>(null)
-  useGSAP(
-    () => {
-      if (reduced) return
-      tl.current = gsap.timeline({ paused: true, defaults: { ease: EASE } })
-      build(tl.current)
-    },
-    { scope, dependencies: [reduced] },
-  )
-  useEffect(() => {
-    if (play) tl.current?.play()
-  }, [play])
-}
+type DemoProps = DemoPlayProps
 
 const PROJECTS = [
   { code: "PRJ-2024-014", name: "Northgate Civic Hall", status: "Active" },

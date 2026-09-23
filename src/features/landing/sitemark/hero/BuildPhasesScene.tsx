@@ -5,7 +5,8 @@ import * as THREE from "three"
 import { BuildingMesh } from "./BuildingMesh"
 import { CAMERA_CUT_S, PHASES, expoOut } from "../phases"
 
-const SURFACE = "#E2E7E5"
+const SURFACE = "#CAD6DD"
+const GROUND = "#D6DAD6"
 const INK = "#0E1210"
 
 /** Portrait planes need the camera further out to keep the whole footprint in frame. */
@@ -71,11 +72,11 @@ function Site() {
     <group>
       <mesh rotation-x={-Math.PI / 2} position={[0, -0.01, 0]} receiveShadow>
         <planeGeometry args={[160, 160]} />
-        <meshStandardMaterial color={SURFACE} roughness={1} />
+        <meshStandardMaterial color={GROUND} roughness={1} />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.005, 1]} receiveShadow>
         <planeGeometry args={[26, 22]} />
-        <meshStandardMaterial color="#D8DEDB" roughness={1} />
+        <meshStandardMaterial color="#BCC3BF" roughness={1} />
       </mesh>
       <Line points={plot} color={INK} lineWidth={1.2} dashed dashSize={0.6} gapSize={0.4} />
     </group>
@@ -94,10 +95,11 @@ export function BuildPhasesScene({ phase, active }: { phase: number; active: boo
     >
       <color attach="background" args={[SURFACE]} />
       <fog attach="fog" args={[SURFACE, 60, 140]} />
-      <hemisphereLight args={["#FFFFFF", "#9AA6A1", 0.9]} />
+      <hemisphereLight args={["#E8EEF2", "#8A9AA3", 0.9]} />
       <directionalLight
         position={[14, 22, 10]}
         intensity={1.6}
+        color="#FFF3DC"
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-camera-left={-18}
@@ -106,6 +108,7 @@ export function BuildPhasesScene({ phase, active }: { phase: number; active: boo
         shadow-camera-bottom={-18}
         shadow-bias={-0.0004}
       />
+      <directionalLight position={[-8, 6, -6]} intensity={0.4} color="#3E5A6C" />
       <Suspense fallback={null}>
         <Rig phase={phase} />
         <Site />
