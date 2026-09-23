@@ -4,22 +4,22 @@ overview: Persist a full Site Mark craft-uplift implementation plan, commit it w
 todos:
   - id: publish-plan-branch
     content: "Task 0: Write plan to docs/superpowers/plans, commit scoped landing+plan, push -u origin feat/landing-revamp"
-    status: pending
+    status: completed
   - id: craft-hero
     content: "Task 1: Hero building rewrite, camera cuts, full-bleed plane, copy enter"
-    status: pending
+    status: completed
   - id: craft-product
     content: "Task 2: Product scripted demo timelines (Projects/BOQ/Scheduling)"
-    status: pending
+    status: completed
   - id: craft-engine
     content: "Task 3: Engine pass sweeps + Longest Path ignition"
-    status: pending
+    status: completed
   - id: craft-roles
     content: "Task 4: Roles mascot redesign + staged swap"
-    status: pending
+    status: completed
   - id: craft-page-push
     content: "Task 5: Page scroll-enter motion, a11y smoke, commit+push craft pass"
-    status: pending
+    status: completed
 isProject: false
 ---
 

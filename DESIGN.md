@@ -42,6 +42,24 @@ Restrained construction PM shell: charcoal navigation, paper content canvas, sin
 
 150ms ease on hover/focus only. No page-load choreography.
 
+## Landing — Site Mark (`/`)
+
+Mode: **Persuade**. Lives in `src/features/landing/sitemark/` (tokens in `sitemark.css`, scoped to `.sm-root`). Authenticated screens have not moved to this world yet.
+
+| Token | Value | Role |
+|-------|-------|------|
+| `--sm-bg` | `#EEF1F0` | Page ground |
+| `--sm-surface` | `#E2E7E5` | Hero plane, Proof band, figure panel |
+| `--sm-ink` | `#0E1210` | Text, rules, controls, Close ground |
+| `--sm-mark` | `#D4FF4A` | Critical spine only; cased in ink on light grounds |
+| `--sm-mute` | `#4E5653` | Secondary text (≥4.5:1 on bg and surface) |
+| `--sm-line` | `#C3CBC8` | Hairlines |
+
+- **Type:** Syne 600–800 (wordmark, headings), Manrope 400–800 (body, UI), IBM Plex Mono (codes, day figures, ES/EF/LS/LF).
+- **Controls:** 2px ink border, 2px radius; primary = ink fill. Hover adds an inset ring (weight, not glow). Segmented toggles, never pills.
+- **Motion:** `--sm-ease-enter` `cubic-bezier(0.16,1,0.3,1)` for entrances; `--sm-ease-swap` `cubic-bezier(0.65,0,0.35,1)` for state swaps. Hero phases hold 3.6s with 0.8s expo camera cuts; Product demos are 1.2–2.0s GSAP timelines with 450ms crossfades; Engine plays once on scroll (Replay available); Roles morph 300ms then content 200ms. `prefers-reduced-motion` shows resting frames: Fit-out, final demo frame, labeled diagram, instant role swap.
+- **Critical representation:** ink bar with a lime core; float = hollow ink outline plus dashed tail.
+
 ## Provenance
 
 - Mock HTML: `docs/mockups/scheduling-clearwater.html`
