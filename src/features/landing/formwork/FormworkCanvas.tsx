@@ -1,88 +1,90 @@
-import { Suspense, useRef, type MutableRefObject } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { Suspense, useEffect } from "react"
+import { Canvas, useThree } from "@react-three/fiber"
 import { ContactShadows, Grid } from "@react-three/drei"
-import { FormworkTower } from "./FormworkTower"
+import { CampusMassing } from "./CampusMassing"
+import { CAMERA_POSES, StageRig } from "./StageRig"
 
-type ProgressRef = MutableRefObject<number>
-
-function Rig({ progressRef }: { progressRef: ProgressRef }) {
-  const { camera } = useThree()
-  const look = useRef({ y: 0.3 })
-
-  useFrame(() => {
-    const t = progressRef.current
-    camera.position.x = 8.6 + t * 3.8
-    camera.position.y = 2.8 + t * 7.0
-    camera.position.z = 9.8 + t * 2.6
-    look.current.y = -0.35 + t * 5.1
-    camera.lookAt(0.2, look.current.y, 0)
-  })
-
+function StepInvalidate({ step }: { step: number }) {
+  const invalidate = useThree((state) => state.invalidate)
+  useEffect(() => {
+    invalidate()
+  }, [invalidate, step])
   return null
 }
 
-function Scene({ progressRef }: { progressRef: ProgressRef }) {
+function Scene({ currentStep, reduced }: { currentStep: number; reduced: boolean }) {
   return (
     <>
-      <color attach="background" args={["#222421"]} />
-      <fog attach="fog" args={["#222421", 26, 58]} />
-      <hemisphereLight args={["#D0D6D4", "#6A5C4C", 0.7]} />
-      <ambientLight intensity={0.42} />
+      <color attach="background" args={["#1A1514"]} />
+      <fog attach="fog" args={["#1A1514", 28, 56]} />
+      <hemisphereLight args={["#F5F5DC", "#3A2A1C", 0.48]} />
+      <ambientLight intensity={0.5} />
       <directionalLight
-        position={[12, 16, 8]}
-        intensity={1.85}
-        color="#FFF3DC"
-        castShadow
+        position={[-11, 18, 9]}
+        intensity={1.28}
+        color="#fff6e8"
+        castShadow={!reduced}
         shadow-mapSize={[1024, 1024]}
-        shadow-camera-far={40}
-        shadow-camera-left={-12}
-        shadow-camera-right={12}
-        shadow-camera-top={16}
-        shadow-camera-bottom={-8}
+        shadow-camera-far={55}
+        shadow-camera-left={-20}
+        shadow-camera-right={20}
+        shadow-camera-top={14}
+        shadow-camera-bottom={-14}
       />
-      <directionalLight position={[-8, 6, -6]} intensity={0.35} color="#8FA3B0" />
-      <Rig progressRef={progressRef} />
-      {/* Swap point: replace FormworkTower with a GLTF group sharing this origin. */}
-      <FormworkTower progressRef={progressRef} />
+      <directionalLight position={[10, 6, -6]} intensity={0.22} color="#e8c547" />
+      <StageRig currentStep={currentStep} reduced={reduced} orbit={false} />
+      <CampusMassing currentStep={currentStep} reduced={reduced} />
       <Grid
         position={[0, 0.01, 0]}
-        args={[40, 40]}
+        args={[48, 48]}
         cellSize={1}
-        cellThickness={0.6}
-        cellColor="#8A8C84"
+        cellThickness={0.35}
+        cellColor="#3a3228"
         sectionSize={5}
-        sectionThickness={1.1}
-        sectionColor="#C4A06A"
+        sectionThickness={0.7}
+        sectionColor="#5a4a32"
         fadeDistance={38}
         fadeStrength={1.4}
         infiniteGrid
       />
-      <ContactShadows position={[0, 0.02, 0]} opacity={0.38} scale={28} blur={2.4} far={10} />
+      <ContactShadows position={[0, 0.02, 0]} opacity={0.38} scale={36} blur={2.8} far={12} />
     </>
   )
 }
 
 export function FormworkCanvas({
-  progressRef,
+  currentStep,
   reduced,
+  active = true,
 }: {
-  progressRef: ProgressRef
+  currentStep: number
   reduced: boolean
+  active?: boolean
 }) {
+  const start = CAMERA_POSES[Math.min(currentStep, CAMERA_POSES.length - 1)] ?? CAMERA_POSES[0]
+  const run = active && !reduced
+
   return (
     <Canvas
-      className="formwork-canvas"
-      camera={{ position: [9.2, 3.6, 10.4], fov: 34, near: 0.1, far: 90 }}
-      dpr={reduced ? [1, 1] : [1, 1.5]}
+      className="formwork-canvas h-full w-full"
+      camera={{
+        position: start.pos.toArray(),
+        fov: start.fov,
+        near: 0.1,
+        far: 120,
+      }}
+      dpr={reduced ? [1, 1] : [1, 1.25]}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-      shadows={!reduced ? "percentage" : false}
-      frameloop={reduced ? "demand" : "always"}
+      shadows={!reduced}
+      frameloop={run ? "always" : "demand"}
       onCreated={(state) => {
-        if (reduced) state.invalidate()
+        state.camera.lookAt(start.target.x, start.target.y, start.target.z)
+        state.invalidate()
       }}
     >
       <Suspense fallback={null}>
-        <Scene progressRef={progressRef} />
+        <StepInvalidate step={currentStep} />
+        <Scene currentStep={currentStep} reduced={reduced} />
       </Suspense>
     </Canvas>
   )

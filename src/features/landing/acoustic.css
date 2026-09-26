@@ -1,0 +1,395 @@
+@theme {
+  --color-espresso: #1a1514;
+  --color-espresso-deep: #100d0c;
+  --color-amber: #d4af37;
+  --color-amber-hot: #e8c547;
+  --color-latte: #f5f5dc;
+  --color-foam: #e8e0d0;
+  --color-frosted: rgb(255 255 255 / 0.03);
+  --color-border-glass: rgb(255 255 255 / 0.08);
+
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-ui: "Overpass", "Segoe UI", sans-serif;
+  --font-measure: "Azeret Mono", ui-monospace, monospace;
+
+  --ease-acoustic: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-glass-inset: inset 0 1px 1px rgb(255 255 255 / 0.1);
+  --shadow-glow-amber: 0 8px 20px rgb(212 175 55 / 0.15);
+  --shadow-glow-amber-hot: 0 10px 32px rgb(212 175 55 / 0.28);
+
+  --backdrop-blur-glass: 24px;
+  --backdrop-blur-glass-heavy: 40px;
+}
+
+@utility bg-glass {
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.05) 0%,
+    rgb(255 255 255 / 0.01) 100%
+  );
+  background-color: var(--color-frosted);
+  backdrop-filter: blur(var(--backdrop-blur-glass-heavy)) saturate(0.85);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur-glass-heavy)) saturate(0.85);
+  box-shadow: var(--shadow-glass-inset);
+  border: 1px solid var(--color-border-glass);
+}
+
+@utility bg-glass-thin {
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.05) 0%,
+    rgb(255 255 255 / 0.01) 100%
+  );
+  background-color: rgb(255 255 255 / 0.02);
+  backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(0.8);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(0.8);
+  border: 1px solid var(--color-border-glass);
+}
+
+.acoustic-root {
+  background: var(--color-espresso);
+  color: var(--color-latte);
+  font-family: var(--font-ui);
+  scrollbar-color: var(--color-amber) var(--color-espresso-deep);
+  scrollbar-width: thin;
+  overflow-x: hidden;
+}
+
+.acoustic-root ::selection {
+  background: color-mix(in srgb, var(--color-amber) 70%, black);
+  color: var(--color-espresso-deep);
+}
+
+.acoustic-pane {
+  min-height: 0;
+}
+
+.acoustic-skip {
+  position: absolute;
+  left: 1rem;
+  top: 0.6rem;
+  z-index: 20;
+  transform: translateY(-160%);
+  background: var(--color-amber);
+  color: var(--color-espresso);
+  padding: 0.45rem 0.7rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.acoustic-skip:focus-visible {
+  transform: none;
+}
+
+.acoustic-focus:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+}
+
+.formwork-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.campus-artefact {
+  height: min(42vh, 28rem);
+  min-height: 16rem;
+}
+
+.campus-artefact .formwork-canvas {
+  pointer-events: none;
+}
+
+.feature-beat {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 860px) {
+  .feature-beat {
+    grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 0.9fr);
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .feature-beat:nth-child(even) {
+    grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .feature-beat:nth-child(even) > :first-child {
+    order: 2;
+  }
+}
+
+.meeting-screen {
+  background: #f3f2ef;
+  color: #111111;
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  border-radius: 1.15rem;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.35),
+    0 24px 48px rgb(0 0 0 / 0.35);
+}
+
+.meeting-object {
+  overflow: hidden;
+  min-height: 7.5rem;
+}
+
+.meeting-chrome {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background: #181c20;
+  color: #f5f5dc;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  min-width: 36rem;
+}
+
+.meeting-chrome-tab {
+  margin-left: auto;
+  color: #ff6e00;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.meeting-table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.meeting-table th {
+  text-align: left;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a6570;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid #dce0e5;
+  background: #eceae4;
+}
+
+.meeting-table td {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid #dce0e5;
+  vertical-align: middle;
+}
+
+.meeting-table tr[data-active="true"] td {
+  background: #fff0e6;
+}
+
+.meeting-table tr[data-critical="true"] td,
+.meeting-row[data-critical="true"] {
+  background: #fdecec;
+}
+
+.meeting-table tr[data-kind="phase"] td,
+.meeting-phase td,
+.meeting-row-phase {
+  font-weight: 650;
+  background: rgb(220 224 229 / 0.45);
+}
+
+.meeting-name {
+  display: block;
+  font-weight: 600;
+}
+
+.meeting-muted {
+  display: block;
+  color: #5a6570;
+  font-size: 0.75rem;
+}
+
+.meeting-mono {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.meeting-swatch {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+
+.meeting-swatch-a {
+  background: #3a556c;
+}
+.meeting-swatch-b {
+  background: #2a6b5a;
+}
+.meeting-swatch-c {
+  background: #9a6b22;
+}
+
+.meeting-lock {
+  display: inline-flex;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a6570;
+  background: #e4dfd4;
+}
+
+.meeting-stage {
+  display: inline-flex;
+  height: 1.5rem;
+  align-items: center;
+  padding: 0 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meeting-stage-active {
+  color: #c2410c;
+  background: #fff0e6;
+}
+.meeting-stage-delayed {
+  color: #b71c1c;
+  background: #fdecec;
+}
+.meeting-stage-planning {
+  color: #3a556c;
+  background: #e8eef2;
+}
+.meeting-stage-on-hold {
+  color: #5a6570;
+  background: #eceae4;
+}
+.meeting-stage-completed {
+  color: #2a6b5a;
+  background: #e7f3ee;
+}
+
+.meeting-crit {
+  color: #b71c1c;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.meeting-pred {
+  margin-left: auto;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 0.68rem;
+  color: #5a6570;
+}
+
+.meeting-split {
+  display: grid;
+  min-width: 52rem;
+}
+
+@media (min-width: 860px) {
+  .meeting-split {
+    grid-template-columns: minmax(18rem, 1.1fr) minmax(12rem, 1fr);
+  }
+}
+
+.meeting-tree {
+  min-width: 18rem;
+}
+
+.meeting-gantt {
+  min-width: 14rem;
+  border-left: 1px solid #dce0e5;
+}
+
+.meeting-gantt-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  background: #eceae4;
+  color: #5a6570;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #dce0e5;
+}
+
+.meeting-gantt-row {
+  position: relative;
+  height: 2.75rem;
+  border-bottom: 1px solid #dce0e5;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(100% / 12 - 1px),
+    #dce0e5 calc(100% / 12 - 1px),
+    #dce0e5 calc(100% / 12)
+  );
+}
+
+.meeting-gantt-row[data-critical="true"] {
+  background-color: #fdecec;
+}
+
+.meeting-bar {
+  position: absolute;
+  top: 0.85rem;
+  height: 1.05rem;
+  border: 1px solid rgb(0 0 0 / 0.12);
+}
+
+.meeting-bar[data-kind="phase"] {
+  top: 1.1rem;
+  height: 0.55rem;
+  opacity: 0.35;
+  border: 0;
+}
+
+.meeting-bar-a {
+  background: #3a556c;
+}
+.meeting-bar-b {
+  background: #2a6b5a;
+}
+.meeting-bar-c {
+  background: #9a6b22;
+}
+
+.meeting-bar[data-critical="true"] {
+  box-shadow: inset 0 0 0 2px #b71c1c;
+}
+
+.meeting-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 0.9rem;
+  border-bottom: 1px solid #dce0e5;
+  font-size: 0.85rem;
+}
+
+.meeting-object .meeting-gantt-row {
+  margin: 0.75rem 0.75rem 0;
+  border: 1px solid #dce0e5;
+}

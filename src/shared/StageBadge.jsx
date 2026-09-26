@@ -1,26 +1,59 @@
-import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-const STAGE_CLASS = {
-  planning: "rounded-none border-border text-muted-foreground",
-  active: "rounded-none border-primary bg-accent text-primary",
-  delayed: "rounded-none border-[#C9A227] bg-[#FFF8E1] text-[#8A6D00]",
-  on_hold: "rounded-none",
-  completed: "rounded-none border-[#2A6B5A] bg-[#E8F5F0] text-[#2A6B5A]",
+export const STAGE_META = {
+  planning: {
+    label: "Planning",
+    token: "planning",
+  },
+  active: {
+    label: "Active",
+    token: "active",
+  },
+  delayed: {
+    label: "Delayed",
+    token: "delayed",
+  },
+  on_hold: {
+    label: "On Hold",
+    token: "on-hold",
+  },
+  completed: {
+    label: "Completed",
+    token: "completed",
+  },
 }
 
-const LABELS = {
-  planning: "Planning",
-  active: "Active",
-  delayed: "Delayed",
-  on_hold: "On Hold",
-  completed: "Completed",
+export function stageToken(stage) {
+  return STAGE_META[stage]?.token ?? "planning"
+}
+
+export function StatusDot({ stage, className }) {
+  const token = stageToken(stage)
+  return (
+    <span
+      className={cn("inline-block size-2.5 shrink-0 rounded-full", className)}
+      style={{ background: `var(--status-${token})` }}
+      aria-hidden="true"
+    />
+  )
 }
 
 export function StageBadge({ stage }) {
+  const meta = STAGE_META[stage]
+  const token = meta?.token ?? "planning"
+  const label = meta?.label ?? stage
+
   return (
-    <Badge variant="outline" className={cn("uppercase tracking-wide text-[10px] font-bold", STAGE_CLASS[stage])}>
-      {LABELS[stage] ?? stage}
-    </Badge>
+    <span
+      className="inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-bold tracking-wide uppercase"
+      style={{
+        color: `var(--status-${token})`,
+        background: `var(--status-${token}-wash)`,
+        boxShadow: "var(--shadow-neu-in)",
+      }}
+    >
+      <StatusDot stage={stage} className="size-2" />
+      {label}
+    </span>
   )
 }

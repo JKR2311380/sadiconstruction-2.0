@@ -30,8 +30,8 @@ function Actions({ className }: { className?: string }) {
       <Link to="/login" className="sm-btn sm-btn--primary">
         Sign in <ArrowRight size={16} strokeWidth={2} aria-hidden />
       </Link>
-      <Link to="/request-access" className="sm-btn">
-        Request access
+      <Link to="/signup" className="sm-btn">
+        Sign up
       </Link>
     </div>
   )
@@ -97,7 +97,7 @@ export default function LandingPage() {
 
       <section className="sm-close" aria-labelledby="sm-close-title">
         <SectionHead id="sm-close-title" title="Your bill already knows the phases.">
-          Sign in to schedule against it. New to the team? Request access and an Admin will set your role.
+          Sign in to schedule against it. New to the team? Sign up and start on the same WBS.
         </SectionHead>
         <Actions className="sm-actions--close" />
         <footer className="sm-foot">

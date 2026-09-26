@@ -9,7 +9,7 @@ related_targets:
 
 # Landing — `/`
 
-Mode: Persuade. Audience: screened Planner / PM arriving at an internal product. Job: understand that BOQ phases own time and Longest Path is computed here, then Sign in or Request access.
+Mode: Persuade. Audience: screened Planner / PM arriving at an internal product. Job: understand that BOQ phases own time and Longest Path is computed here, then Sign in or Sign up.
 
 Proof: the in-app CPM engine (`src/features/scheduling/engine`) runs on a synthetic Clearwater Medical Center PRJ-2024-008 network in the Engine and Proof sections, labeled synthetic. Constraints: no fake org KPIs; no pills or card grids; no purple SaaS; no kicker labels above headings; exactly six sections.
 
@@ -23,7 +23,7 @@ OWN-WORLD: Steel & concrete site materials — `#EEF1F0` ground, `#D6DAD6` / `#B
 
 STORY: The bill sets the envelope. Three modules, one bill. Criticality is computed. Two seats with a designed figure and capability micros. Push a date and watch the spine move. Enter.
 
-FIRST VIEWPORT: Wordmark as h1, lede, support, Sign in / Request access on the left; full-bleed R3F plane on the right cycling Massing → Structure → Envelope → Fit-out (~2.1s hold, 0.55s camera cuts), caption in the plane, phase ticks and pause.
+FIRST VIEWPORT: Wordmark as h1, lede, support, Sign in / Sign up on the left; full-bleed R3F plane on the right cycling Massing → Structure → Envelope → Fit-out (~2.1s hold, 0.55s camera cuts), caption in the plane, phase ticks and pause.
 
 FORM: Six sections — Hero, Product, Engine (navy band), Roles (lazy GLB figure + micros), Proof (steel-soft), Close (ink).
 

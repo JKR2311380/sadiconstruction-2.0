@@ -125,3 +125,11 @@ export function coreHeight(progress: number) {
 export function roofProgress(progress: number) {
   return clamp01((progress - 0.86) / 0.1)
 }
+
+/** Programme stepper → formwork pour timeline (0–1). */
+export const STEP_PROGRESS = [0.06, 0.18, 0.32, 0.5, 0.66, 0.84, 1] as const
+
+export function stepToProgress(step: number) {
+  const index = Math.min(STEP_PROGRESS.length - 1, Math.max(0, Math.round(step)))
+  return STEP_PROGRESS[index]
+}

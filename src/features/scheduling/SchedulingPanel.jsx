@@ -73,7 +73,7 @@ export function SchedulingPanel({ projectId }) {
   if (!schedule) {
     return (
       <div className="p-[18px_22px]">
-        <Empty className="rounded-none border border-dashed border-border">
+        <Empty>
           <EmptyHeader>
             <EmptyTitle>No schedule yet</EmptyTitle>
             <EmptyDescription>Open a Project that has an approved BOQ to seed Phase Roots.</EmptyDescription>
@@ -153,7 +153,7 @@ export function SchedulingPanel({ projectId }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-[22px] py-2.5">
-        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           <span>
             <strong className="text-foreground">Retained Logic</strong> · {workingDays} · {holidayCount} PH holidays
           </span>
@@ -168,8 +168,8 @@ export function SchedulingPanel({ projectId }) {
           <Button
             type="button"
             size="sm"
-            variant={criticalOnly ? "secondary" : "outline"}
-            className="rounded-none"
+            variant="ghost"
+            className={criticalOnly ? "neu-selected text-foreground" : ""}
             aria-pressed={criticalOnly}
             onClick={() => setCriticalOnly((value) => !value)}
           >
@@ -181,7 +181,6 @@ export function SchedulingPanel({ projectId }) {
                 type="button"
                 size="sm"
                 variant="outline"
-                className="rounded-none"
                 onClick={() => {
                   simulateCycle(projectId)
                   toast.message("Simulated cycle B.2 ↔ B.3")
@@ -189,10 +188,10 @@ export function SchedulingPanel({ projectId }) {
               >
                 Simulate cycle
               </Button>
-              <Button type="button" size="sm" variant="outline" className="rounded-none" onClick={() => openAdd("summary")}>
+              <Button type="button" size="sm" variant="outline" onClick={() => openAdd("summary")}>
                 + Nested summary
               </Button>
-              <Button type="button" size="sm" variant="secondary" className="rounded-none" onClick={() => openAdd("leaf")}>
+              <Button type="button" size="sm" variant="secondary" onClick={() => openAdd("leaf")}>
                 + Activity
               </Button>
             </>
@@ -201,7 +200,7 @@ export function SchedulingPanel({ projectId }) {
       </div>
 
       {cycle ? (
-        <Alert variant="destructive" className="mx-[22px] mt-3 rounded-none">
+        <Alert variant="destructive" className="mx-[22px] mt-3">
           <AlertCircleIcon />
           <AlertTitle>CPM halted</AlertTitle>
           <AlertDescription>
@@ -213,7 +212,7 @@ export function SchedulingPanel({ projectId }) {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="rounded-none text-destructive"
+                className="text-destructive"
                 onClick={() => {
                   restoreClearwaterNetwork(projectId)
                   toast.success("Network restored")
@@ -228,7 +227,7 @@ export function SchedulingPanel({ projectId }) {
 
       {!phases.length ? (
         <div className="p-[18px_22px]">
-          <Empty className="rounded-none border border-dashed border-border">
+          <Empty>
             <EmptyHeader>
               <EmptyTitle>No BOQ phases</EmptyTitle>
               <EmptyDescription>
@@ -265,7 +264,7 @@ export function SchedulingPanel({ projectId }) {
               onSelect={(id) => selectNode(projectId, id)}
             />
           </div>
-          <footer className="flex flex-wrap items-center gap-4 border-t border-border bg-card px-[22px] py-2 text-[11px] text-muted-foreground tabular-nums">
+          <footer className="flex flex-wrap items-center gap-4 border-t border-border bg-card px-[22px] py-3 text-sm text-muted-foreground tabular-nums">
             {cycle ? (
               <span>
                 <b className="text-foreground">Invalid network</b> – fix cycle to recalculate
@@ -287,7 +286,7 @@ export function SchedulingPanel({ projectId }) {
       )}
 
       <Dialog open={addOpen} onOpenChange={setAddOpen}>
-        <DialogContent className="rounded-none sm:max-w-md">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{addMode === "summary" ? "Add nested summary" : "Add activity"}</DialogTitle>
           </DialogHeader>
@@ -296,7 +295,7 @@ export function SchedulingPanel({ projectId }) {
               <Field>
                 <FieldLabel>Under</FieldLabel>
                 <Select value={addParent} onValueChange={setAddParent}>
-                  <SelectTrigger className="w-full rounded-none">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Parent" />
                   </SelectTrigger>
                   <SelectContent>
@@ -315,7 +314,7 @@ export function SchedulingPanel({ projectId }) {
               </Field>
               <Field>
                 <FieldLabel htmlFor="add-name">Name</FieldLabel>
-                <Input id="add-name" value={addName} onChange={(event) => setAddName(event.target.value)} className="rounded-none" />
+                <Input id="add-name" value={addName} onChange={(event) => setAddName(event.target.value)} />
               </Field>
               {addMode === "leaf" ? (
                 <Field>
@@ -326,16 +325,15 @@ export function SchedulingPanel({ projectId }) {
                     min="0"
                     value={addDur}
                     onChange={(event) => setAddDur(event.target.value)}
-                    className="rounded-none"
                   />
                 </Field>
               ) : null}
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-none" onClick={() => setAddOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="secondary" className="rounded-none">
+              <Button type="submit" variant="secondary">
                 Add
               </Button>
             </DialogFooter>
@@ -344,18 +342,18 @@ export function SchedulingPanel({ projectId }) {
       </Dialog>
 
       <Dialog open={predOpen} onOpenChange={setPredOpen}>
-        <DialogContent className="rounded-none sm:max-w-md">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Edit predecessors</DialogTitle>
           </DialogHeader>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Links into {schedule.nodes.find((node) => node.id === predTarget)?.name}
           </p>
           <FieldGroup>
             <Field>
               <FieldLabel>Predecessor</FieldLabel>
               <Select value={predId} onValueChange={setPredId}>
-                <SelectTrigger className="w-full rounded-none">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Leaf activity" />
                 </SelectTrigger>
                 <SelectContent>
@@ -374,7 +372,7 @@ export function SchedulingPanel({ projectId }) {
             <Field>
               <FieldLabel>Type</FieldLabel>
               <Select value={predType} onValueChange={setPredType}>
-                <SelectTrigger className="w-full rounded-none">
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -393,7 +391,7 @@ export function SchedulingPanel({ projectId }) {
             <Button
               type="button"
               variant="destructive"
-              className="mr-auto rounded-none"
+              className="mr-auto"
               onClick={() => {
                 clearDependencies(projectId, predTarget)
                 setPredOpen(false)
@@ -402,13 +400,12 @@ export function SchedulingPanel({ projectId }) {
             >
               Clear all
             </Button>
-            <Button type="button" variant="outline" className="rounded-none" onClick={() => setPredOpen(false)}>
+            <Button type="button" variant="outline" onClick={() => setPredOpen(false)}>
               Cancel
             </Button>
             <Button
               type="button"
               variant="secondary"
-              className="rounded-none"
               onClick={() => {
                 if (predId) {
                   addDependency(projectId, {

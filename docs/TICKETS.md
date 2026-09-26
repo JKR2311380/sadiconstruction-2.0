@@ -120,8 +120,8 @@ E10 CI/CD                            ← specified; not implemented
 
 | ID | Ticket | Acceptance |
 |----|--------|------------|
-| T8.1 | Storage bucket + `documents` table | Private bucket; size guard for Free 1 GB |
-| T8.2 | Upload / list UI | On Documents tab |
+| T8.1 | Storage bucket + `documents` table | Done — private `project-documents`, ≤50 MB, soft-delete |
+| T8.2 | Upload / list UI | Done — Documents tab uploads bytes + metadata |
 
 ---
 
@@ -129,10 +129,10 @@ E10 CI/CD                            ← specified; not implemented
 
 | ID | Ticket | Notes |
 |----|--------|-------|
-| T9.1 | Key Personnel CRUD | `project_personnel` |
-| T9.2 | Contractors registry | certs + project history |
-| T9.3 | Reports inbox | `report_messages` |
-| T9.4 | Settings / Dark Mode | |
+| T9.1 | Key Personnel CRUD | Done — free-text `project_personnel` (no required `staff_id`) |
+| T9.2 | Contractors registry | **OUT** of the working app |
+| T9.3 | Reports inbox | **OUT** of the working app |
+| T9.4 | Settings / Dark Mode | Done |
 | T9.5 | LOE UI designation | Engine already skips flag |
 | T9.6 | Baseline snapshots | Post-foundation |
 

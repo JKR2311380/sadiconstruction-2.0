@@ -19,53 +19,85 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { ConfirmDialog } from "@/components/ConfirmDialog"
 import { can } from "@/lib/permissions"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
 
+const EMPTY_ROWS = []
+
 export function PersonnelPanel({ projectId }) {
   const role = useSessionStore((state) => state.staff?.role)
-  const rows = useWorkspaceStore((state) => state.personnelByProject[projectId] || [])
+  const rows = useWorkspaceStore((state) => state.personnelByProject[projectId] ?? EMPTY_ROWS)
   const addPersonnel = useWorkspaceStore((state) => state.addPersonnel)
+  const removePersonnel = useWorkspaceStore((state) => state.removePersonnel)
   const [open, setOpen] = useState(false)
+  const [pending, setPending] = useState(false)
   const [name, setName] = useState("")
   const [title, setTitle] = useState("")
   const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  const [pendingRemove, setPendingRemove] = useState(null)
 
-  function handleAdd(event) {
-    event.preventDefault()
-    addPersonnel(projectId, { name, title, startDate })
-    toast.success("Personnel added")
-    setOpen(false)
+  function resetForm() {
     setName("")
     setTitle("")
     setStartDate("")
+    setEndDate("")
+  }
+
+  async function handleAdd(event) {
+    event.preventDefault()
+    setPending(true)
+    try {
+      await addPersonnel(projectId, { name, title, startDate, endDate })
+      toast.success("Personnel added")
+      setOpen(false)
+      resetForm()
+    } catch (error) {
+      toast.error(error.message || "Could not add this person.")
+    } finally {
+      setPending(false)
+    }
+  }
+
+  async function handleRemove(row) {
+    try {
+      await removePersonnel(projectId, row.id)
+      toast.success("Personnel removed")
+    } catch (error) {
+      toast.error(error.message || "Could not remove this person.")
+    }
   }
 
   return (
     <div className="flex flex-col gap-3">
-      {can(role, "createProject") ? (
+      {can(role, "editPersonnel") ? (
         <div className="flex justify-end">
-          <Button type="button" variant="secondary" className="rounded-none" onClick={() => setOpen(true)}>
+          <Button type="button" onClick={() => setOpen(true)}>
             Add person
           </Button>
         </div>
       ) : null}
 
       {rows.length === 0 ? (
-        <Empty className="rounded-none border border-dashed border-border">
+        <Empty>
           <EmptyHeader>
             <EmptyTitle>No key personnel yet</EmptyTitle>
-            <EmptyDescription>Assign Staff Members or site roles to this Project.</EmptyDescription>
+            <EmptyDescription>
+              Free-text roster of people on this Project. They do not have to be Staff Members.
+            </EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (
-        <Table className="border border-border bg-card text-[13px]">
+        <Table className="text-[13px]">
           <TableHeader>
-            <TableRow className="bg-[#ECEEF0] hover:bg-[#ECEEF0]">
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Name</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Role on project</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Start</TableHead>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Role on project</TableHead>
+              <TableHead>Start</TableHead>
+              <TableHead>End</TableHead>
+              {can(role, "editPersonnel") ? <TableHead className="w-24" /> : null}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -74,43 +106,85 @@ export function PersonnelPanel({ projectId }) {
                 <TableCell className="font-medium">{row.name}</TableCell>
                 <TableCell>{row.title}</TableCell>
                 <TableCell>{row.startDate || "—"}</TableCell>
+                <TableCell>{row.endDate || "—"}</TableCell>
+                {can(role, "editPersonnel") ? (
+                  <TableCell>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive"
+                      onClick={() => setPendingRemove(row)}
+                    >
+                      Remove
+                    </Button>
+                  </TableCell>
+                ) : null}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="rounded-none sm:max-w-md">
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          setOpen(next)
+          if (!next) resetForm()
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Add key personnel</DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleAdd} className="flex flex-col gap-4">
+          <form onSubmit={(event) => void handleAdd(event)} className="flex flex-col gap-4">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="per-name">Name</FieldLabel>
-                <Input id="per-name" value={name} onChange={(event) => setName(event.target.value)} required className="rounded-none" />
+                <Input id="per-name" value={name} onChange={(event) => setName(event.target.value)} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="per-title">Title on this Project</FieldLabel>
-                <Input id="per-title" value={title} onChange={(event) => setTitle(event.target.value)} required className="rounded-none" />
+                <Input id="per-title" value={title} onChange={(event) => setTitle(event.target.value)} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="per-start">Start date</FieldLabel>
-                <Input id="per-start" type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="rounded-none" />
+                <Input id="per-start" type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="per-end">End date</FieldLabel>
+                <Input id="per-end" type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} />
               </Field>
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-none" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="secondary" className="rounded-none">
-                Add
+              <Button type="submit" disabled={pending}>
+                {pending ? "Adding…" : "Add"}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
+
+      <ConfirmDialog
+        open={Boolean(pendingRemove)}
+        onOpenChange={(next) => {
+          if (!next) setPendingRemove(null)
+        }}
+        title="Remove this person?"
+        description={
+          pendingRemove
+            ? `${pendingRemove.name} will be removed from this Project roster. They are not a Staff Member account.`
+            : ""
+        }
+        confirmLabel="Remove"
+        onConfirm={() => {
+          if (pendingRemove) void handleRemove(pendingRemove)
+          setPendingRemove(null)
+        }}
+      />
     </div>
   )
 }

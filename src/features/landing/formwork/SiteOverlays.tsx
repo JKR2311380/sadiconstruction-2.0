@@ -1,6 +1,6 @@
 import type { RefObject } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowDown, LogIn, UnlockKeyhole } from "lucide-react"
+import { ArrowDown, LogIn, UserPlus } from "lucide-react"
 import { Link } from "react-router-dom"
 import type { Beat } from "./lifecycle"
 
@@ -24,8 +24,17 @@ export function SiteOverlays({ beat, hint, fillRef, reduced }: Props) {
   return (
     <div className="formwork-hud">
       <a className="formwork-skip" href="#formwork-enter">
-        Skip to sign in
+        Skip to sign up
       </a>
+
+      <nav className="formwork-app-nav" aria-label="Account">
+        <Link className="formwork-action" to="/login">
+          Sign in
+        </Link>
+        <Link className="formwork-action formwork-action-primary" to="/signup">
+          Sign up
+        </Link>
+      </nav>
 
       <motion.p
         className="formwork-wordmark"
@@ -101,13 +110,13 @@ export function SiteOverlays({ beat, hint, fillRef, reduced }: Props) {
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
-              <Link className="formwork-action formwork-action-primary" to="/login">
+              <Link className="formwork-action formwork-action-primary" to="/signup">
+                <UserPlus size={16} strokeWidth={1.75} aria-hidden />
+                Sign up
+              </Link>
+              <Link className="formwork-action" to="/login">
                 <LogIn size={16} strokeWidth={1.75} aria-hidden />
                 Sign in
-              </Link>
-              <Link className="formwork-action" to="/request-access">
-                <UnlockKeyhole size={16} strokeWidth={1.75} aria-hidden />
-                Request access
               </Link>
             </motion.div>
           )}

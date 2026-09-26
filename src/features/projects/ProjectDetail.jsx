@@ -1,4 +1,5 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { StageBadge } from "@/shared/StageBadge"
@@ -23,6 +24,15 @@ export function ProjectDetail() {
   const project = useWorkspaceStore((state) =>
     state.projects.find((row) => row.id === projectId && !row.deletedAt),
   )
+  const ensureNetwork = useWorkspaceStore((state) => state.ensureNetwork)
+  const refreshProjectRecords = useWorkspaceStore((state) => state.refreshProjectRecords)
+
+  useEffect(() => {
+    if (projectId) {
+      void ensureNetwork(projectId)
+      void refreshProjectRecords(projectId)
+    }
+  }, [projectId, ensureNetwork, refreshProjectRecords])
 
   if (!project) {
     return <Navigate to="/projects" replace />
@@ -31,8 +41,8 @@ export function ProjectDetail() {
   const activeTab = TABS.some((item) => item.id === tab) ? tab : "overview"
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <header className="border-b border-border bg-card px-[22px] pt-3.5">
+    <div className="flex min-h-0 flex-1 flex-col py-4">
+      <header className="mb-4">
         <Button
           variant="link"
           className="mb-2 h-auto px-0 text-xs text-muted-foreground"
@@ -61,12 +71,12 @@ export function ProjectDetail() {
           onValueChange={(value) => navigate(`/projects/${project.id}/${value}`)}
           className="gap-0"
         >
-          <TabsList variant="line" className="h-auto w-full justify-start rounded-none bg-transparent p-0">
+          <TabsList variant="line" className="h-auto w-full justify-start">
             {TABS.map((item) => (
               <TabsTrigger
                 key={item.id}
                 value={item.id}
-                className="rounded-none px-3.5 text-[13px]"
+                className="px-4 py-2.5 text-[13px]"
               >
                 {item.label}
               </TabsTrigger>
@@ -78,7 +88,7 @@ export function ProjectDetail() {
       {activeTab === "scheduling" ? (
         <SchedulingPanel projectId={project.id} />
       ) : (
-        <div className="min-h-0 flex-1 overflow-auto p-[18px_22px]">
+        <div className="min-h-0 flex-1 pb-8">
           {activeTab === "overview" ? <OverviewPanel project={project} /> : null}
           {activeTab === "personnel" ? <PersonnelPanel projectId={project.id} /> : null}
           {activeTab === "documents" ? <DocumentsPanel projectId={project.id} /> : null}

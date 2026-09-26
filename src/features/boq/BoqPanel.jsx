@@ -35,9 +35,9 @@ export function BoqPanel({ projectId }) {
 
   const total = boqGrandTotal(boq)
 
-  function handleReplace(event) {
+  async function handleReplace(event) {
     event.preventDefault()
-    const result = replaceBoqFromCsv(projectId, csv)
+    const result = await replaceBoqFromCsv(projectId, csv)
     if (!result.ok) {
       setError(result.error)
       return
@@ -49,35 +49,35 @@ export function BoqPanel({ projectId }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted-foreground">
         <p>
           View-only · {boq ? <>Grand total <strong className="text-foreground">{formatPhp(total)}</strong></> : "No approved BOQ"}
         </p>
         {can(role, "seedBoq") ? (
-          <Button type="button" variant="outline" className="rounded-none" onClick={() => setOpen(true)}>
+          <Button type="button" variant="outline" onClick={() => setOpen(true)}>
             Replace via CSV
           </Button>
         ) : null}
       </div>
 
       {!boq ? (
-        <Empty className="rounded-none border border-dashed border-border">
+        <Empty>
           <EmptyHeader>
             <EmptyTitle>No approved BOQ</EmptyTitle>
             <EmptyDescription>
-              Scheduling cannot seed Phase Roots until an Admin loads a CSV. The product UI never edits quantities.
+              Scheduling cannot seed Phase Roots until a Staff Member replaces the BOQ via CSV. The product UI never edits quantities.
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (
-        <Table className="border border-border bg-card text-[13px] tabular-nums">
+        <Table className="text-[13px] tabular-nums">
           <TableHeader>
-            <TableRow className="bg-[#ECEEF0] hover:bg-[#ECEEF0]">
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Item</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Description</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Unit</TableHead>
-              <TableHead className="text-[10px] tracking-wider text-muted-foreground uppercase">Qty</TableHead>
-              <TableHead className="text-right text-[10px] tracking-wider text-muted-foreground uppercase">Amount</TableHead>
+            <TableRow>
+              <TableHead>Item</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Unit</TableHead>
+              <TableHead>Qty</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -89,7 +89,7 @@ export function BoqPanel({ projectId }) {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="rounded-none sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Replace BOQ from CSV</DialogTitle>
           </DialogHeader>
@@ -105,7 +105,7 @@ export function BoqPanel({ projectId }) {
                     setCsv(event.target.value)
                     setError("")
                   }}
-                  className="min-h-40 rounded-none font-mono text-xs"
+                  className="min-h-40 font-readout text-xs"
                 />
                 <FieldDescription>
                   Columns: phase_code, phase_name, item_code, description, unit, quantity, rate, amount.
@@ -114,10 +114,10 @@ export function BoqPanel({ projectId }) {
               </Field>
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-none" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="secondary" className="rounded-none">
+              <Button type="submit">
                 Replace BOQ
               </Button>
             </DialogFooter>

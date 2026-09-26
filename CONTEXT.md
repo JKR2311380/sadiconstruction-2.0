@@ -7,16 +7,24 @@ Internal construction project-management domain: cost WBS (BOQ) owns schedule ph
 ### Organization & access
 
 **Staff Member**:
-An authenticated person who uses the platform after admin screening.
-_Avoid_: User (ambiguous), Client, Account
+An authenticated person with a Sign-in session who can use the product shell.
+_Avoid_: User (ambiguous), Client, Account, Guest
 
-**Access Request**:
-A guest application for credentials, reviewed before any Staff Member row exists.
-_Avoid_: Signup, Registration, Invite (unless invite is later chosen)
+**Visitor**:
+An unauthenticated person limited to Landing, Sign-up, and Sign-in.
+_Avoid_: Guest, Anonymous user
+
+**Sign-up**:
+Public creation of a Staff Member with email and password; no email verification; new accounts are Planners.
+_Avoid_: Access Request, Registration, Invite, Screening
+
+**Sign-in**:
+Email and password authentication that establishes a Staff Member session.
+_Avoid_: Login as a domain noun when Sign-in is meant; SSO (not in v1)
 
 **Role**:
-The permission set attached to a Staff Member: Admin, Planner, Project Manager, or Viewer. Capabilities live in the matrix in [`docs/adr/0005-role-permission-matrix.md`](docs/adr/0005-role-permission-matrix.md).
-_Avoid_: Permission string soup, Job title as auth
+The permission set attached to a Staff Member: Admin or Planner. Capabilities live in [`docs/OPEN-DECISIONS.md`](docs/OPEN-DECISIONS.md) D1 and [`docs/adr/0012-open-signup-two-roles.md`](docs/adr/0012-open-signup-two-roles.md).
+_Avoid_: Permission string soup, Job title as auth, Project Manager as a Role, Viewer as a Role
 
 ### Project directory
 

@@ -6,9 +6,24 @@ import {
 } from "@/data/mock/seed"
 import { nextProjectCode } from "@/lib/projectCode"
 import { parseBoqCsv } from "@/data/mock/csv"
+import { isSupabaseConfigured } from "@/lib/supabaseClient"
+import * as projectsApi from "@/data/projects"
+import * as boqApi from "@/data/boq"
+import * as scheduleApi from "@/data/schedule"
+import * as documentsApi from "@/data/documents"
+import * as personnelApi from "@/data/personnel"
 
 function uid(prefix) {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+const emptyWorkspace = {
+  projects: [],
+  boqByProject: {},
+  personnelByProject: {},
+  documentsByProject: {},
+  scheduleByProject: {},
+  settings: { darkMode: false },
 }
 
 export function boqGrandTotal(boq) {
@@ -96,45 +111,106 @@ function syncPhaseRootsInto(schedule, boq) {
 export const useWorkspaceStore = create(
   persist(
     (set, get) => ({
-      ...createSeedState(),
+      ...(isSupabaseConfigured ? emptyWorkspace : createSeedState()),
+      hydrateStatus: isSupabaseConfigured ? "idle" : "ready",
+
+      async hydrate() {
+        if (!isSupabaseConfigured) {
+          set({ hydrateStatus: "ready" })
+          return
+        }
+        set({ hydrateStatus: "loading" })
+        try {
+          const projects = await projectsApi.listProjects()
+          const ids = projects.map((project) => project.id)
+          const [boqByProject, documentsByProject, personnelByProject] = await Promise.all([
+            boqApi.loadAllBoqs(ids),
+            documentsApi.loadAllDocuments(ids),
+            personnelApi.loadAllPersonnel(ids),
+          ])
+          set({
+            projects,
+            boqByProject,
+            documentsByProject,
+            personnelByProject,
+            scheduleByProject: {},
+            hydrateStatus: "ready",
+          })
+        } catch (error) {
+          console.error("Workspace hydrate failed", error)
+          set({ hydrateStatus: "ready" })
+        }
+      },
+
+      async ensureNetwork(projectId) {
+        if (get().scheduleByProject[projectId]) return
+        if (!isSupabaseConfigured) {
+          set((state) => ({
+            scheduleByProject: {
+              ...state.scheduleByProject,
+              [projectId]: {
+                calendar: structuredClone(DEFAULT_CALENDAR),
+                nodes: [],
+                dependencies: [],
+                selectedId: null,
+              },
+            },
+          }))
+          return
+        }
+        try {
+          await scheduleApi.syncPhaseRoots(projectId)
+          const network = await scheduleApi.loadNetwork(projectId)
+          set((state) => ({
+            scheduleByProject: { ...state.scheduleByProject, [projectId]: network },
+          }))
+        } catch (error) {
+          console.error("ensureNetwork failed", error)
+        }
+      },
+
+      async refreshProjectRecords(projectId) {
+        if (!isSupabaseConfigured) return
+        try {
+          const [documents, personnel] = await Promise.all([
+            documentsApi.listDocuments(projectId),
+            personnelApi.listPersonnel(projectId),
+          ])
+          set((state) => ({
+            documentsByProject: { ...state.documentsByProject, [projectId]: documents },
+            personnelByProject: { ...state.personnelByProject, [projectId]: personnel },
+          }))
+        } catch (error) {
+          console.error("refreshProjectRecords failed", error)
+        }
+      },
 
       resetDemo() {
-        set(createSeedState())
+        if (isSupabaseConfigured) return
+        set({ ...createSeedState(), hydrateStatus: "ready" })
       },
 
-      submitAccessRequest({ email, fullName, companyNote }) {
-        const row = {
-          id: uid("ar"),
-          email,
-          fullName,
-          companyNote: companyNote || "",
-          status: "pending",
-          createdAt: new Date().toISOString(),
-          reviewedBy: null,
-          reviewedAt: null,
+      async createProject({ name, client, stage = "planning" }) {
+        if (isSupabaseConfigured) {
+          const project = await projectsApi.createProject({
+            name,
+            client,
+            stage,
+            existing: get().projects,
+          })
+          const network = await scheduleApi.loadNetwork(project.id)
+          set((state) => ({
+            projects: [project, ...state.projects],
+            scheduleByProject: {
+              ...state.scheduleByProject,
+              [project.id]: network,
+            },
+            personnelByProject: { ...state.personnelByProject, [project.id]: [] },
+            documentsByProject: { ...state.documentsByProject, [project.id]: [] },
+          }))
+          return project
         }
-        set((state) => ({
-          accessRequests: [row, ...state.accessRequests],
-        }))
-        return row
-      },
 
-      reviewAccessRequest(id, status, reviewerId) {
-        set((state) => ({
-          accessRequests: state.accessRequests.map((row) =>
-            row.id === id
-              ? {
-                  ...row,
-                  status,
-                  reviewedBy: reviewerId,
-                  reviewedAt: new Date().toISOString(),
-                }
-              : row,
-          ),
-        }))
-      },
-
-      createProject({ name, client, stage = "planning" }) {
         const code = nextProjectCode(get().projects)
         const project = {
           id: uid("prj"),
@@ -164,6 +240,8 @@ export const useWorkspaceStore = create(
               selectedId: null,
             },
           },
+          personnelByProject: { ...state.personnelByProject, [project.id]: [] },
+          documentsByProject: { ...state.documentsByProject, [project.id]: [] },
         }))
         return project
       },
@@ -176,6 +254,9 @@ export const useWorkspaceStore = create(
               : project,
           ),
         }))
+        if (isSupabaseConfigured) {
+          void projectsApi.archiveProject(projectId)
+        }
       },
 
       setProjectStage(projectId, stage) {
@@ -198,7 +279,25 @@ export const useWorkspaceStore = create(
         }))
       },
 
-      replaceBoqFromCsv(projectId, csvText) {
+      async replaceBoqFromCsv(projectId, csvText) {
+        if (isSupabaseConfigured) {
+          const result = await boqApi.replaceBoqFromCsv(projectId, csvText)
+          if (!result.ok) return result
+          const boq = await boqApi.loadBoq(projectId)
+          await scheduleApi.syncPhaseRoots(projectId)
+          const network = await scheduleApi.loadNetwork(projectId)
+          set((state) => ({
+            boqByProject: { ...state.boqByProject, [projectId]: boq },
+            scheduleByProject: { ...state.scheduleByProject, [projectId]: network },
+            projects: state.projects.map((project) =>
+              project.id === projectId
+                ? { ...project, updatedAt: new Date().toISOString() }
+                : project,
+            ),
+          }))
+          return { ok: true }
+        }
+
         const parsed = parseBoqCsv(csvText)
         if (!parsed.ok) return parsed
         set((state) => {
@@ -228,13 +327,29 @@ export const useWorkspaceStore = create(
         return { ok: true }
       },
 
-      addPersonnel(projectId, { name, title, startDate }) {
+      async addPersonnel(projectId, { name, title, startDate, endDate }) {
+        if (isSupabaseConfigured) {
+          const row = await personnelApi.addPersonnel(projectId, {
+            name,
+            title,
+            startDate,
+            endDate,
+          })
+          set((state) => ({
+            personnelByProject: {
+              ...state.personnelByProject,
+              [projectId]: [...(state.personnelByProject[projectId] || []), row],
+            },
+          }))
+          return row
+        }
         const row = {
           id: uid("per"),
           staffId: null,
           name,
           title,
           startDate,
+          endDate: endDate || null,
         }
         set((state) => ({
           personnelByProject: {
@@ -242,14 +357,44 @@ export const useWorkspaceStore = create(
             [projectId]: [...(state.personnelByProject[projectId] || []), row],
           },
         }))
+        return row
       },
 
-      addDocument(projectId, { title, contentType, byteSize }) {
+      async removePersonnel(projectId, personnelId) {
+        if (isSupabaseConfigured) {
+          await personnelApi.removePersonnel(personnelId)
+        }
+        set((state) => ({
+          personnelByProject: {
+            ...state.personnelByProject,
+            [projectId]: (state.personnelByProject[projectId] || []).filter(
+              (row) => row.id !== personnelId,
+            ),
+          },
+        }))
+      },
+
+      async addDocument(projectId, { title, contentType, file }) {
+        if (isSupabaseConfigured) {
+          const row = await documentsApi.uploadDocument(projectId, {
+            title,
+            contentType,
+            file,
+          })
+          set((state) => ({
+            documentsByProject: {
+              ...state.documentsByProject,
+              [projectId]: [row, ...(state.documentsByProject[projectId] || [])],
+            },
+          }))
+          return row
+        }
         const row = {
           id: uid("doc"),
           title,
           contentType,
-          byteSize,
+          byteSize: file?.size ?? 0,
+          storagePath: null,
           updatedAt: new Date().toISOString().slice(0, 10),
           deletedAt: null,
         }
@@ -259,9 +404,13 @@ export const useWorkspaceStore = create(
             [projectId]: [...(state.documentsByProject[projectId] || []), row],
           },
         }))
+        return row
       },
 
-      removeDocument(projectId, documentId) {
+      async removeDocument(projectId, documentId) {
+        if (isSupabaseConfigured) {
+          await documentsApi.archiveDocument(documentId)
+        }
         set((state) => ({
           documentsByProject: {
             ...state.documentsByProject,
@@ -314,6 +463,10 @@ export const useWorkspaceStore = create(
             },
           }
         })
+        if (isSupabaseConfigured) {
+          const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+          if (node) void scheduleApi.saveNode(projectId, node)
+        }
       },
 
       addScheduleNode(projectId, { parentId, kind, name, durationDays }) {
@@ -321,10 +474,10 @@ export const useWorkspaceStore = create(
           const schedule = structuredClone(state.scheduleByProject[projectId])
           const parent = schedule.nodes.find((row) => row.id === parentId)
           if (!parent) return {}
-          const id = `${parentId}.${Math.random().toString(36).slice(2, 6)}`
+          const id = isSupabaseConfigured ? crypto.randomUUID() : `${parentId}.${Math.random().toString(36).slice(2, 6)}`
           const node = {
             id,
-            name: `${id} ${name}`,
+            name: `${parent.wbsCode ? `${parent.wbsCode}.` : ""}${name}`,
             kind,
             parentId,
             boqPhaseId: parent.boqPhaseId ?? null,
@@ -332,6 +485,7 @@ export const useWorkspaceStore = create(
             locked: false,
             durationDays: kind === "leaf" ? durationDays || 0 : 0,
             isLoe: false,
+            wbsCode: parent.wbsCode ? `${parent.wbsCode}.${schedule.nodes.filter((row) => row.parentId === parentId).length + 1}` : id,
             spanStartId: null,
             spanEndId: null,
             sortOrder: schedule.nodes.filter((row) => row.parentId === parentId).length + 1,
@@ -364,6 +518,11 @@ export const useWorkspaceStore = create(
             },
           }
         })
+        if (isSupabaseConfigured) {
+          const schedule = get().scheduleByProject[projectId]
+          const node = schedule?.nodes.find((row) => row.id === schedule.selectedId)
+          if (node) void scheduleApi.saveNode(projectId, node)
+        }
       },
 
       addDependency(projectId, { predecessorId, successorId, type, lagDays = 0 }) {
@@ -378,7 +537,7 @@ export const useWorkspaceStore = create(
           )
           if (!exists) {
             schedule.dependencies.push({
-              id: uid("dep"),
+              id: isSupabaseConfigured ? crypto.randomUUID() : uid("dep"),
               predecessorId,
               successorId,
               type,
@@ -392,6 +551,16 @@ export const useWorkspaceStore = create(
             },
           }
         })
+        if (isSupabaseConfigured) {
+          const deps = get().scheduleByProject[projectId]?.dependencies || []
+          const created = deps.find(
+            (dep) =>
+              dep.predecessorId === predecessorId &&
+              dep.successorId === successorId &&
+              dep.type === type,
+          )
+          if (created) void scheduleApi.saveDependency(projectId, created)
+        }
       },
 
       clearDependencies(projectId, successorId) {
@@ -407,6 +576,9 @@ export const useWorkspaceStore = create(
             },
           }
         })
+        if (isSupabaseConfigured) {
+          void scheduleApi.deleteDependenciesForSuccessor(projectId, successorId)
+        }
       },
 
       deleteScheduleNode(projectId, nodeId) {
@@ -438,6 +610,9 @@ export const useWorkspaceStore = create(
             },
           }
         })
+        if (isSupabaseConfigured) {
+          void scheduleApi.deleteNode(projectId, nodeId)
+        }
       },
 
       simulateCycle(projectId) {
@@ -480,8 +655,19 @@ export const useWorkspaceStore = create(
     }),
     {
       name: "sadicon-workspace",
-      version: 2,
-      migrate: () => createSeedState(),
+      version: 4,
+      partialize: (state) =>
+        isSupabaseConfigured
+          ? { settings: state.settings }
+          : {
+              projects: state.projects,
+              boqByProject: state.boqByProject,
+              personnelByProject: state.personnelByProject,
+              documentsByProject: state.documentsByProject,
+              scheduleByProject: state.scheduleByProject,
+              settings: state.settings,
+            },
+      migrate: () => ({ ...createSeedState(), hydrateStatus: "ready" }),
     },
   ),
 )

@@ -1,11 +1,14 @@
+export const ROLES = ["admin", "planner"]
+
 export const CAPABILITIES = {
-  approveAccess: ["admin"],
+  changeRole: ["admin"],
   createProject: ["admin", "planner"],
   archiveProject: ["admin", "planner"],
-  seedBoq: ["admin"],
+  seedBoq: ["admin", "planner"],
   editSchedule: ["admin", "planner"],
-  viewSchedule: ["admin", "planner", "project_manager", "viewer"],
-  uploadDocuments: ["admin", "planner", "project_manager"],
+  viewSchedule: ["admin", "planner"],
+  uploadDocuments: ["admin", "planner"],
+  editPersonnel: ["admin", "planner"],
 }
 
 export function can(role, capability) {
@@ -15,6 +18,8 @@ export function can(role, capability) {
 export const ROLE_LABELS = {
   admin: "Admin",
   planner: "Planner",
-  project_manager: "Project Manager",
-  viewer: "Viewer",
+}
+
+export function isStaffRole(role) {
+  return ROLES.includes(role)
 }

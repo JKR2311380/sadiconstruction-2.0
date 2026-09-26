@@ -12,20 +12,19 @@ Checkboxes are closed. If product reality changes, write a new ADR and update th
 
 ## D1 — Role permission matrix — RESOLVED
 
-Roles: `admin`, `planner`, `project_manager`, `viewer`.
+Roles: `admin`, `planner`.
 
-| Capability | admin | planner | project_manager | viewer |
-|------------|:-----:|:-------:|:---------------:|:------:|
-| Approve Access Requests | ✓ | | | |
-| Create / archive Projects | ✓ | ✓ | | |
-| Seed / replace BOQ | ✓ | | | |
-| Edit Scheduling network | ✓ | ✓ | | |
-| View Scheduling / BOQ | ✓ | ✓ | ✓ | ✓ |
-| Upload Documents | ✓ | ✓ | ✓ | |
+| Capability | admin | planner |
+|------------|:-----:|:-------:|
+| Change Staff Member Role | ✓ | |
+| Create / archive Projects | ✓ | ✓ |
+| Seed / replace BOQ | ✓ | ✓ |
+| Edit Scheduling network | ✓ | ✓ |
+| View Scheduling / BOQ | ✓ | ✓ |
+| Upload Documents | ✓ | ✓ |
+| Edit Personnel roster | ✓ | ✓ |
 
-Matches the DATA-MODEL RLS sketch and typical construction-PM role split (author vs review vs read). Per-project membership is still out (ADR 0002).
-
-ADR: [`adr/0005-role-permission-matrix.md`](adr/0005-role-permission-matrix.md)
+SUPERSEDED four-role matrix — ADR [`0012-open-signup-two-roles.md`](adr/0012-open-signup-two-roles.md).
 
 - [x] Decided: four roles, matrix above
 

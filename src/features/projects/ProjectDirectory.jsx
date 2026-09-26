@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useMemo, useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,22 +21,24 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { can } from "@/lib/permissions"
+import { cn } from "@/lib/utils"
 import { formatPhpCompact } from "@/lib/money"
 import { useSessionStore } from "@/store/session"
 import { projectExpenditure, useWorkspaceStore } from "@/store/workspace"
-import { StageBadge } from "@/shared/StageBadge"
+import { StageBadge, STAGE_META, StatusDot } from "@/shared/StageBadge"
 
 const STAGE_OPTIONS = [
   { id: "all", label: "All" },
-  { id: "active", label: "Active" },
-  { id: "delayed", label: "Delayed" },
-  { id: "planning", label: "Planning" },
-  { id: "on_hold", label: "On Hold" },
-  { id: "completed", label: "Completed" },
+  { id: "active", label: STAGE_META.active.label },
+  { id: "delayed", label: STAGE_META.delayed.label },
+  { id: "planning", label: STAGE_META.planning.label },
+  { id: "on_hold", label: STAGE_META.on_hold.label },
+  { id: "completed", label: STAGE_META.completed.label },
 ]
 
 export function ProjectDirectory() {
   const navigate = useNavigate()
+  const [params, setParams] = useSearchParams()
   const role = useSessionStore((state) => state.staff?.role)
   const projects = useWorkspaceStore((state) => state.projects)
   const boqByProject = useWorkspaceStore((state) => state.boqByProject)
@@ -46,6 +48,15 @@ export function ProjectDirectory() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const [client, setClient] = useState("")
+
+  useEffect(() => {
+    if (params.get("new") === "1") {
+      setOpen(true)
+      const next = new URLSearchParams(params)
+      next.delete("new")
+      setParams(next, { replace: true })
+    }
+  }, [params, setParams])
 
   const live = useMemo(
     () => projects.filter((project) => !project.deletedAt),
@@ -66,9 +77,9 @@ export function ProjectDirectory() {
     0,
   )
 
-  function handleCreate(event) {
+  async function handleCreate(event) {
     event.preventDefault()
-    const project = createProject({ name, client })
+    const project = await createProject({ name, client })
     toast.success(`Created ${project.code}`)
     setOpen(false)
     setName("")
@@ -77,56 +88,68 @@ export function ProjectDirectory() {
   }
 
   return (
-    <div className="overflow-auto p-[22px]">
+    <div className="py-6">
       <h1 className="font-heading text-2xl font-normal">Projects</h1>
-      <p className="mb-[18px] text-xs text-muted-foreground">
+      <p className="mb-6 text-xs text-muted-foreground">
         Directory · {formatPhpCompact(totalSpend)} expenditure across {live.length} jobs
       </p>
 
-      <div className="mb-3.5 flex flex-wrap items-center gap-2">
-        {STAGE_OPTIONS.map((option) => (
-          <Button
-            key={option.id}
-            type="button"
-            size="sm"
-            variant={stage === option.id ? "secondary" : "outline"}
-            className="rounded-none"
-            onClick={() => setStage(option.id)}
-          >
-            {option.label}
-          </Button>
-        ))}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <div className="neu-in flex flex-wrap items-center gap-1 rounded-2xl p-1">
+          {STAGE_OPTIONS.map((option) => (
+            <Button
+              key={option.id}
+              type="button"
+              size="sm"
+              variant="ghost"
+              className={cn(
+                stage === option.id && "neu-selected",
+                stage === option.id && option.id === "all" && "text-foreground",
+              )}
+              style={
+                stage === option.id && option.id !== "all"
+                  ? { color: `var(--status-${STAGE_META[option.id].token})` }
+                  : undefined
+              }
+              aria-pressed={stage === option.id}
+              onClick={() => setStage(option.id)}
+            >
+              {option.id !== "all" ? <StatusDot stage={option.id} /> : null}
+              {option.label}
+            </Button>
+          ))}
+        </div>
         <Input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search projects…"
-          className="ml-auto min-w-[200px] max-w-xs rounded-none"
+          className="ml-auto min-w-[200px] max-w-xs"
         />
         {can(role, "createProject") ? (
-          <Button type="button" variant="secondary" className="rounded-none" onClick={() => setOpen(true)}>
+          <Button type="button" onClick={() => setOpen(true)}>
             Add Project
           </Button>
         ) : null}
       </div>
 
       {rows.length === 0 ? (
-        <Empty className="rounded-none border border-dashed border-border">
+        <Empty>
           <EmptyHeader>
             <EmptyTitle>No projects match</EmptyTitle>
             <EmptyDescription>Clear the stage filter or search, or add a Project if your role allows it.</EmptyDescription>
           </EmptyHeader>
         </Empty>
       ) : (
-        <Table className="border border-border bg-card text-[13px] tabular-nums">
+        <Table className="text-[13px] tabular-nums">
           <TableHeader>
-            <TableRow className="bg-[#ECEEF0] hover:bg-[#ECEEF0]">
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">Project</TableHead>
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">ID</TableHead>
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">Stage</TableHead>
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">Priority</TableHead>
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">Progress</TableHead>
-              <TableHead className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase">Expenditure</TableHead>
+            <TableRow>
+              <TableHead>Project</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>Stage</TableHead>
+              <TableHead>Priority</TableHead>
+              <TableHead>Progress</TableHead>
+              <TableHead>Expenditure</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -163,7 +186,7 @@ export function ProjectDirectory() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="rounded-none sm:max-w-md">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Add Project</DialogTitle>
           </DialogHeader>
@@ -176,7 +199,6 @@ export function ProjectDirectory() {
                   value={name}
                   onChange={(event) => setName(event.target.value)}
                   required
-                  className="rounded-none"
                 />
               </Field>
               <Field>
@@ -185,7 +207,6 @@ export function ProjectDirectory() {
                   id="proj-client"
                   value={client}
                   onChange={(event) => setClient(event.target.value)}
-                  className="rounded-none"
                 />
               </Field>
             </FieldGroup>
@@ -193,12 +214,10 @@ export function ProjectDirectory() {
               Project Code is assigned as PRJ-YYYY-NNN on save. Stage starts as Planning.
             </p>
             <DialogFooter>
-              <Button type="button" variant="outline" className="rounded-none" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" variant="secondary" className="rounded-none">
-                Create
-              </Button>
+              <Button type="submit">Create</Button>
             </DialogFooter>
           </form>
         </DialogContent>

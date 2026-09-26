@@ -8,10 +8,15 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-.env.local
+.env
+.env.*
+!.env.example
 dist
 dist-ssr
 *.local
+
+# Supabase CLI
+supabase/.temp/
 
 # Editor directories and files
 .vscode/*
