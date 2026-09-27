@@ -20,9 +20,16 @@ const heroItem: Variants = {
 }
 
 const heroMark: Variants = {
-  rest: { clipPath: "inset(0 0 100% 0)", y: 24 },
-  shown: { clipPath: "inset(0 0 0% 0)", y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
+  rest: {},
+  shown: { transition: { staggerChildren: 0.045, delayChildren: 0.05 } },
 }
+
+const heroMarkChar: Variants = {
+  rest: { y: "100%" },
+  shown: { y: "0%", transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+}
+
+const BRAND = "Sadiconstruction"
 
 function Actions({ className }: { className?: string }) {
   return (
@@ -49,8 +56,17 @@ export default function LandingPage() {
           initial={reduced ? "shown" : "rest"}
           animate="shown"
         >
-          <motion.h1 id="sm-hero-title" className="sm-hero__mark" variants={heroMark}>
-            Sadiconstruction
+          <motion.h1
+            id="sm-hero-title"
+            className="sm-hero__mark"
+            variants={heroMark}
+            aria-label={BRAND}
+          >
+            {BRAND.split("").map((char, i) => (
+              <span key={i} className="sm-hero__mark-char" aria-hidden>
+                <motion.span variants={heroMarkChar}>{char}</motion.span>
+              </span>
+            ))}
           </motion.h1>
           <motion.p className="sm-hero__lede" variants={heroItem}>
             Schedule on the bill you already approved.

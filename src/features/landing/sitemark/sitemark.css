@@ -24,12 +24,12 @@ html:has(.sm-root) {
   --sm-amber: #e2a33b;
   --sm-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --sm-ease-swap: cubic-bezier(0.65, 0, 0.35, 1);
-  --sm-font-display: "Syne", "Manrope", sans-serif;
-  --sm-font-body: "Manrope", system-ui, sans-serif;
-  --sm-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sm-accent: #2563eb;
+  --sm-font-display: "Geist Sans", "Inter", sans-serif;
+  --sm-font-body: "Inter", system-ui, sans-serif;
+  --sm-font-mono: "Geist Mono", ui-monospace, monospace;
   --sm-gutter: clamp(20px, 4.2vw, 64px);
   --sm-max: 1320px;
-  --sm-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
 
   background: var(--sm-bg);
   color: var(--sm-ink);
@@ -125,21 +125,29 @@ html:has(.sm-root) {
 
 .sm-hero__mark {
   margin: 0 0 6px;
+  display: flex;
+  flex-wrap: wrap;
   font-family: var(--sm-font-display);
-  font-weight: 800;
-  font-size: clamp(1.4rem, 7.5cqi, 5.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  font-size: clamp(2.5rem, 9cqi, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.sm-hero__mark-char {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.1;
 }
 
 .sm-hero__lede {
   margin: 0;
   font-family: var(--sm-font-display);
   font-weight: 600;
-  font-size: clamp(1.35rem, 4.2cqi, 2.1rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  max-width: 20ch;
+  font-size: clamp(1.25rem, 3.4cqi, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
   text-wrap: balance;
 }
 
@@ -147,14 +155,20 @@ html:has(.sm-root) {
   margin: 0 0 10px;
   max-width: 46ch;
   color: var(--sm-mute);
-  font-size: 17px;
+  font-family: var(--sm-font-body);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
 .sm-hero__meta {
   margin: 8px 0 0;
   color: var(--sm-mute);
+  font-family: var(--sm-font-body);
   font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .sm-hero__plane {
@@ -163,17 +177,6 @@ html:has(.sm-root) {
   background:
     linear-gradient(165deg, var(--sm-steel-soft) 0%, var(--sm-concrete) 55%, var(--sm-concrete-deep) 100%);
   overflow: hidden;
-}
-
-.sm-hero__plane::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background-image: var(--sm-grain);
-  opacity: 0.05;
-  pointer-events: none;
-  mix-blend-mode: multiply;
 }
 
 .sm-hero__stage,
@@ -932,16 +935,6 @@ html:has(.sm-root) {
   overflow: hidden;
 }
 
-.sm-roles__figure::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--sm-grain);
-  opacity: 0.06;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
-
 .sm-roles__figure-stage,
 .sm-roles__canvas {
   position: absolute;
@@ -1034,7 +1027,7 @@ html:has(.sm-root) {
 }
 
 .sm-mascot__mark-bar {
-  fill: var(--sm-mark);
+  fill: var(--sm-accent);
   stroke: var(--sm-ink);
   stroke-width: 2;
 }
@@ -1052,7 +1045,7 @@ html:has(.sm-root) {
 }
 
 .sm-mascot__mark {
-  stroke: var(--sm-mark);
+  stroke: var(--sm-accent);
   stroke-width: 3;
 }
 
