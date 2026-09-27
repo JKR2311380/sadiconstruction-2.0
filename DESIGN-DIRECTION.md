@@ -1,5 +1,13 @@
 # Design direction — professional unification (landing + app)
 
+> **Historical.** Batches 1–5 (issues #3–#19) have all shipped. `DESIGN.md`
+> and `docs/UI_UX_GUIDELINES.md` now document what actually landed and are
+> the source of truth going forward — this file is kept as the design
+> rationale/history, not as a living doc; don't treat it as authoritative on
+> conflict anymore. `design-system.md` (root) has been deleted per Batch 5.
+>
+> Original framing follows, unedited below.
+>
 > Supersedes the brutalist-industrial voice of `sitemark.css` and the undocumented
 > neumorphic drift in `src/index.css`. This file is the standing brief for every
 > visual change from here forward, on both surfaces. `DESIGN.md` and
