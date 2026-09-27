@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState, type ReactNode } from "react"
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion"
 import { Lock, MousePointer2 } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ACTIVITIES, computeNetwork } from "./network"
 import { useDemoTimeline, type DemoPlayProps } from "./useDemoTimeline"
 
@@ -230,38 +232,46 @@ export function ProductDemos() {
   const activeModule = MODULES.find((m) => m.id === active)!
 
   return (
-    <div className="sm-product">
-      <ul className="sm-product__targets">
-        {MODULES.map((m) => (
-          <li key={m.id}>
-            <button
-              type="button"
-              className="sm-product__target"
-              aria-pressed={m.id === active}
+    <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-16">
+      <Tabs
+        value={active}
+        onValueChange={(v: string) => setActive(v as ModuleId)}
+        orientation="vertical"
+        className=""
+      >
+        <TabsList
+          variant="plain"
+          className="h-auto w-full flex-col items-stretch gap-0 rounded-none border-0 border-t-0 bg-transparent p-0"
+        >
+          {MODULES.map((m) => (
+            <TabsTrigger
+              key={m.id}
+              value={m.id}
               aria-controls="sm-product-stage"
               onMouseEnter={() => setActive(m.id)}
               onFocus={() => setActive(m.id)}
-              onClick={() => setActive(m.id)}
+              className="group relative w-full flex-col items-start gap-1 rounded-none border-0 border-t border-border px-0 py-3.5 text-left font-normal text-muted-foreground shadow-none data-active:bg-transparent data-active:text-foreground data-active:shadow-none sm:py-6"
             >
-              <span className="sm-product__target-name">{m.name}</span>
-              <span className="sm-product__target-line">{m.line}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
+              <span className="absolute inset-x-0 -top-px h-0.5 origin-left scale-x-0 bg-foreground transition-transform duration-450 ease-out group-data-active:scale-x-100" />
+              <span className="font-heading text-xl leading-tight font-semibold tracking-tight sm:text-2xl">{m.name}</span>
+              <span className="hidden max-w-[34ch] text-[15px] font-normal sm:block">{m.line}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
-      <div ref={stageRef} id="sm-product-stage" className="sm-product__stage" aria-live="polite">
-        <div className="sm-product__bar">
+      <Card ref={stageRef} id="sm-product-stage" variant="plain" className="gap-0 rounded-sm py-0" aria-live="polite">
+        <div className="flex items-center justify-between gap-3 border-b border-border bg-secondary px-4 py-2.5 text-[13px] font-semibold">
           <span>
             Clearwater Medical Center <span aria-hidden>/</span> {activeModule.name}
           </span>
-          <span className="sm-product__synthetic">Synthetic data</span>
+          <span className="font-medium text-muted-foreground">Synthetic data</span>
         </div>
-        <div className="sm-product__viewport">
+        <CardContent className="relative h-[392px] overflow-hidden px-0">
           <AnimatePresence initial={false}>
             <motion.div
               key={active}
-              className="sm-product__demo"
+              className="absolute inset-0"
               initial={reduced ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -270,8 +280,8 @@ export function ProductDemos() {
               {DEMOS[active]({ play, reduced })}
             </motion.div>
           </AnimatePresence>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

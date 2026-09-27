@@ -4,6 +4,7 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { ACTIVITIES, LINKS, NODE_H, NODE_W, computeNetwork, isCriticalLink } from "./network"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -121,9 +122,15 @@ export function EngineDiagram() {
           <strong>{STEPS[step].label}.</strong> {STEPS[step].line}
         </p>
         {!reduced && (
-          <button type="button" className="sm-engine__replay" onClick={replay}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={replay}
+            className="rounded-md border border-white/30 bg-transparent text-[#e8eef2] shadow-none hover:border-white/50 hover:bg-white/5 hover:text-[#e8eef2]"
+          >
             <RotateCcw size={14} strokeWidth={2} aria-hidden /> Replay
-          </button>
+          </Button>
         )}
       </div>
 

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { motion, useReducedMotion, type Variants } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { BuildPhases } from "./features/landing/sitemark/hero/BuildPhases"
 import { ProductDemos } from "./features/landing/sitemark/ProductDemos"
 import { EngineDiagram } from "./features/landing/sitemark/EngineDiagram"
@@ -31,15 +32,36 @@ const heroMarkChar: Variants = {
 
 const BRAND = "Sadiconstruction"
 
-function Actions({ className }: { className?: string }) {
+function Actions({ className, invert = false }: { className?: string; invert?: boolean }) {
   return (
-    <div className={`sm-actions ${className ?? ""}`}>
-      <Link to="/login" className="sm-btn sm-btn--primary">
-        Sign in <ArrowRight size={16} strokeWidth={2} aria-hidden />
-      </Link>
-      <Link to="/signup" className="sm-btn">
-        Sign up
-      </Link>
+    <div className={`flex flex-wrap gap-3 ${className ?? ""}`}>
+      <Button
+        asChild
+        size="lg"
+        className={invert ? "rounded-md bg-background text-foreground shadow-none hover:bg-background/90" : "rounded-md shadow-none"}
+      >
+        <Link to="/login" className="group">
+          Sign in{" "}
+          <ArrowRight
+            size={16}
+            strokeWidth={2}
+            aria-hidden
+            className="transition-transform duration-220 group-hover:translate-x-0.5"
+          />
+        </Link>
+      </Button>
+      <Button
+        asChild
+        variant="outline"
+        size="lg"
+        className={
+          invert
+            ? "rounded-md border-background/50 bg-transparent text-background shadow-none hover:bg-background/10 hover:text-background"
+            : "rounded-md border-border bg-transparent shadow-none"
+        }
+      >
+        <Link to="/signup">Sign up</Link>
+      </Button>
     </div>
   )
 }
@@ -115,7 +137,7 @@ export default function LandingPage() {
         <SectionHead id="sm-close-title" title="Your bill already knows the phases.">
           Sign in to schedule against it. New to the team? Sign up and start on the same WBS.
         </SectionHead>
-        <Actions className="sm-actions--close" />
+        <Actions className="-mt-2" invert />
         <footer className="sm-foot">
           <span>SADICON MANAGEMENT · Internal platform</span>
           <span>Figures on this page are synthetic: Clearwater Medical Center, PRJ-2024-008.</span>

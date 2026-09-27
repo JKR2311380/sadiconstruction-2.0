@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import { Minus, Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { ACTIVITIES, computeNetwork } from "./network"
+
+const SWAP_EASE = [0.65, 0, 0.35, 1] as const
+const SWAP_TRANSITION = { duration: 0.45, ease: SWAP_EASE }
 
 const TARGET = "E"
 const MIN = 6
@@ -28,33 +33,44 @@ export function ProofGraph() {
           {target.name} duration
         </p>
         <div className="sm-proof__stepper" role="group" aria-labelledby="sm-proof-label">
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon-sm"
+            className="rounded-r-none border-border shadow-none"
             onClick={() => setDays((d) => Math.max(MIN, d - 2))}
             disabled={days <= MIN}
             aria-label="Shorten by 2 days"
           >
             <Minus size={16} strokeWidth={2} aria-hidden />
-          </button>
+          </Button>
           <output className="sm-proof__value" aria-live="off">
             {days} d
           </output>
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="icon-sm"
+            className="rounded-l-none border-border shadow-none"
             onClick={() => setDays((d) => Math.min(MAX, d + 2))}
             disabled={days >= MAX}
             aria-label="Lengthen by 2 days"
           >
             <Plus size={16} strokeWidth={2} aria-hidden />
-          </button>
+          </Button>
         </div>
         <p className="sm-proof__summary" aria-live="polite">
           {summary}
         </p>
         {days !== BASE && (
-          <button type="button" className="sm-proof__reset" onClick={() => setDays(BASE)}>
+          <Button
+            type="button"
+            variant="link"
+            className="mt-3.5 h-auto px-0 py-0 text-[14px] font-semibold text-foreground underline decoration-[1.5px] underline-offset-4"
+            onClick={() => setDays(BASE)}
+          >
             Reset to {BASE} d
-          </button>
+          </Button>
         )}
       </div>
 
@@ -65,9 +81,13 @@ export function ProofGraph() {
               <span>{d}</span>
             </span>
           ))}
-          <span className="sm-proof__handover" style={{ left: pct(net.duration) }}>
+          <motion.span
+            className="sm-proof__handover"
+            animate={{ left: pct(net.duration) }}
+            transition={SWAP_TRANSITION}
+          >
             <span>Handover, day {net.duration}</span>
-          </span>
+          </motion.span>
         </div>
         <ul className="sm-proof__rows">
           {rows.map((a) => {
@@ -79,16 +99,18 @@ export function ProofGraph() {
                   <span className="sm-num">{a.code}</span> {a.name}
                 </span>
                 <span className="sm-proof__track">
-                  <span
+                  <motion.span
                     className="sm-proof__bar"
-                    style={{ left: pct(m.es), width: pct(m.ef - m.es) }}
+                    animate={{ left: pct(m.es), width: pct(m.ef - m.es) }}
+                    transition={SWAP_TRANSITION}
                     aria-label={`${a.name}: day ${m.es} to ${m.ef}${critical ? ", on the Longest Path" : `, ${m.totalFloat} days float`}`}
                     role="img"
                   />
                   {!critical && (m.totalFloat ?? 0) > 0 && (
-                    <span
+                    <motion.span
                       className="sm-proof__float"
-                      style={{ left: pct(m.ef), width: pct(m.totalFloat ?? 0) }}
+                      animate={{ left: pct(m.ef), width: pct(m.totalFloat ?? 0) }}
+                      transition={SWAP_TRANSITION}
                       aria-hidden
                     />
                   )}

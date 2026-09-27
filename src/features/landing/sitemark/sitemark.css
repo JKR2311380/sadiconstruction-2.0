@@ -13,7 +13,6 @@ html:has(.sm-root) {
   --sm-bg: #eef1f0;
   --sm-surface: #e2e7e5;
   --sm-ink: #0e1210;
-  --sm-mark: #d4ff4a;
   --sm-mute: #4e5653;
   --sm-line: color-mix(in srgb, #3e5a6c 28%, #bcc3bf);
   --sm-concrete: #d6dad6;
@@ -54,53 +53,6 @@ html:has(.sm-root) {
 .sm-root output {
   font-family: var(--sm-font-mono);
   font-variant-numeric: tabular-nums;
-}
-
-/* ---------- Buttons ---------- */
-
-.sm-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.sm-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 50px;
-  padding: 0 22px;
-  border: 2px solid var(--sm-ink);
-  border-radius: 2px;
-  color: var(--sm-ink);
-  font-weight: 650;
-  font-size: 15px;
-  letter-spacing: -0.005em;
-  text-decoration: none;
-  transition:
-    box-shadow 160ms var(--sm-ease-enter),
-    background-color 160ms var(--sm-ease-enter);
-}
-
-.sm-btn:hover {
-  box-shadow: inset 0 0 0 1.5px var(--sm-ink);
-}
-
-.sm-btn--primary {
-  background: var(--sm-ink);
-  color: var(--sm-bg);
-}
-
-.sm-btn--primary:hover {
-  box-shadow: inset 0 0 0 2px var(--sm-bg);
-}
-
-.sm-btn svg {
-  transition: transform 220ms var(--sm-ease-enter);
-}
-
-.sm-btn:hover svg {
-  transform: translateX(3px);
 }
 
 /* ---------- Hero ---------- */
@@ -350,107 +302,8 @@ html:has(.sm-root) {
 }
 
 /* ---------- Product ---------- */
-
-.sm-product {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
-}
-
-.sm-product__targets {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sm-product__target {
-  position: relative;
-  display: grid;
-  gap: 4px;
-  width: 100%;
-  padding: 22px 0 24px;
-  border: 0;
-  border-top: 1px solid var(--sm-line);
-  background: none;
-  color: var(--sm-mute);
-  text-align: left;
-  font: inherit;
-  cursor: pointer;
-  transition: color 200ms var(--sm-ease-enter);
-}
-
-.sm-product__target::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -1px;
-  height: 2px;
-  width: 100%;
-  background: var(--sm-ink);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 450ms var(--sm-ease-enter);
-}
-
-.sm-product__target[aria-pressed="true"] {
-  color: var(--sm-ink);
-}
-
-.sm-product__target[aria-pressed="true"]::before {
-  transform: scaleX(1);
-}
-
-.sm-product__target:hover {
-  color: var(--sm-ink);
-}
-
-.sm-product__target-name {
-  font-family: var(--sm-font-display);
-  font-weight: 700;
-  font-size: 26px;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.sm-product__target-line {
-  max-width: 34ch;
-  font-size: 15px;
-}
-
-.sm-product__stage {
-  border: 1px solid var(--sm-steel);
-  border-radius: 2px;
-  background: var(--sm-bg);
-  box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--sm-ink) 45%, transparent);
-}
-
-.sm-product__bar {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--sm-steel);
-  background: var(--sm-steel-soft);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.sm-product__synthetic {
-  color: var(--sm-mute);
-  font-weight: 500;
-}
-
-.sm-product__viewport {
-  position: relative;
-  height: 392px;
-  overflow: hidden;
-}
-
-.sm-product__demo {
-  position: absolute;
-  inset: 0;
-}
+/* Shell (target list, stage frame) migrated to shadcn Tabs/Card in ProductDemos.tsx;
+   only the inner per-demo markup below is still bespoke (GSAP-timeline targets). */
 
 .sm-demo {
   height: 100%;
@@ -709,7 +562,7 @@ html:has(.sm-root) {
 
 .sm-demo__spine-core {
   fill: none;
-  stroke: var(--sm-mark);
+  stroke: var(--sm-accent);
   stroke-width: 3.5;
   stroke-linecap: butt;
   vector-effect: non-scaling-stroke;
@@ -731,7 +584,7 @@ html:has(.sm-root) {
 }
 
 .sm-spine-mark {
-  stroke: var(--sm-mark);
+  stroke: var(--sm-accent);
   stroke-width: 3;
 }
 
@@ -794,26 +647,6 @@ html:has(.sm-root) {
   font-weight: 700;
 }
 
-.sm-engine__replay {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 38px;
-  padding: 0 14px;
-  border: 2px solid var(--sm-ink);
-  border-radius: 2px;
-  background: none;
-  color: var(--sm-ink);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.sm-engine__replay:hover {
-  box-shadow: inset 0 0 0 1px var(--sm-ink);
-}
-
 .sm-engine__scroller {
   overflow-x: auto;
   padding-bottom: 6px;
@@ -861,7 +694,7 @@ html:has(.sm-root) {
 }
 
 .sm-engine__ignite {
-  fill: var(--sm-mark);
+  fill: var(--sm-accent);
   stroke: var(--sm-ink);
   stroke-width: 1.5;
 }
@@ -1249,7 +1082,7 @@ html:has(.sm-root) {
   background: linear-gradient(
     to bottom,
     var(--sm-ink) 0 36%,
-    var(--sm-mark) 36% 64%,
+    var(--sm-accent) 36% 64%,
     var(--sm-ink) 64% 100%
   );
 }
@@ -1321,12 +1154,7 @@ html:has(.sm-root) {
 }
 
 .sm-section--engine .sm-engine__steps li[aria-current]::after {
-  background: var(--sm-mark);
-}
-
-.sm-section--engine .sm-engine__replay {
-  border-color: #e8eef2;
-  color: #e8eef2;
+  background: var(--sm-accent);
 }
 
 .sm-section--engine .sm-engine__box {
@@ -1354,11 +1182,11 @@ html:has(.sm-root) {
 }
 
 .sm-section--engine .sm-engine__sweep line {
-  stroke: var(--sm-mark);
+  stroke: var(--sm-accent);
 }
 
 .sm-section--engine :focus-visible {
-  outline-color: var(--sm-mark);
+  outline-color: var(--sm-accent);
 }
 
 .sm-section--proof > * {
@@ -1496,8 +1324,6 @@ html:has(.sm-root) {
 .sm-proof__float {
   position: absolute;
   transition:
-    left 450ms var(--sm-ease-swap),
-    width 450ms var(--sm-ease-swap),
     background 300ms var(--sm-ease-swap),
     opacity 300ms var(--sm-ease-swap);
 }
@@ -1516,7 +1342,7 @@ html:has(.sm-root) {
   background: linear-gradient(
     to bottom,
     var(--sm-ink) 0 36%,
-    var(--sm-mark) 36% 64%,
+    var(--sm-accent) 36% 64%,
     var(--sm-ink) 64% 100%
   );
 }
@@ -1557,7 +1383,6 @@ html:has(.sm-root) {
 
 .sm-proof__handover {
   border-left: 1.5px dashed var(--sm-ink);
-  transition: left 450ms var(--sm-ease-swap);
 }
 
 .sm-proof__handover span {
@@ -1587,24 +1412,6 @@ html:has(.sm-root) {
   color: #b7c0bc;
 }
 
-.sm-close .sm-btn {
-  border-color: var(--sm-bg);
-  color: var(--sm-bg);
-}
-
-.sm-close .sm-btn:hover {
-  box-shadow: inset 0 0 0 1.5px var(--sm-bg);
-}
-
-.sm-close .sm-btn--primary {
-  background: var(--sm-bg);
-  color: var(--sm-ink);
-}
-
-.sm-close .sm-btn--primary:hover {
-  box-shadow: inset 0 0 0 2px var(--sm-ink);
-}
-
 .sm-close :focus-visible {
   outline-color: var(--sm-bg);
 }
@@ -1612,10 +1419,6 @@ html:has(.sm-root) {
 .sm-close ::selection {
   background: var(--sm-bg);
   color: var(--sm-ink);
-}
-
-.sm-actions--close {
-  margin-top: -8px;
 }
 
 .sm-foot {
@@ -1654,25 +1457,9 @@ html:has(.sm-root) {
 }
 
 @media (max-width: 960px) {
-  .sm-product,
   .sm-proof,
   .sm-roles {
     grid-template-columns: 1fr;
-  }
-
-  .sm-product__target {
-    grid-template-columns: 9.5rem minmax(0, 1fr);
-    align-items: baseline;
-    gap: 16px;
-    padding: 14px 0 16px;
-  }
-
-  .sm-product__target-name {
-    font-size: 20px;
-  }
-
-  .sm-product__target-line {
-    font-size: 14px;
   }
 
   .sm-roles__figure {
@@ -1707,34 +1494,6 @@ html:has(.sm-root) {
 
   .sm-hero__phase-line {
     font-size: 14px;
-  }
-
-  .sm-product__viewport {
-    height: 440px;
-  }
-
-  .sm-product__target {
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-
-  .sm-product__target-line {
-    display: none;
-  }
-
-  .sm-product__bar {
-    padding: 9px 12px;
-    font-size: 12px;
-  }
-
-  .sm-product__bar > span:first-child {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .sm-product__synthetic {
-    white-space: nowrap;
   }
 
   .sm-demo--projects {
@@ -1817,10 +1576,6 @@ html:has(.sm-root) {
 
   .sm-engine__status {
     grid-template-columns: 1fr;
-  }
-
-  .sm-engine__replay {
-    justify-self: start;
   }
 }
 
