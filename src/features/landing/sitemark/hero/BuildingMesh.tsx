@@ -3,6 +3,7 @@ import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 import { expoOut, layersFor } from "../phases"
 import { siteMaterials } from "./materials"
+import { Shrubs } from "./Planting"
 
 /*
  * Composite steel frame (H-columns, primary and secondary I-beams, concrete slab on deck) on
@@ -511,6 +512,15 @@ export function BuildingMesh({ phase }: { phase: number }) {
     return { ahu, chillers, services, canopy, posts, frames, ceilings }
   }, [envelope])
 
+  // Terrace planters on the podium roof: the usable datum the tower steps back from.
+  const planters = useMemo(() => {
+    const y = slabTop(1) + 0.08
+    return [
+      { x0: PODIUM.x0 + 1.2, x1: -3.2, z0: PODIUM.z1 - 1.6, z1: PODIUM.z1 - 0.7 },
+      { x0: TOWER.x1 + 1.4, x1: PODIUM.x1 - 0.7, z0: GRID_Z[0] + 1.5, z1: GRID_Z[2] - 0.5 },
+    ].map((r) => ({ r, box: slab(r, y, y + 0.5), y: y + 0.5 }))
+  }, [])
+
   return (
     <group>
       <Layer visible={layers.foundations}>
@@ -556,6 +566,15 @@ export function BuildingMesh({ phase }: { phase: number }) {
         <Box {...fitout.canopy} material={m.panel} edges />
         <Instanced specs={fitout.posts} material={m.steel} />
         <Instanced specs={fitout.frames} material={m.steel} />
+      </Layer>
+
+      <Layer visible={layers.landscape}>
+        {planters.map(({ r, box, y }, i) => (
+          <group key={i}>
+            <Box {...box} material={m.kerb} />
+            <Shrubs x={(r.x0 + r.x1) / 2} z={(r.z0 + r.z1) / 2} width={r.x1 - r.x0} depth={r.z1 - r.z0} y={y - 0.2} seed={40 + i * 9} />
+          </group>
+        ))}
       </Layer>
     </group>
   )

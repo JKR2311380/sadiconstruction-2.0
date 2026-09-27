@@ -47,7 +47,10 @@ export function phaseIndex(id: PhaseId): number {
   return PHASES.findIndex((phase) => phase.id === id)
 }
 
-/** Which layers are visible from a given phase onward. */
+/**
+ * Which layers are visible from a given phase onward. Foundations are backfilled once the
+ * massing is set; hard and soft landscaping go in with fit-out, ahead of handover.
+ */
 export function layersFor(index: number) {
   return {
     foundations: index === 0,
@@ -55,6 +58,7 @@ export function layersFor(index: number) {
     structure: index >= 2,
     envelope: index >= 3,
     fitout: index >= 4,
+    landscape: index >= 4,
   }
 }
 

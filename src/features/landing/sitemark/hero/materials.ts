@@ -145,6 +145,19 @@ const earth = () =>
     specks(ctx, r, 2500, [1, 2.5], [0.2, 0.4], 0.4)
   }, 0.12)
 
+/** Open ground seen from a distance: fine grit, barely any patching, so it never reads as cloud. */
+const grit = () =>
+  surface(89, 0.84, (ctx, r) => {
+    blotches(ctx, r, 24, 40, 140, 0.025)
+    specks(ctx, r, 9000, [1, 2], [0.55, 1], 0.25)
+  }, 0.05)
+
+/** Leaf-scale mottling for tree crowns. */
+const leaves = () =>
+  surface(97, 0.72, (ctx, r) => {
+    specks(ctx, r, 14000, [2, 5], [0.35, 1], 0.5)
+  }, 0.12)
+
 const asphalt = () =>
   surface(79, 0.55, (ctx, r) => {
     blotches(ctx, r, 40, 30, 120, 0.06)
@@ -175,7 +188,17 @@ function textured(
 }
 
 function build() {
-  const c = { concrete: concrete(), formwork: formwork(), panel: panel(), paving: paving(), gravel: gravel(), earth: earth(), asphalt: asphalt() }
+  const c = {
+    concrete: concrete(),
+    formwork: formwork(),
+    panel: panel(),
+    paving: paving(),
+    gravel: gravel(),
+    earth: earth(),
+    asphalt: asphalt(),
+    grit: grit(),
+    leaves: leaves(),
+  }
   return {
     mass: new THREE.MeshStandardMaterial({ color: "#CDD3D0", roughness: 0.95 }),
     concrete: textured(c.concrete, 3, { color: "#E2E4DF", roughness: 0.92 }),
@@ -205,15 +228,15 @@ function build() {
     paving: textured(c.paving, 1.2, { color: "#D8DBD6", roughness: 0.9 }, 1.2),
     kerb: textured(c.concrete, 1.5, { color: "#C9CCC6", roughness: 0.9 }),
     gravel: textured(c.gravel, 1.5, { color: "#B9BDB6", roughness: 1 }, 1.6),
-    site: textured(c.gravel, 3, { color: "#BCC3BF", roughness: 1 }, 0.8),
-    ground: textured(c.concrete, 6, { color: "#D6DAD6", roughness: 1 }, 0.5),
+    site: textured(c.gravel, 3, { color: "#B3BAB5", roughness: 1 }, 0.8),
+    ground: textured(c.grit, 5, { color: "#C9CFCB", roughness: 1 }, 0.4),
     earth: textured(c.earth, 4, { color: "#7A6650", roughness: 1, side: THREE.DoubleSide }, 2),
     asphalt: textured(c.asphalt, 5, { color: "#6A7072", roughness: 0.95 }, 0.8),
     marking: new THREE.MeshStandardMaterial({ color: "#E9ECEA", roughness: 0.8 }),
     planting: textured(c.earth, 2, { color: "#6F7E62", roughness: 1 }, 1.5),
-    foliage: new THREE.MeshStandardMaterial({ color: "#71826A", roughness: 0.95, flatShading: true }),
+    foliage: textured(c.leaves, 0.9, { color: "#6A7C62", roughness: 0.95 }, 2.5),
     trunk: new THREE.MeshStandardMaterial({ color: "#5E5A52", roughness: 1 }),
-    ink: new THREE.LineBasicMaterial({ color: "#0E1210", transparent: true, opacity: 0.45 }),
+    ink: new THREE.LineBasicMaterial({ color: "#0E1210", transparent: true, opacity: 0.7 }),
   }
 }
 
