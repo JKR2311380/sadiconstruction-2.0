@@ -1,4 +1,4 @@
-export type PhaseId = "massing" | "structure" | "envelope" | "fitout"
+export type PhaseId = "foundations" | "massing" | "structure" | "envelope" | "fitout"
 
 export interface Phase {
   id: PhaseId
@@ -9,28 +9,34 @@ export interface Phase {
 
 export const PHASES: Phase[] = [
   {
+    id: "foundations",
+    label: "Foundations",
+    caption: "The civil works: excavation, footings, the slab the whole path stands on.",
+    camera: { position: [21, 10.5, 26], target: [-0.5, -0.9, 0] },
+  },
+  {
     id: "massing",
     label: "Massing",
     caption: "The bill sets the envelope before a single activity exists.",
-    camera: { position: [31, 27, 31], target: [0, 3.6, 0] },
+    camera: { position: [33, 30, 33], target: [0, 5, 0] },
   },
   {
     id: "structure",
     label: "Structure",
     caption: "Slabs and columns: the frame the Longest Path runs through.",
-    camera: { position: [17, 1.1, 29], target: [-1, 6.6, 0] },
+    camera: { position: [18, 1.2, 31], target: [-1, 8, 0] },
   },
   {
     id: "envelope",
     label: "Envelope",
     caption: "Facade closes in parallel. Float lives here.",
-    camera: { position: [0.01, 6.5, 38], target: [0, 6, 0] },
+    camera: { position: [0.01, 7.5, 44], target: [0, 7.4, 0] },
   },
   {
     id: "fitout",
     label: "Fit-out",
-    caption: "Services, glazing, plant. Handover waits on the spine.",
-    camera: { position: [-30, 17, 36], target: [0, 4.6, 0] },
+    caption: "Services, glazing, plant. Handover completes the spine.",
+    camera: { position: [-31, 20, 38], target: [0, 5.8, 0] },
   },
 ]
 
@@ -44,10 +50,11 @@ export function phaseIndex(id: PhaseId): number {
 /** Which layers are visible from a given phase onward. */
 export function layersFor(index: number) {
   return {
-    massing: index === 0,
-    structure: index >= 1,
-    envelope: index >= 2,
-    fitout: index >= 3,
+    foundations: index === 0,
+    massing: index === 1,
+    structure: index >= 2,
+    envelope: index >= 3,
+    fitout: index >= 4,
   }
 }
 
