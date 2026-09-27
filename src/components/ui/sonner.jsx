@@ -34,13 +34,13 @@ const Toaster = ({
         {
           "--normal-bg": "var(--background)",
           "--normal-text": "var(--foreground)",
-          "--normal-border": "transparent",
-          "--border-radius": "1.15rem",
+          "--normal-border": "var(--border)",
+          "--border-radius": "var(--radius-xl)",
         }
       }
       toastOptions={{
         classNames: {
-          toast: "neu-toast",
+          toast: "border border-border shadow-lg",
         },
       }}
       {...props}

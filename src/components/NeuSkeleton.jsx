@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 
 export function NeuSkeleton({ className, ...props }) {
-  return <div className={cn("neu-skeleton rounded-2xl", className)} {...props} />
+  return <div className={cn("animate-pulse rounded-2xl bg-muted", className)} {...props} />
 }
 
 export function WorkspaceSkeleton() {

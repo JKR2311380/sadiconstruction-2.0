@@ -169,7 +169,7 @@ export function SchedulingPanel({ projectId }) {
             type="button"
             size="sm"
             variant="ghost"
-            className={criticalOnly ? "neu-selected text-foreground" : ""}
+            className={criticalOnly ? "border border-border bg-accent text-foreground" : ""}
             aria-pressed={criticalOnly}
             onClick={() => setCriticalOnly((value) => !value)}
           >

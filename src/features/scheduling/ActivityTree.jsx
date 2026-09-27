@@ -27,7 +27,7 @@ export function ActivityTree({
   onEditPred,
 }) {
   return (
-    <section className="overflow-auto neu-in rounded-2xl lg:rounded-none lg:rounded-l-2xl">
+    <section className="overflow-auto rounded-2xl border border-border bg-card shadow-sm lg:rounded-none lg:rounded-l-2xl">
       <table className="w-full border-collapse text-sm tabular-nums">
         <thead>
           <tr>
@@ -66,7 +66,7 @@ export function ActivityTree({
                   node.kind === "phase_root" && "bg-muted/50 font-semibold",
                   node.kind === "summary" && "font-medium",
                   critical && "bg-[var(--critical-wash)]",
-                  selectedId === node.id && "bg-background shadow-neu-in",
+                  selectedId === node.id && "bg-accent/70",
                 )}
                 onClick={(event) => {
                   if (event.target.closest("button, input")) return
@@ -95,7 +95,7 @@ export function ActivityTree({
                     />
                     <span>{node.name}</span>
                     {node.locked ? (
-                      <span className="neu-in rounded-md px-1.5 py-0.5 text-[11px] font-bold tracking-widest text-muted-foreground">
+                      <span className="rounded-md border border-border bg-muted px-1.5 py-0.5 text-[11px] font-bold tracking-widest text-muted-foreground">
                         LOCKED
                       </span>
                     ) : null}
@@ -104,7 +104,7 @@ export function ActivityTree({
                 <td className="h-11 px-2">
                   {node.kind === "leaf" && !node.isLoe && editable ? (
                     <Input
-                    className="h-9 w-[64px] border-transparent bg-transparent px-1.5 tabular-nums shadow-none hover:shadow-neu-in"
+                    className="h-9 w-[64px] border-transparent bg-transparent px-1.5 tabular-nums shadow-none hover:border-input hover:bg-background hover:shadow-sm"
                       type="number"
                       min="0"
                       defaultValue={node.durationDays}

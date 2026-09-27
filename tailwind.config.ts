@@ -7,9 +7,6 @@ export default {
       colors: {
         clay: "var(--background)",
       },
-      borderRadius: {
-        neu: "1.15rem",
-      },
     },
   },
 }

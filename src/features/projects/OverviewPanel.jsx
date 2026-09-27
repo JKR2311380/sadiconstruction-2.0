@@ -18,13 +18,13 @@ export function OverviewPanel({ project }) {
           ["Personnel", String(personnel.length)],
           ["Completion", `${project.progressPct}%`],
         ].map(([label, value]) => (
-          <div key={label} className="neu-out rounded-2xl px-4 py-3.5">
+          <div key={label} className="rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
             <div className="mb-1.5 text-[11px] text-muted-foreground">{label}</div>
             <div className="font-heading text-[22px]">{value}</div>
           </div>
         ))}
       </div>
-      <div className="neu-out rounded-2xl p-4">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
         <h2 className="mb-2 text-sm font-semibold">Overview</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {project.site ? `${project.site}. ` : ""}

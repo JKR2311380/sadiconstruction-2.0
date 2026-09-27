@@ -23,7 +23,13 @@ export function FeedbackDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
-          <div className="neu-in mb-3 grid size-12 place-items-center rounded-2xl">
+          <div
+            className={
+              tone === "error"
+                ? "mb-3 grid size-12 place-items-center rounded-2xl bg-destructive/10"
+                : "mb-3 grid size-12 place-items-center rounded-2xl bg-accent"
+            }
+          >
             <Icon className={tone === "error" ? "text-destructive" : "text-primary"} />
           </div>
           <DialogTitle>{title}</DialogTitle>

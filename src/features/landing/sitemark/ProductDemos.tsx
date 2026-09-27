@@ -260,7 +260,7 @@ export function ProductDemos() {
         </TabsList>
       </Tabs>
 
-      <Card ref={stageRef} id="sm-product-stage" variant="plain" className="gap-0 rounded-sm py-0" aria-live="polite">
+      <Card ref={stageRef} id="sm-product-stage" className="gap-0 rounded-sm py-0" aria-live="polite">
         <div className="flex items-center justify-between gap-3 border-b border-border bg-secondary px-4 py-2.5 text-[13px] font-semibold">
           <span>
             Clearwater Medical Center <span aria-hidden>/</span> {activeModule.name}

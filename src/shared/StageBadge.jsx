@@ -49,7 +49,6 @@ export function StageBadge({ stage }) {
       style={{
         color: `var(--status-${token})`,
         background: `var(--status-${token}-wash)`,
-        boxShadow: "var(--shadow-neu-in)",
       }}
     >
       <StatusDot stage={stage} className="size-2" />

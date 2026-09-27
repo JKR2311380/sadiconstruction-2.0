@@ -4,17 +4,21 @@ import { cn } from "cn"
 import { Slot } from "radix-ui"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-2xl border-0 bg-clip-padding text-sm font-medium whitespace-nowrap outline-none select-none focus-visible:ring-2 focus-visible:ring-ring/55 disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-destructive/30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-2xl bg-clip-padding text-sm font-medium whitespace-nowrap outline-none select-none transition-[background-color,box-shadow,color] duration-160 focus-visible:ring-2 focus-visible:ring-ring/55 disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-destructive/30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {
-        default: "neu-btn neu-btn-primary",
-        outline: "neu-btn text-foreground",
-        secondary: "neu-btn text-foreground",
+        default:
+          "border border-primary bg-primary text-primary-foreground shadow-sm hover:brightness-105 active:brightness-95",
+        outline:
+          "border border-border bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "border border-border bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/70",
         ghost:
-          "bg-transparent text-muted-foreground hover:text-foreground hover:shadow-neu-flat",
-        destructive: "neu-btn text-destructive",
-        link: "bg-transparent text-primary underline-offset-4 hover:underline",
+          "border border-transparent bg-transparent text-muted-foreground hover:border-border hover:text-foreground hover:bg-accent/60",
+        destructive:
+          "border border-destructive/30 bg-background text-destructive shadow-sm hover:bg-destructive/10",
+        link: "border-0 bg-transparent text-primary underline-offset-4 hover:underline",
       },
       size: {
         default:

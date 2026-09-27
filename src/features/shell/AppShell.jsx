@@ -62,10 +62,10 @@ function NavButtons({ onNavigate }) {
             to={item.to}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[13px] font-medium transition-[box-shadow,color] duration-160",
+              "flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-[13px] font-medium transition-colors duration-160",
               active
-                ? "neu-nav-current"
-                : "text-muted-foreground hover:text-foreground hover:shadow-neu-flat",
+                ? "border-border bg-accent text-primary"
+                : "border-transparent text-muted-foreground hover:border-border hover:text-foreground",
             )}
           >
             <Icon className={active ? "text-primary" : undefined} data-icon="inline-start" />
@@ -102,7 +102,7 @@ function ShellFooter() {
 
   return (
     <div className="px-5 py-5 text-[11px] leading-relaxed text-muted-foreground">
-      <div className="neu-in rounded-2xl px-4 py-3.5">
+      <div className="rounded-2xl border border-border bg-muted/40 px-4 py-3.5">
         Portfolio
         <ul className="mt-2 flex flex-col gap-1.5 font-semibold">
           {counts.map((row) => (
@@ -143,7 +143,10 @@ function ShellFooter() {
 function Brand() {
   return (
     <div className="flex items-center gap-3 px-5 py-5">
-      <div className="neu-out grid size-12 place-items-center rounded-2xl" aria-hidden="true">
+      <div
+        className="grid size-12 place-items-center rounded-2xl border border-border bg-card shadow-sm"
+        aria-hidden="true"
+      >
         <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
           <path d="M2 11 L7 2 L12 11 Z" stroke="currentColor" strokeWidth="1.5" />
         </svg>
@@ -212,12 +215,14 @@ export function AppShell() {
         <span className="font-semibold md:hidden">Sadiconstruction</span>
         <button
           type="button"
-          className="neu-in ml-auto hidden h-12 min-w-72 items-center gap-2 rounded-full px-5 text-sm text-muted-foreground md:flex"
+          className="ml-auto hidden h-12 min-w-72 items-center gap-2 rounded-full border border-border bg-muted/40 px-5 text-sm text-muted-foreground transition-colors hover:bg-muted/70 md:flex"
           onClick={() => setOpen(true)}
         >
           <SearchIcon />
           Search workspace
-          <kbd className="ml-auto rounded-md px-1.5 py-0.5 font-readout text-[10px] neu-out-sm">⌘K</kbd>
+          <kbd className="ml-auto rounded-md border border-border bg-background px-1.5 py-0.5 font-readout text-[10px]">
+            ⌘K
+          </kbd>
         </button>
         <Button
           type="button"

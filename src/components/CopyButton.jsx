@@ -22,7 +22,10 @@ export function CopyButton({ value, label = "Copy", className }) {
     <Tooltip>
       <TooltipTrigger
         type="button"
-        className={cn("neu-btn grid size-10 place-items-center rounded-full", className)}
+        className={cn(
+          "grid size-10 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent",
+          className
+        )}
         onClick={() => void copy()}
         aria-label={copied ? "Copied" : label}
       >

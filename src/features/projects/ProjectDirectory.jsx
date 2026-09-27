@@ -95,7 +95,7 @@ export function ProjectDirectory() {
       </p>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <div className="neu-in flex flex-wrap items-center gap-1 rounded-2xl p-1">
+        <div className="flex flex-wrap items-center gap-1 rounded-2xl border border-border bg-muted/40 p-1">
           {STAGE_OPTIONS.map((option) => (
             <Button
               key={option.id}
@@ -103,7 +103,7 @@ export function ProjectDirectory() {
               size="sm"
               variant="ghost"
               className={cn(
-                stage === option.id && "neu-selected",
+                stage === option.id && "border-border bg-background shadow-sm",
                 stage === option.id && option.id === "all" && "text-foreground",
               )}
               style={

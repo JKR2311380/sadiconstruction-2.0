@@ -36,7 +36,7 @@ export function CommandPalette({ open, onOpenChange }) {
   }
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange} className="neu-out sm:max-w-lg">
+    <CommandDialog open={open} onOpenChange={onOpenChange} className="sm:max-w-lg">
       <CommandInput placeholder="Search projects, jump, or run a command…" />
       <CommandList>
         <CommandEmpty>Nothing matches that search.</CommandEmpty>

@@ -82,7 +82,7 @@ export function ScrollToTop({ targetRef }) {
         <motion.button
           type="button"
           aria-label="Scroll to top"
-          className="neu-btn no-print fixed right-5 bottom-24 z-40 grid size-12 place-items-center rounded-full"
+          className="no-print fixed right-5 bottom-24 z-40 grid size-12 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
@@ -123,7 +123,7 @@ export function HelpWidget() {
             initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            className="neu-out w-[min(26rem,calc(100vw-2.5rem))] rounded-[1.4rem] p-5"
+            className="w-[min(26rem,calc(100vw-2.5rem))] rounded-2xl border border-border bg-card p-5 shadow-lg"
           >
             <div className="mb-3 flex items-start justify-between gap-3">
               <div>
@@ -137,7 +137,7 @@ export function HelpWidget() {
                 <span className="sr-only">Close help</span>
               </Button>
             </div>
-            <div className="mb-3 flex items-center justify-between gap-2 rounded-[1rem] px-3 py-2 neu-in">
+            <div className="mb-3 flex items-center justify-between gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2">
               <span className="flex items-center gap-2 text-sm">
                 <Mail />
                 admin@sadicon.local
@@ -173,7 +173,7 @@ export function HelpWidget() {
       <button
         ref={fabRef}
         type="button"
-        className="neu-btn-primary grid size-14 place-items-center rounded-full"
+        className="grid size-14 place-items-center rounded-full border border-primary bg-primary text-primary-foreground shadow-md transition hover:brightness-105 active:brightness-95"
         aria-expanded={open}
         aria-label="Open workspace help"
         onClick={() => setOpen((current) => !current)}

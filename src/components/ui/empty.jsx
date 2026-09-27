@@ -9,7 +9,7 @@ function Empty({
     <div
       data-slot="empty"
       className={cn(
-        "neu-in flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-2xl border-0 p-6 text-center text-balance",
+        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/30 p-6 text-center text-balance",
         className
       )}
       {...props}

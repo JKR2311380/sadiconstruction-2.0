@@ -95,12 +95,12 @@ export function SettingsPage() {
       <p className="mb-6 text-xs text-muted-foreground">Dark mode, schedule defaults, and Admin Staff Roles</p>
 
       <div className="flex max-w-xl flex-col gap-3">
-        <label className="neu-out flex cursor-pointer items-center justify-between rounded-2xl px-4 py-3.5">
+        <label className="flex cursor-pointer items-center justify-between rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
           <span>
             <strong>Dark mode</strong>
             <br />
             <span className="text-xs text-muted-foreground">
-              Swaps Soft UI highlight and shadow profiles. Light source stays top-left.
+              Swaps the palette between the light and dark token sets.
             </span>
           </span>
           <Switch
@@ -112,14 +112,14 @@ export function SettingsPage() {
           />
         </label>
 
-        <div className="neu-out rounded-2xl px-4 py-3.5">
+        <div className="rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
           <h2 className="mb-2 text-sm font-semibold">Schedule defaults</h2>
           <p className="text-sm text-muted-foreground">
             Project Calendar: Mon–Sat / Sunday off · starter PH holidays · Retained Logic only · nested summaries under BOQ phases allowed.
           </p>
         </div>
 
-        <div className="neu-out rounded-2xl px-4 py-3.5">
+        <div className="rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
           <h2 className="mb-2 text-sm font-semibold">Demo workspace</h2>
           <p className="mb-3 text-sm text-muted-foreground">
             Restore Clearwater seed and wipe local edits. Signed-in Staff Member is unchanged. No-ops when Supabase owns domain data.
@@ -158,7 +158,7 @@ export function SettingsPage() {
                     <TableCell>{row.email}</TableCell>
                     <TableCell>
                       <select
-                        className="rounded-xl bg-background px-2 py-1.5 text-sm shadow-neu-in"
+                        className="rounded-xl border border-input bg-background px-2 py-1.5 text-sm shadow-sm"
                         value={row.role}
                         aria-label={`Role for ${row.email}`}
                         onChange={(event) => {

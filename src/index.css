@@ -64,6 +64,7 @@
 }
 
 :root {
+    --radius: var(--radius-md);
     --background: #fafafa;
     --foreground: #18181b;
     --card: #ffffff;

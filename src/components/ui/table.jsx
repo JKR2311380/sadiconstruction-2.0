@@ -8,7 +8,7 @@ function Table({
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto rounded-2xl neu-out"
+      className="relative w-full overflow-x-auto rounded-2xl border border-border bg-card shadow-sm"
     >
       <table
         data-slot="table"
