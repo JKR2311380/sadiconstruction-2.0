@@ -8,6 +8,8 @@ const BuildPhasesScene = lazy(() =>
 )
 
 const LAST = PHASES.length - 1
+/** The Spine S reveal runs ~1.1s; WebGL setup blocks the main thread, so the scene mounts after it. */
+const SCENE_DELAY_MS = 1200
 
 export function BuildPhases() {
   const reduced = useReducedMotion() ?? false
@@ -15,8 +17,14 @@ export function BuildPhases() {
   const inView = useInView(planeRef, { amount: 0.2 })
   const [phase, setPhase] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [sceneReady, setSceneReady] = useState(false)
   const shown = reduced ? LAST : phase
   const playing = !reduced && !paused && inView
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setSceneReady(true), reduced ? 0 : SCENE_DELAY_MS)
+    return () => window.clearTimeout(id)
+  }, [reduced])
 
   useEffect(() => {
     if (!playing) return
@@ -29,9 +37,11 @@ export function BuildPhases() {
   return (
     <div ref={planeRef} className="sm-hero__plane">
       <div className="sm-hero__stage" aria-hidden>
-        <Suspense fallback={null}>
-          <BuildPhasesScene phase={shown} active={inView} />
-        </Suspense>
+        {sceneReady && (
+          <Suspense fallback={null}>
+            <BuildPhasesScene phase={shown} active={inView} />
+          </Suspense>
+        )}
       </div>
 
       <div className="sm-hero__caption">

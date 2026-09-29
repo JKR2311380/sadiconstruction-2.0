@@ -1,0 +1,57 @@
+/* The Spine S — see DESIGN.md § Mark. Colors are fixed brand values, not theme tokens:
+   the mark looks the same in light and dark mode. */
+.spine {
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.spine--blue { --spine-tile: #2563eb; --spine-ink: #ffffff; --spine-end: #ffffff; }
+.spine--ink { --spine-tile: #0e1210; --spine-ink: #eef1f0; --spine-end: #60a5fa; }
+.spine--ground { --spine-tile: #f8faf9; --spine-edge: #bcc3bf; --spine-ink: #0e1210; --spine-end: #2563eb; }
+.spine--navy { --spine-tile: #15253a; --spine-ink: #cad6dd; --spine-end: #60a5fa; }
+.spine--white { --spine-tile: #ffffff; --spine-ink: #2563eb; --spine-end: #0e1210; }
+
+.spine__tile { fill: var(--spine-tile); stroke: var(--spine-edge, none); stroke-width: 0.75; }
+.spine__path { fill: none; stroke: var(--spine-ink); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.spine__node { fill: var(--spine-ink); }
+.spine__ring { fill: var(--spine-tile); stroke: var(--spine-end); stroke-width: 3; }
+.spine__ring[data-solid] { fill: var(--spine-end); }
+.spine__dot { fill: var(--spine-end); }
+.spine__ripple { fill: none; stroke: var(--spine-end); stroke-width: 1.5; opacity: 0; }
+.spine__path--base { opacity: 0.3; }
+
+.spine__node,
+.spine__end,
+.spine__ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Reduced motion gets none of this: every state below resolves to the static mark. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Reveal, 1.1 s for the icon. Easings are --sm-ease-enter and --sm-ease-swap. */
+  .spine--reveal { animation: spine-tile 320ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .spine--reveal .spine__node { animation: spine-pop 260ms 120ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .spine--reveal .spine__path { stroke-dasharray: 100; animation: spine-draw 620ms 220ms cubic-bezier(0.65, 0, 0.35, 1) both; }
+  .spine--reveal .spine__end { animation: spine-land 300ms 800ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .spine--reveal .spine__ripple { animation: spine-ripple 700ms 820ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  /* Loading: the spine draws on, then erases from the start. */
+  .spine--loading .spine__path { stroke-dasharray: 100; animation: spine-load 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+
+  /* Recalculating: a pulse runs start → handover over the faded path. */
+  .spine--recalculating .spine__path:not(.spine__path--base) { stroke-dasharray: 22 78; animation: spine-run 1.1s linear infinite; }
+
+  /* Handover set: the end node pings. */
+  .spine--handover .spine__ripple { animation: spine-ping 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+}
+
+@keyframes spine-tile { from { opacity: 0; transform: scale(0.86); } to { opacity: 1; transform: none; } }
+@keyframes spine-pop { 0% { transform: scale(0); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+@keyframes spine-land { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+@keyframes spine-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes spine-ripple { 0% { opacity: 0; transform: scale(1); } 8% { opacity: 0.9; } 100% { opacity: 0; transform: scale(3.4); } }
+@keyframes spine-load { 0% { stroke-dashoffset: 100; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -100; } }
+@keyframes spine-run { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes spine-ping { 0% { opacity: 0.9; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(3.2); } }

@@ -85,6 +85,39 @@ One job per library (unchanged from DESIGN-DIRECTION.md §6):
   The app shell keeps a ~150ms hover/focus-only ceiling; only the landing
   gets expressive motion.
 
+## Mark — the Spine S
+
+The brand mark is a finish-to-start link drawn as an **S**: a start node,
+right-angle turns like the engine diagram's dependency arrows, and the
+handover ring at the end. The initial and the critical path in one shape.
+It lives in `src/components/brand/SpineIcon.tsx` (+ `spine-mark.css`); use
+the component, never a copied SVG.
+
+- **Geometry** (64u tile, `rx` 14): path `M48 16 H16 V32 H48 V48 H22`,
+  6u stroke, start node ⌀10u at (48,16), handover ring ⌀12u / 3u stroke at
+  (16,48). Clear space = one 16u margin.
+- **Variants** (`variant`): `blue` (default: app icon, favicon, shell),
+  `ink`, `ground`, `navy`, `white` (on a blue field). Mark colors are fixed
+  brand hexes, not theme tokens, so it reads the same in light and dark.
+- **Optical size**: at ≤20px the ring closes to a solid dot
+  (`public/favicon.svg` is that version). `public/apple-touch-icon.png` is
+  full-bleed because iOS applies its own corner mask.
+- **Lockup**: icon + "Sadiconstruction" in Geist Sans (700 on the landing
+  hero, 600 in the shell), optional "SADICON MANAGEMENT" descriptor in
+  Geist Mono. Float Amber never appears in the mark.
+- **Dynamic states** (`motion`), all CSS, all resolving to the static mark
+  under `prefers-reduced-motion`:
+  - `reveal`: landing hero only. Tile 0–320ms, start node 120ms, path draws
+    220–840ms (`--sm-ease-swap`), ring lands 800ms with one ripple. The
+    wordmark rises from 560ms at 24ms per letter (`--sm-ease-enter`) and the
+    hero copy follows from 1.0s. The R3F scene mounts after the reveal
+    (`BuildPhases` `SCENE_DELAY_MS`) so WebGL setup can't stall it.
+  - `loading`: path draws on and erases. Used by `WorkspaceSkeleton`.
+  - `recalculating`: pulse runs start → handover over a faded path.
+  - `handover`: the end node pings (valid schedule).
+- Concept board (static + dynamic, alternates B/C rejected):
+  <https://claude.ai/artifact/G8y2q4esfUzgDLK4wDLFie>
+
 ## Landing — Site Mark (`/`)
 
 Mode: **Persuade**. Lives in `src/features/landing/sitemark/`

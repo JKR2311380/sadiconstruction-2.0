@@ -11,6 +11,7 @@ import {
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { SpineIcon } from "@/components/brand/SpineIcon"
 import {
   Sheet,
   SheetContent,
@@ -143,14 +144,7 @@ function ShellFooter() {
 function Brand() {
   return (
     <div className="flex items-center gap-3 px-5 py-5">
-      <div
-        className="grid size-12 place-items-center rounded-2xl border border-border bg-card shadow-sm"
-        aria-hidden="true"
-      >
-        <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-          <path d="M2 11 L7 2 L12 11 Z" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-      </div>
+      <SpineIcon size={40} />
       <span className="text-[15px] font-semibold tracking-tight">Sadiconstruction</span>
     </div>
   )
@@ -212,7 +206,10 @@ export function AppShell() {
             </SheetContent>
           </Sheet>
         ) : null}
-        <span className="font-semibold md:hidden">Sadiconstruction</span>
+        <span className="flex items-center gap-2 font-semibold md:hidden">
+          <SpineIcon size={24} />
+          Sadiconstruction
+        </span>
         <button
           type="button"
           className="ml-auto hidden h-12 min-w-72 items-center gap-2 rounded-full border border-border bg-muted/40 px-5 text-sm text-muted-foreground transition-colors hover:bg-muted/70 md:flex"

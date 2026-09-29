@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { motion, useReducedMotion, type Variants } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { SpineIcon } from "@/components/brand/SpineIcon"
 import { BuildPhases } from "./features/landing/sitemark/hero/BuildPhases"
 import { ProductDemos } from "./features/landing/sitemark/ProductDemos"
 import { EngineDiagram } from "./features/landing/sitemark/EngineDiagram"
@@ -10,9 +11,10 @@ import { ProofGraph } from "./features/landing/sitemark/ProofGraph"
 import { SectionHead } from "./features/landing/sitemark/SectionHead"
 import "./features/landing/sitemark/sitemark.css"
 
+// The copy waits for the mark's reveal (icon 0–1.1s, wordmark from 0.56s) before it follows.
 const heroCopy: Variants = {
   rest: {},
-  shown: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
+  shown: { transition: { staggerChildren: 0.09, delayChildren: 1.0 } },
 }
 
 const heroItem: Variants = {
@@ -22,12 +24,12 @@ const heroItem: Variants = {
 
 const heroMark: Variants = {
   rest: {},
-  shown: { transition: { staggerChildren: 0.045, delayChildren: 0.05 } },
+  shown: { transition: { staggerChildren: 0.024, delayChildren: 0.56 } },
 }
 
 const heroMarkChar: Variants = {
   rest: { y: "100%" },
-  shown: { y: "0%", transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+  shown: { y: "0%", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 }
 
 const BRAND = "Sadiconstruction"
@@ -82,8 +84,11 @@ export default function LandingPage() {
             id="sm-hero-title"
             className="sm-hero__mark"
             variants={heroMark}
+            initial={reduced ? "shown" : "rest"}
+            animate="shown"
             aria-label={BRAND}
           >
+            <SpineIcon className="sm-hero__icon" motion="reveal" />
             {BRAND.split("").map((char, i) => (
               <span key={i} className="sm-hero__mark-char" aria-hidden>
                 <motion.span variants={heroMarkChar}>{char}</motion.span>
