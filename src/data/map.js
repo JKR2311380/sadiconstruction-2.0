@@ -77,6 +77,7 @@ export function mapNode(row) {
     locked: kind === "phase_root",
     durationDays: Number(row.duration_days ?? 0),
     isLoe: Boolean(row.is_loe),
+    progressPct: Number(row.progress_pct ?? 0),
     wbsCode: row.wbs_code || null,
     spanStartId: null,
     spanEndId: null,
@@ -133,6 +134,7 @@ export function nodeWritePayload(projectId, node) {
     name: node.name,
     duration_days: node.durationDays ?? 0,
     is_loe: Boolean(node.isLoe),
+    progress_pct: node.progressPct ?? 0,
     sort_order: node.sortOrder ?? 0,
   }
 }

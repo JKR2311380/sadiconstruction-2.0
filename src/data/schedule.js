@@ -2,7 +2,7 @@ import { mapCalendar, mapDependency, mapNode, nodeWritePayload } from "@/data/ma
 import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient"
 
 export async function loadNetwork(projectId) {
-  const [{ data: calendarRow, error: calendarError }, { data: nodeRows, error: nodeError }, { data: depRows, error: depError }] =
+  const [{ data: calendarRow, error: calendarError }, { data: nodeRows, error: nodeError }, { data: depRows, error: depError }, { data: baselineRow }] =
     await Promise.all([
       supabase.from("project_calendars").select("*").eq("project_id", projectId).maybeSingle(),
       supabase
@@ -28,6 +28,13 @@ export async function loadNetwork(projectId) {
         },
     nodes: (nodeRows ?? []).map(mapNode),
     dependencies: (depRows ?? []).map(mapDependency),
+    baseline: baselineRow
+      ? {
+          capturedAt: baselineRow.captured_at,
+          projectDurationDays: Number(baselineRow.project_duration_days),
+          nodes: baselineRow.nodes ?? {},
+        }
+      : null,
     selectedId: null,
   }
 }
@@ -65,6 +72,24 @@ export async function deleteDependenciesForSuccessor(projectId, successorId) {
     .delete()
     .eq("project_id", projectId)
     .eq("successor_id", successorId)
+  if (error) throw error
+}
+
+export async function saveBaseline(projectId, baseline) {
+  const { error } = await supabase.from("schedule_baselines").upsert(
+    {
+      project_id: projectId,
+      captured_at: baseline.capturedAt,
+      project_duration_days: baseline.projectDurationDays,
+      nodes: baseline.nodes,
+    },
+    { onConflict: "project_id" },
+  )
+  if (error) throw error
+}
+
+export async function clearBaseline(projectId) {
+  const { error } = await supabase.from("schedule_baselines").delete().eq("project_id", projectId)
   if (error) throw error
 }
 

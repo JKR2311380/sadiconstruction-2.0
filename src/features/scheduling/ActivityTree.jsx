@@ -2,6 +2,17 @@ import { ChevronDownIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { finishVariance } from "./scheduleReport"
+
+function Variance({ value }) {
+  if (value == null) return <span className="text-muted-foreground">–</span>
+  if (value === 0) return <span className="text-muted-foreground">0</span>
+  return (
+    <span className={value > 0 ? "font-medium text-destructive" : "font-medium text-emerald-600 dark:text-emerald-400"}>
+      {value > 0 ? `+${value}` : value}d
+    </span>
+  )
+}
 
 function depthOf(node, allNodes) {
   let depth = 0
@@ -18,20 +29,24 @@ export function ActivityTree({
   allNodes,
   dependencies,
   metrics,
+  progress,
+  baseline,
   selectedId,
   cycle,
   editable,
   onSelect,
   onToggle,
   onDuration,
+  onProgress,
   onEditPred,
 }) {
+  const columns = ["WBS / Name", "Dur", "Pred", "ES", "EF", "TF", "%", ...(baseline ? ["Δ Fin"] : []), "Crit"]
   return (
     <section className="overflow-auto rounded-2xl border border-border bg-card shadow-sm lg:rounded-none lg:rounded-l-2xl">
       <table className="w-full border-collapse text-sm tabular-nums">
         <thead>
           <tr>
-            {["WBS / Name", "Dur", "Pred", "ES", "EF", "TF", "Crit"].map((label) => (
+            {columns.map((label) => (
               <th
                 key={label}
                 className="sticky top-0 z-2 bg-muted/40 px-2 py-2.5 text-left text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
@@ -150,6 +165,33 @@ export function ActivityTree({
                     m.totalFloat
                   )}
                 </td>
+                <td className="h-11 px-2">
+                  {node.kind === "leaf" && !node.isLoe && editable ? (
+                    <Input
+                      className="h-9 w-[60px] border-transparent bg-transparent px-1.5 tabular-nums shadow-none hover:border-input hover:bg-background hover:shadow-sm"
+                      type="number"
+                      min="0"
+                      max="100"
+                      aria-label={`${node.name} percent complete`}
+                      defaultValue={progress[node.id] ?? 0}
+                      key={`${node.id}-p${progress[node.id] ?? 0}`}
+                      onBlur={(event) => {
+                        const next = Math.min(100, Math.max(0, Math.round(Number(event.target.value) || 0)))
+                        if (next !== (progress[node.id] ?? 0)) onProgress(node.id, next)
+                      }}
+                      onClick={(event) => event.stopPropagation()}
+                    />
+                  ) : node.isLoe ? (
+                    <span className="text-muted-foreground">–</span>
+                  ) : (
+                    <span className="text-muted-foreground">{progress[node.id] ?? 0}%</span>
+                  )}
+                </td>
+                {baseline ? (
+                  <td className="h-11 px-2">
+                    <Variance value={cycle || node.isLoe ? null : finishVariance(baseline, node.id, metrics)} />
+                  </td>
+                ) : null}
                 <td className="h-11 px-2">
                   {critical ? (
                     <span className="text-xs font-bold tracking-wide text-destructive">YES</span>

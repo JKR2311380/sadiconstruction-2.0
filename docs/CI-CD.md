@@ -1,6 +1,6 @@
-# CI/CD workflow — specified, not implemented
+# CI/CD workflow — CI implemented, CD not
 
-> Status: **contract only**. No GitHub Actions, no host, no secrets. Implement from [`TICKETS.md`](TICKETS.md) E10 when asked.  
+> Status: **CI implemented** in `.github/workflows/ci.yml` (install, lint, typecheck, test, build). No host, no secrets, no CD. Implement from [`TICKETS.md`](TICKETS.md) E10 when asked.  
 > Hosting stance today: local Vite (OPEN-DECISIONS D8). The app is a static `dist/` — any later host is a CD target, not a rewrite.
 
 ## Intent

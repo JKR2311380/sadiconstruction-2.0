@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SpineIcon } from "@/components/brand/SpineIcon"
 import { BuildPhases } from "./features/landing/sitemark/hero/BuildPhases"
+import { ProductPreview } from "./features/landing/sitemark/ProductPreview"
 import { ProductDemos } from "./features/landing/sitemark/ProductDemos"
 import { EngineDiagram } from "./features/landing/sitemark/EngineDiagram"
 import { RolesToggle } from "./features/landing/sitemark/RolesToggle"
@@ -111,6 +112,8 @@ export default function LandingPage() {
         </motion.div>
         <BuildPhases />
       </section>
+
+      <ProductPreview />
 
       <section className="sm-section" aria-labelledby="sm-product-title">
         <SectionHead id="sm-product-title" title="Three modules. One bill underneath.">

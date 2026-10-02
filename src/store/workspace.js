@@ -469,6 +469,33 @@ export const useWorkspaceStore = create(
         }
       },
 
+      setProgress(projectId, nodeId, progressPct) {
+        set((state) => {
+          const schedule = structuredClone(state.scheduleByProject[projectId])
+          const node = schedule.nodes.find((row) => row.id === nodeId)
+          if (node && node.kind === "leaf" && !node.isLoe) {
+            node.progressPct = Math.min(100, Math.max(0, Math.round(Number(progressPct) || 0)))
+          }
+          return { scheduleByProject: { ...state.scheduleByProject, [projectId]: schedule } }
+        })
+        if (isSupabaseConfigured) {
+          const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+          if (node) void scheduleApi.saveNode(projectId, node)
+        }
+      },
+
+      setBaseline(projectId, baseline) {
+        set((state) => ({
+          scheduleByProject: {
+            ...state.scheduleByProject,
+            [projectId]: { ...state.scheduleByProject[projectId], baseline },
+          },
+        }))
+        if (isSupabaseConfigured) {
+          void (baseline ? scheduleApi.saveBaseline(projectId, baseline) : scheduleApi.clearBaseline(projectId))
+        }
+      },
+
       addScheduleNode(projectId, { parentId, kind, name, durationDays }) {
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])

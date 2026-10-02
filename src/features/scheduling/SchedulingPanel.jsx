@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
-import { AlertCircleIcon } from "lucide-react"
+import { AlertCircleIcon, DownloadIcon, PrinterIcon } from "lucide-react"
 import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,6 +26,7 @@ import { can } from "@/lib/permissions"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
 import { ActivityTree } from "./ActivityTree"
+import { computeProgress, makeBaseline, overallProgress, scheduleToCsv } from "./scheduleReport"
 import { GanttChart } from "./GanttChart"
 
 export function SchedulingPanel({ projectId }) {
@@ -35,7 +36,10 @@ export function SchedulingPanel({ projectId }) {
   const schedule = useWorkspaceStore((state) => state.scheduleByProject[projectId])
   const toggleNodeOpen = useWorkspaceStore((state) => state.toggleNodeOpen)
   const selectNode = useWorkspaceStore((state) => state.selectNode)
+  const project = useWorkspaceStore((state) => state.projects.find((row) => row.id === projectId))
   const setDuration = useWorkspaceStore((state) => state.setDuration)
+  const setProgress = useWorkspaceStore((state) => state.setProgress)
+  const setBaseline = useWorkspaceStore((state) => state.setBaseline)
   const addScheduleNode = useWorkspaceStore((state) => state.addScheduleNode)
   const addDependency = useWorkspaceStore((state) => state.addDependency)
   const clearDependencies = useWorkspaceStore((state) => state.clearDependencies)
@@ -84,6 +88,9 @@ export function SchedulingPanel({ projectId }) {
   }
 
   const phases = boq?.phases || []
+  const progress = computeProgress(schedule.nodes)
+  const overall = overallProgress(schedule.nodes)
+  const baseline = schedule.baseline ?? null
   const metrics = result?.ok ? result.metrics : {}
   const cycle = result && !result.ok
 
@@ -148,11 +155,30 @@ export function SchedulingPanel({ projectId }) {
   }
 
   const workingDays = schedule.calendar.workingWeek.sat ? "Mon–Sat" : "Mon–Fri"
+  const daysPerWeek = schedule.calendar.workingWeek.sat ? 6 : 5
+
+  function exportCsv() {
+    const csv = scheduleToCsv({
+      nodes: schedule.nodes,
+      dependencies: schedule.dependencies,
+      metrics,
+      baseline,
+      calendar: schedule.calendar,
+      startDate: project?.startDate,
+    })
+    const url = URL.createObjectURL(new Blob(["﻿", csv], { type: "text/csv;charset=utf-8" }))
+    const link = document.createElement("a")
+    link.href = url
+    link.download = `${project?.code || "schedule"}-schedule.csv`
+    link.click()
+    URL.revokeObjectURL(url)
+    toast.success("Schedule exported")
+  }
   const holidayCount = schedule.calendar.exceptions.filter((row) => row.type === "holiday").length
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-[22px] py-2.5">
+      <div className="no-print flex flex-wrap items-center justify-between gap-3 border-b border-border bg-card px-[22px] py-2.5">
         <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           <span>
             <strong className="text-foreground">Retained Logic</strong> · {workingDays} · {holidayCount} PH holidays
@@ -175,6 +201,14 @@ export function SchedulingPanel({ projectId }) {
           >
             Critical only
           </Button>
+          <Button type="button" size="sm" variant="ghost" disabled={cycle} onClick={exportCsv}>
+            <DownloadIcon data-icon="inline-start" />
+            Export CSV
+          </Button>
+          <Button type="button" size="sm" variant="ghost" onClick={() => window.print()}>
+            <PrinterIcon data-icon="inline-start" />
+            Print
+          </Button>
           {editable ? (
             <>
               <Button
@@ -188,6 +222,31 @@ export function SchedulingPanel({ projectId }) {
               >
                 Simulate cycle
               </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                disabled={cycle}
+                onClick={() => {
+                  setBaseline(projectId, makeBaseline(metrics, result.projectDurationDays))
+                  toast.success(baseline ? "Baseline replaced with the current schedule" : "Baseline saved")
+                }}
+              >
+                {baseline ? "Re-baseline" : "Set baseline"}
+              </Button>
+              {baseline ? (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setBaseline(projectId, null)
+                    toast.message("Baseline cleared")
+                  }}
+                >
+                  Clear baseline
+                </Button>
+              ) : null}
               <Button type="button" size="sm" variant="outline" onClick={() => openAdd("summary")}>
                 + Nested summary
               </Button>
@@ -244,6 +303,8 @@ export function SchedulingPanel({ projectId }) {
               allNodes={schedule.nodes}
               dependencies={schedule.dependencies}
               metrics={metrics}
+              progress={progress}
+              baseline={baseline}
               selectedId={schedule.selectedId}
               cycle={Boolean(cycle)}
               editable={editable}
@@ -253,11 +314,15 @@ export function SchedulingPanel({ projectId }) {
                 setDuration(projectId, id, value)
                 toast.success("Duration updated · CPM recalculated")
               }}
+              onProgress={(id, value) => setProgress(projectId, id, value)}
               onEditPred={openPred}
             />
             <GanttChart
               rows={visible}
               metrics={metrics}
+              progress={progress}
+              baseline={baseline}
+              daysPerWeek={daysPerWeek}
               selectedId={schedule.selectedId}
               projectDurationDays={result?.ok ? result.projectDurationDays : 0}
               cycle={Boolean(cycle)}
@@ -274,6 +339,17 @@ export function SchedulingPanel({ projectId }) {
                 <span>
                   Project duration <b className="text-foreground">{result.projectDurationDays} working days</b>
                 </span>
+                <span>
+                  Complete <b className="text-foreground">{overall}%</b>
+                </span>
+                {baseline ? (
+                  <span>
+                    Finish vs baseline{" "}
+                    <b className="text-foreground">
+                      {formatVariance(result.projectDurationDays - baseline.projectDurationDays)}
+                    </b>
+                  </span>
+                ) : null}
                 <span>
                   Longest Path{" "}
                   <b className="text-foreground">{result.criticalIds.join(" → ") || "—"}</b>
@@ -425,6 +501,11 @@ export function SchedulingPanel({ projectId }) {
       </Dialog>
     </div>
   )
+}
+
+function formatVariance(days) {
+  if (days === 0) return "on baseline"
+  return `${days > 0 ? "+" : ""}${days} working days`
 }
 
 function LegendSwatch({ className, label }) {
