@@ -2,7 +2,7 @@ import { ChevronDownIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { DependencyArrows, GanttAxis, GanttRow } from "./GanttChart"
+import { DependencyArrows, GanttAxis, GanttRow, TodayLine } from "./GanttChart"
 import {
   activityCode,
   activityLabel,
@@ -53,6 +53,7 @@ export function ActivityTree({
   onProgress,
   onEditPred,
   daysPerWeek,
+  weekPx,
   projectDurationDays,
   startDate,
   calendar,
@@ -68,7 +69,7 @@ export function ActivityTree({
     ...(baseline ? ["Δ Fin"] : []),
     "Crit",
   ]
-  const scale = ganttScale(projectDurationDays, baseline, daysPerWeek)
+  const scale = ganttScale(projectDurationDays, baseline, daysPerWeek, weekPx)
   const widths = [280, 70, 170, 50, 50, 50, 70, ...(baseline ? [70] : []), 60]
   const treeWidth = widths.reduce((a, b) => a + b, 0)
   const ganttProps = {
@@ -319,6 +320,7 @@ export function ActivityTree({
             })}
           </tbody>
         </table>
+        <TodayLine scale={scale} left={treeWidth} startDate={startDate} calendar={calendar} />
         <DependencyArrows
           rows={nodes}
           dependencies={dependencies}

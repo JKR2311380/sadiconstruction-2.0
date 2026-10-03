@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
-import { AlertCircleIcon, DownloadIcon, PrinterIcon } from "lucide-react"
+import { AlertCircleIcon, DownloadIcon, PrinterIcon, ZoomInIcon, ZoomOutIcon } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,7 +30,7 @@ import { recalculate } from "@/features/scheduling/engine"
 import { can } from "@/lib/permissions"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
-import { activityCode, activityLabel as labelOf } from "./ganttHelpers"
+import { activityCode, activityLabel as labelOf, WEEK_WIDTHS } from "./ganttHelpers"
 import { ActivityCards, ActivityTree } from "./ActivityTree"
 import {
   computeProgress,
@@ -68,6 +68,7 @@ export function SchedulingPanel({ projectId }) {
     (state) => state.restoreClearwaterNetwork,
   )
   const [criticalOnly, setCriticalOnly] = useState(false)
+  const [zoom, setZoom] = useState(1)
   const [addOpen, setAddOpen] = useState(false)
   const [addMode, setAddMode] = useState("leaf")
   const [addParent, setAddParent] = useState("")
@@ -216,6 +217,7 @@ export function SchedulingPanel({ projectId }) {
     onProgress: (id, value) => setProgress(projectId, id, value),
     onEditPred: openPred,
     daysPerWeek,
+    weekPx: WEEK_WIDTHS[zoom],
     projectDurationDays: result?.ok ? result.projectDurationDays : 0,
     startDate: project?.startDate,
     calendar: schedule.calendar,
@@ -277,6 +279,24 @@ export function SchedulingPanel({ projectId }) {
             onClick={() => setCriticalOnly((value) => !value)}
           >
             Critical only
+          </Button>
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Zoom timeline out"
+            disabled={zoom === 0}
+            onClick={() => setZoom((value) => Math.max(0, value - 1))}
+          >
+            <ZoomOutIcon />
+          </Button>
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label="Zoom timeline in"
+            disabled={zoom === WEEK_WIDTHS.length - 1}
+            onClick={() => setZoom((value) => Math.min(WEEK_WIDTHS.length - 1, value + 1))}
+          >
+            <ZoomInIcon />
           </Button>
           <Button
             size="sm"

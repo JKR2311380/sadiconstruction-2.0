@@ -1,6 +1,6 @@
 import { useId } from "react"
 import { cn } from "@/lib/utils"
-import { ganttScale, scheduleDate } from "./ganttHelpers"
+import { ganttScale, scheduleDate, workingDaysElapsed } from "./ganttHelpers"
 
 function shortDate(iso) {
   return new Intl.DateTimeFormat("en-PH", {
@@ -161,11 +161,29 @@ export function DependencyArrows({
   )
 }
 
+export function TodayLine({ scale, left, startDate, calendar }) {
+  const today = new Date().toISOString().slice(0, 10)
+  const elapsed = workingDaysElapsed(startDate, calendar, today)
+  if (elapsed == null || elapsed > scale.totalDays) return null
+  return (
+    <div
+      aria-label={`Today, ${today}`}
+      className="pointer-events-none absolute top-0 bottom-0 z-[5] w-px bg-primary"
+      style={{ left: left + (elapsed / scale.totalDays) * scale.width }}
+    >
+      <span className="absolute top-1 left-1 rounded-sm bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+        Today
+      </span>
+    </div>
+  )
+}
+
 export function GanttChart(props) {
   const scale = ganttScale(
     props.projectDurationDays,
     props.baseline,
     props.daysPerWeek,
+    props.weekPx,
   )
   return (
     <section aria-label="Gantt chart" style={{ width: scale.width }}>

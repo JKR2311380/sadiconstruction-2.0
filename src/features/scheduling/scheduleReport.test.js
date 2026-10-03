@@ -72,3 +72,14 @@ describe("scheduleToCsv", () => {
     expect(csv).not.toMatch(/\d{4}-\d{2}-\d{2}/)
   })
 })
+
+describe("workingDaysElapsed", () => {
+  it("counts only working days between start and today", async () => {
+    const { workingDaysElapsed } = await import("./ganttHelpers")
+    // Mon 2026-10-05 -> Mon 2026-10-12: five working days (Mon-Fri)
+    expect(workingDaysElapsed("2026-10-05", calendar, "2026-10-12")).toBe(5)
+    expect(workingDaysElapsed("2026-10-05", calendar, "2026-10-05")).toBe(0)
+    expect(workingDaysElapsed("2026-10-05", calendar, "2026-10-01")).toBeNull()
+    expect(workingDaysElapsed(null, calendar, "2026-10-12")).toBeNull()
+  })
+})
