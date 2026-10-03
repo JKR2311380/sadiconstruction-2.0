@@ -98,6 +98,15 @@
     --phase-a: #4f46e5;
     --phase-b: #0891b2;
     --phase-c: #ca8a04;
+    --phase-d: #059669;
+    --phase-e: #c026d3;
+    --phase-f: #ea580c;
+    --phase-g: #64748b;
+    --phase-h: #db2777;
+    --phase-i: #0d9488;
+    --phase-j: #7c3aed;
+    --phase-k: #65a30d;
+    --phase-l: #0284c7;
     --critical-wash: #fdecec;
     --status-planning: #64748b;
     --status-planning-wash: color-mix(in srgb, #64748b 16%, var(--background));
@@ -147,6 +156,15 @@
     --phase-a: #818cf8;
     --phase-b: #22d3ee;
     --phase-c: #facc15;
+    --phase-d: #34d399;
+    --phase-e: #e879f9;
+    --phase-f: #fb923c;
+    --phase-g: #94a3b8;
+    --phase-h: #f472b6;
+    --phase-i: #2dd4bf;
+    --phase-j: #a78bfa;
+    --phase-k: #a3e635;
+    --phase-l: #38bdf8;
     --status-planning: #94a3b8;
     --status-planning-wash: color-mix(in srgb, #94a3b8 18%, var(--background));
     --status-active: #60a5fa;
@@ -319,4 +337,9 @@ html {
     overflow: visible !important;
     box-shadow: none !important;
   }
+}
+
+@media print {
+  .schedule-scroll { display: block !important; overflow: visible !important; }
+  .schedule-scroll + section { display: none !important; }
 }

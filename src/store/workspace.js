@@ -307,7 +307,10 @@ export const useWorkspaceStore = create(
             status: "approved",
             title: "Uploaded BOQ",
             approvedAt: new Date().toISOString(),
-            phases: parsed.phases,
+            phases: parsed.phases.map((phase) => ({
+              ...phase,
+              id: state.boqByProject[projectId]?.phases.find((existing) => existing.code === phase.code)?.id || phase.id,
+            })),
           }
           const schedule = structuredClone(ensureSchedule(state, projectId))
           syncPhaseRootsInto(schedule, boq)
@@ -552,45 +555,30 @@ export const useWorkspaceStore = create(
         }
       },
 
-      addDependency(projectId, { predecessorId, successorId, type, lagDays = 0 }) {
+      async addDependency(projectId, { predecessorId, successorId, type, lagDays = 0 }) {
+        const current = get().scheduleByProject[projectId]
+        if (predecessorId === successorId || !Number.isFinite(lagDays)) return
+        if (current.dependencies.some((dep) => dep.predecessorId === predecessorId && dep.successorId === successorId && dep.type === type)) return
+        const dep = { id: isSupabaseConfigured ? crypto.randomUUID() : uid("dep"), predecessorId, successorId, type, lagDays }
+        if (isSupabaseConfigured) await scheduleApi.saveDependency(projectId, dep)
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])
-          if (predecessorId === successorId) return {}
-          const exists = schedule.dependencies.some(
-            (dep) =>
-              dep.predecessorId === predecessorId &&
-              dep.successorId === successorId &&
-              dep.type === type,
-          )
-          if (!exists) {
-            schedule.dependencies.push({
-              id: isSupabaseConfigured ? crypto.randomUUID() : uid("dep"),
-              predecessorId,
-              successorId,
-              type,
-              lagDays,
-            })
-          }
-          return {
-            scheduleByProject: {
-              ...state.scheduleByProject,
-              [projectId]: schedule,
-            },
-          }
+          if (!schedule.dependencies.some((row) => row.predecessorId === predecessorId && row.successorId === successorId && row.type === type)) schedule.dependencies.push(dep)
+          return { scheduleByProject: { ...state.scheduleByProject, [projectId]: schedule } }
         })
-        if (isSupabaseConfigured) {
-          const deps = get().scheduleByProject[projectId]?.dependencies || []
-          const created = deps.find(
-            (dep) =>
-              dep.predecessorId === predecessorId &&
-              dep.successorId === successorId &&
-              dep.type === type,
-          )
-          if (created) void scheduleApi.saveDependency(projectId, created)
-        }
       },
 
-      clearDependencies(projectId, successorId) {
+      async removeDependency(projectId, dependencyId) {
+        if (isSupabaseConfigured) await scheduleApi.deleteDependency(projectId, dependencyId)
+        set((state) => {
+          const schedule = structuredClone(state.scheduleByProject[projectId])
+          schedule.dependencies = schedule.dependencies.filter((dep) => dep.id !== dependencyId)
+          return { scheduleByProject: { ...state.scheduleByProject, [projectId]: schedule } }
+        })
+      },
+
+      async clearDependencies(projectId, successorId) {
+        if (isSupabaseConfigured) await scheduleApi.deleteDependenciesForSuccessor(projectId, successorId)
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])
           schedule.dependencies = schedule.dependencies.filter(
@@ -603,9 +591,6 @@ export const useWorkspaceStore = create(
             },
           }
         })
-        if (isSupabaseConfigured) {
-          void scheduleApi.deleteDependenciesForSuccessor(projectId, successorId)
-        }
       },
 
       deleteScheduleNode(projectId, nodeId) {

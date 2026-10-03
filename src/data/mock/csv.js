@@ -33,7 +33,7 @@ const REQUIRED = [
   "amount",
 ]
 
-const PHASE_COLORS = ["a", "b", "c"]
+const PHASE_COLORS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
 
 export function parseBoqCsv(text) {
   const lines = String(text || "")
@@ -78,6 +78,9 @@ export function parseBoqCsv(text) {
     const quantity = Number(cells[index.quantity] || 0)
     const rate = Number(cells[index.rate] || 0)
     const amount = Number(cells[index.amount] || quantity * rate)
+    if (![quantity, rate, amount].every(Number.isFinite) || quantity < 0 || rate < 0 || amount < 0) {
+      return { ok: false, error: `Invalid quantity, rate or amount for ${cells[index.item_code] || phaseCode}. Use non-negative numbers.` }
+    }
     phaseMap.get(phaseCode).lines.push({
       id: `line-${phaseCode}-${phaseMap.get(phaseCode).lines.length + 1}`,
       itemCode: cells[index.item_code] || "",

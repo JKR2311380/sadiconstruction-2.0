@@ -2,7 +2,7 @@ import { mapCalendar, mapDependency, mapNode, nodeWritePayload } from "@/data/ma
 import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient"
 
 export async function loadNetwork(projectId) {
-  const [{ data: calendarRow, error: calendarError }, { data: nodeRows, error: nodeError }, { data: depRows, error: depError }, { data: baselineRow }] =
+  const [{ data: calendarRow, error: calendarError }, { data: nodeRows, error: nodeError }, { data: depRows, error: depError }, { data: baselineRow, error: baselineError }] =
     await Promise.all([
       supabase.from("project_calendars").select("*").eq("project_id", projectId).maybeSingle(),
       supabase
@@ -11,11 +11,13 @@ export async function loadNetwork(projectId) {
         .eq("project_id", projectId)
         .order("sort_order"),
       supabase.from("dependencies").select("*").eq("project_id", projectId),
+      supabase.from("schedule_baselines").select("*").eq("project_id", projectId).maybeSingle(),
     ])
 
   if (calendarError) throw calendarError
   if (nodeError) throw nodeError
   if (depError) throw depError
+  if (baselineError) throw baselineError
 
   return {
     calendar: calendarRow
@@ -99,3 +101,8 @@ export async function deleteNode(projectId, nodeId) {
 }
 
 export { isSupabaseConfigured }
+
+export async function deleteDependency(projectId, dependencyId) {
+  const { error } = await supabase.from("dependencies").delete().eq("project_id", projectId).eq("id", dependencyId)
+  if (error) throw error
+}
