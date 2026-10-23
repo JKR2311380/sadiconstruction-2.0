@@ -49,9 +49,18 @@ export function DocumentsPanel({ projectId }) {
   function handleFile(event) {
     const next = event.target.files?.[0]
     if (!next) return
-    if (next.size > MAX_DOCUMENT_BYTES) {
-      toast.error("File exceeds the 50 MB Free-tier maximum.")
+    const problem =
+      next.size > MAX_DOCUMENT_BYTES
+        ? "File exceeds the 50 MB Free-tier maximum."
+        : next.size === 0
+          ? "This file is empty. Choose a file with content."
+          : ""
+    if (problem) {
+      toast.error(problem)
       event.target.value = ""
+      // Drop the earlier selection too, so Upload cannot send a file that is no longer shown.
+      setTitle((current) => (current === file?.name ? "" : current))
+      setFile(null)
       return
     }
     setFile(next)
@@ -64,9 +73,13 @@ export function DocumentsPanel({ projectId }) {
       toast.error("Choose a file to upload.")
       return
     }
+    if (!title.trim()) {
+      toast.error("Enter a title for the document.")
+      return
+    }
     setPending(true)
     try {
-      await addDocument(projectId, { title, contentType, file })
+      await addDocument(projectId, { title: title.trim(), contentType: contentType.trim(), file })
       toast.success(
         isSupabaseConfigured
           ? "Document uploaded"
@@ -197,7 +210,7 @@ export function DocumentsPanel({ projectId }) {
               </Field>
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); resetForm() }}>
                 Cancel
               </Button>
               <Button type="submit" disabled={pending || !file}>

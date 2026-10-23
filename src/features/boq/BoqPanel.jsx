@@ -50,6 +50,14 @@ export function BoqPanel({ projectId }) {
 
   const total = boqGrandTotal(boq)
 
+  // Closing by any route starts the next visit from a clean dialog.
+  function closeDialog() {
+    setOpen(false)
+    setPreview(null)
+    setError("")
+    setCsv(BOQ_CSV_TEMPLATE)
+  }
+
   async function handleReplace(event) {
     event.preventDefault()
     if (!preview) {
@@ -71,9 +79,7 @@ export function BoqPanel({ projectId }) {
         return
       }
       toast.success("BOQ replaced / Phase Roots synced")
-      setOpen(false)
-      setPreview(null)
-      setError("")
+      closeDialog()
     } catch (error) {
       setError(error.message || "Could not replace the BOQ. Try again.")
     } finally {
@@ -134,11 +140,9 @@ export function BoqPanel({ projectId }) {
       <Dialog
         open={open}
         onOpenChange={(next) => {
-          if (!saving) {
-            setOpen(next)
-            setPreview(null)
-            setError("")
-          }
+          if (saving) return
+          if (next) setOpen(true)
+          else closeDialog()
         }}
       >
         <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
@@ -206,6 +210,18 @@ export function BoqPanel({ projectId }) {
                   Removed phases and their schedule activities will be deleted.
                   Retained phases keep their activities.
                 </p>
+                {preview.warnings?.length ? (
+                  <div className="rounded-md border border-border bg-muted/40 p-3 text-sm">
+                    <p className="font-medium">
+                      Check before confirming ({preview.warnings.length})
+                    </p>
+                    <ul className="mt-1 list-disc pl-5 text-muted-foreground">
+                      {preview.warnings.map((warning) => (
+                        <li key={warning}>{warning}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
                 <div className="max-h-64 overflow-auto rounded-md border border-border">
                   <Table>
                     <TableHeader>
@@ -234,10 +250,7 @@ export function BoqPanel({ projectId }) {
                 type="button"
                 variant="outline"
                 disabled={saving}
-                onClick={() => {
-                  setOpen(false)
-                  setPreview(null)
-                }}
+                onClick={closeDialog}
               >
                 Cancel
               </Button>
