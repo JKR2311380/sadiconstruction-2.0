@@ -74,11 +74,12 @@ export async function signIn(email, password) {
     staff = await staffFromUser(data.user)
   } catch {
     // Do not leave a Supabase session open without a Staff Member behind it.
-    await supabase.auth.signOut()
+    // Not awaited: sign-out takes the auth lock and must not hold up the error message.
+    void supabase.auth.signOut().catch(() => {})
     return { ok: false, error: "Could not load your Staff Member profile. Try again." }
   }
   if (!staff) {
-    await supabase.auth.signOut()
+    void supabase.auth.signOut().catch(() => {})
     return { ok: false, error: "This account has no active Staff Member profile. Ask an Admin for help." }
   }
   return { ok: true, staff }
@@ -136,10 +137,17 @@ export function onAuthChange(callback) {
   if (!isSupabaseConfigured) return () => {}
   const {
     data: { subscription },
-  } = supabase.auth.onAuthStateChange(async (event, session) => {
+  } = supabase.auth.onAuthStateChange((event, session) => {
     if (event === "TOKEN_REFRESHED") return
-    const staff = await staffFromUser(session?.user ?? null)
-    callback(staff)
+    // Supabase calls this while holding the auth lock; queries made here would wait on that
+    // lock. Defer the work so the callback returns at once (QA-044).
+    setTimeout(async () => {
+      try {
+        callback(await staffFromUser(session?.user ?? null))
+      } catch (error) {
+        console.error("Auth state change failed", error)
+      }
+    }, 0)
   })
   return () => subscription.unsubscribe()
 }
