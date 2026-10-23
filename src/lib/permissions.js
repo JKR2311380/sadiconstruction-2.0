@@ -3,6 +3,7 @@ export const ROLES = ["admin", "planner"]
 export const CAPABILITIES = {
   changeRole: ["admin"],
   createProject: ["admin", "planner"],
+  editProject: ["admin", "planner"],
   archiveProject: ["admin", "planner"],
   seedBoq: ["admin", "planner"],
   editSchedule: ["admin", "planner"],

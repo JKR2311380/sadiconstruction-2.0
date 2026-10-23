@@ -43,6 +43,17 @@ export function overallProgress(nodes) {
   )
 }
 
+/** Duration-weighted percent complete per project, from leaf rows of many projects. */
+export function progressByProject(rows) {
+  const grouped = {}
+  for (const row of rows) (grouped[row.projectId] ||= []).push(row)
+  const result = {}
+  for (const [projectId, nodes] of Object.entries(grouped)) {
+    if (nodes.some(isDriving)) result[projectId] = overallProgress(nodes)
+  }
+  return result
+}
+
 /** Snapshot of the current CPM result, stored as the schedule baseline. */
 export function makeBaseline(metrics, projectDurationDays, capturedAt = new Date().toISOString()) {
   const nodes = {}
@@ -59,7 +70,9 @@ export function finishVariance(baseline, nodeId, metrics) {
 }
 
 function csvCell(value) {
-  const text = value == null ? "" : String(value)
+  let text = value == null ? "" : String(value)
+  // Spreadsheet apps run text that starts with these characters as a formula. Numbers are left alone.
+  if (typeof value === "string" && /^[=+\-@\t\r]/.test(text)) text = `'${text}`
   return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text
 }
 

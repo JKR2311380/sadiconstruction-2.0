@@ -33,15 +33,21 @@ export function SignupPage() {
   async function handleSubmit(event) {
     event.preventDefault()
     setPending(true)
-    const result = await signUp({ email, password, fullName })
-    setPending(false)
-    if (!result.ok) {
-      setError(result.error)
-      toast.error(result.error)
-      return
+    try {
+      const result = await signUp({ email, password, fullName })
+      if (!result.ok) {
+        setError(result.error)
+        toast.error(result.error)
+        return
+      }
+      toast.success("Signed up as Planner")
+      setDone(true)
+    } catch {
+      setError("Could not create the account. Check your connection and try again.")
+      toast.error("Could not create the account. Check your connection and try again.")
+    } finally {
+      setPending(false)
     }
-    toast.success("Signed up as Planner")
-    setDone(true)
   }
 
   return (

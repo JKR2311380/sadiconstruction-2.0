@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,7 +24,7 @@ import { can } from "@/lib/permissions"
 import { cn } from "@/lib/utils"
 import { formatPhpCompact } from "@/lib/money"
 import { useSessionStore } from "@/store/session"
-import { projectExpenditure, useWorkspaceStore } from "@/store/workspace"
+import { projectExpenditure, projectProgress, useWorkspaceStore } from "@/store/workspace"
 import { StageBadge, STAGE_META, StatusDot } from "@/shared/StageBadge"
 
 const STAGE_OPTIONS = [
@@ -42,12 +42,15 @@ export function ProjectDirectory() {
   const role = useSessionStore((state) => state.staff?.role)
   const projects = useWorkspaceStore((state) => state.projects)
   const boqByProject = useWorkspaceStore((state) => state.boqByProject)
+  const scheduleByProject = useWorkspaceStore((state) => state.scheduleByProject)
+  const progressByProject = useWorkspaceStore((state) => state.progressByProject)
   const createProject = useWorkspaceStore((state) => state.createProject)
   const [stage, setStage] = useState("all")
   const [query, setQuery] = useState("")
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
   const [client, setClient] = useState("")
+  const [pending, setPending] = useState(false)
 
   useEffect(() => {
     if (params.get("new") === "1") {
@@ -79,12 +82,24 @@ export function ProjectDirectory() {
 
   async function handleCreate(event) {
     event.preventDefault()
-    const project = await createProject({ name, client })
-    toast.success(`Created ${project.code}`)
-    setOpen(false)
-    setName("")
-    setClient("")
-    navigate(`/projects/${project.id}/overview`)
+    if (pending) return
+    if (!name.trim()) {
+      toast.error("Enter a project name.")
+      return
+    }
+    setPending(true)
+    try {
+      const project = await createProject({ name: name.trim(), client: client.trim() })
+      toast.success(`Created ${project.code}`)
+      setOpen(false)
+      setName("")
+      setClient("")
+      navigate(`/projects/${project.id}/overview`)
+    } catch (error) {
+      toast.error(error.message || "Could not create the project. Try again.")
+    } finally {
+      setPending(false)
+    }
   }
 
   return (
@@ -155,6 +170,7 @@ export function ProjectDirectory() {
           <TableBody>
             {rows.map((project) => {
               const spend = projectExpenditure(project, boqByProject[project.id])
+              const progress = projectProgress({ scheduleByProject, progressByProject }, project.id)
               const priority = project.priority === 1 ? "High" : project.priority === 3 ? "Low" : "Medium"
               return (
                 <TableRow
@@ -163,7 +179,13 @@ export function ProjectDirectory() {
                   onClick={() => navigate(`/projects/${project.id}/overview`)}
                 >
                   <TableCell>
-                    <div className="font-medium">{project.name}</div>
+                    <Link
+                      to={`/projects/${project.id}/overview`}
+                      className="font-medium underline-offset-4 hover:underline focus-visible:underline"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      {project.name.trim() || project.code}
+                    </Link>
                     <div className="text-[11px] text-muted-foreground">{project.client}</div>
                   </TableCell>
                   <TableCell>{project.code}</TableCell>
@@ -171,7 +193,7 @@ export function ProjectDirectory() {
                     <StageBadge stage={project.stage} />
                   </TableCell>
                   <TableCell>{priority}</TableCell>
-                  <TableCell>{project.progressPct}%</TableCell>
+                  <TableCell>{progress == null ? "–" : `${progress}%`}</TableCell>
                   <TableCell>
                     {formatPhpCompact(spend)}
                     {project.budget ? (
@@ -198,6 +220,7 @@ export function ProjectDirectory() {
                   id="proj-name"
                   value={name}
                   onChange={(event) => setName(event.target.value)}
+                  maxLength={120}
                   required
                 />
               </Field>
@@ -217,7 +240,9 @@ export function ProjectDirectory() {
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Create</Button>
+              <Button type="submit" disabled={pending}>
+                {pending ? "Creating…" : "Create"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

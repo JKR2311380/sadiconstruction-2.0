@@ -1,4 +1,5 @@
-import { isWorkingDay, workingDateAtIndex } from "./engine/calendar"
+import { activityCode } from "@/lib/wbs"
+import { addWorkingDays, isWorkingDay, workingDateAtIndex } from "./engine/calendar"
 
 export const WEEK_WIDTHS = [56, 88, 140]
 
@@ -26,12 +27,18 @@ export function scheduleDate(startDate, index, calendar) {
   )
 }
 
-export function activityCode(node) {
-  return (
-    node?.wbsCode ||
-    (/^[A-Z](?:\.[\w-]+)*$/.test(node?.id || "") ? node.id : "")
-  )
+/** Date of the first working day of each axis week, stepping from the previous week. */
+export function weekStartDates(startDate, weeks, daysPerWeek, calendar) {
+  let date = scheduleDate(startDate, 0, calendar)
+  const dates = [date]
+  for (let i = 1; i < weeks; i += 1) {
+    date = date && addWorkingDays(date, daysPerWeek, calendar)
+    dates.push(date)
+  }
+  return dates
 }
+
+export { activityCode }
 
 export function activityLabel(node) {
   if (!node) return "Missing activity"

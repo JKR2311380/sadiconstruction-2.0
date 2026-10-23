@@ -1,0 +1,23 @@
+[OBSERVED] LIVE-LOGIN-PROFILE-FAILURE :: button="Sign in" url=/login message shown=true
+[PASS] LIVE-WORKSPACE-LOAD-FAILURE :: Load error surfaced
+[OBSERVED] LIVE-DIRECTORY-SNAPSHOT :: 7 projects: QA Beta 2026-10-06 - disposable Playwright QA PRJ-2026-006 ON HOLD Med || Clearwater Medical Center HealthFirst Systems – Plano, TX PRJ-2024-008 || 
+[OBSERVED] LIVE-CLEARWATER-BOQ-INTACT :: Clearwater BOQ phases (3): Part A – General Requirements & Prelimin | Part B – Site Works & Earthworks ₱9,619, | Part C – Concrete Works ₱135,527,300
+[OBSERVED] LIVE-CLEARWATER-SCHEDULE-ORDER-LOE :: first phase root at row 1 of 14; order: A,A.1,A.2,A.3,A.4,B,B.0,B.1,B.2,B.3,B.4,B.5,C,C.pkg; LOE cells: ["A.4 Supervision (LOE)","hammock","SS/FF span"
+[PASS] LIVE-CLEARWATER-PROGRESS-MISMATCH :: Both 0%
+[OBSERVED] LIVE-TAB-REFOCUS-REHYDRATE :: Dialog survived tab refocus; project-list requests triggered=0
+[OBSERVED] LIVE-QA-PROJECT-STATE :: ← All projects QA Beta 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bill of
+[OBSERVED] LIVE-OVERVIEW-BUDGET-FALSE-OVERRUN :: budget=Not over=undefined action=false
+[OBSERVED] LIVE-OVERVIEW-START-DATE-DEADEND :: url=/projects/9de4aee3-2efc-4805-929b-c462b12b04fd/overview date inputs=2
+[OBSERVED] LIVE-QA-SCHEDULE-STATE :: rows: ["A – QA Renamed Phase A LOCKED","A.1 A.QA Package","A.1.2 A.1.QA Followup","A.1.2 A.1.QA Durable Foundation"] | Duration 9 working days Complete 36% Longe
+[OBSERVED] LIVE-SCHEDULE-LOADING-STATE ::  2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bill of Quantities Schedu
+[OBSERVED] LIVE-SCHEDULE-LOAD-FAILURE :: ← All projects QA Beta 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bi
+[OBSERVED] LIVE-ADD-ACTIVITY-SAVE-FAILURE :: success toast=0 error toast=1 rows 4→4 afterReload=false
+[OBSERVED] LIVE-PROGRESS-SAVE-FAILURE :: errToast=1 shown=0 persisted=0 (was 0)
+[OBSERVED] LIVE-BASELINE-SAVE-FAILURE :: ok=0 err=1
+[PASS] LIVE-DEPENDENCY-SAVE-FAILURE :: Dependency failure surfaced in dialog: "QA injected failure"
+[PASS] LIVE-PERSONNEL-SAVE-FAILURE :: Personnel save failure shows a toast and keeps the dialog open
+[PASS] LIVE-CREATE-PROJECT-FAILURE :: Error surfaced
+[FAIL] LIVE-CREATE-PROJECT-NO-PENDING-STATE :: Create button is not disabled while saving; three quick clicks sent 2 insert requests, disabled=false (would create duplicate projects on a slow connecti
+[PASS] LIVE-SETTINGS-RESET-DEMO-NOOP :: Reset demo data is not offered on the live build
+[OBSERVED] LIVE-BANNER-WORDING :: Live build banner: "Synthetic demo data · Supabase session · CPM runs in the browser"
+[PASS] LIVE-SESSION-EXPIRED :: Missing session redirects to login

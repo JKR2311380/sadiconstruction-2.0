@@ -48,9 +48,17 @@ export function PersonnelPanel({ projectId }) {
 
   async function handleAdd(event) {
     event.preventDefault()
+    if (!name.trim() || !title.trim()) {
+      toast.error("Enter a name and a title.")
+      return
+    }
+    if (startDate && endDate && endDate < startDate) {
+      toast.error("End date cannot be before the start date.")
+      return
+    }
     setPending(true)
     try {
-      await addPersonnel(projectId, { name, title, startDate, endDate })
+      await addPersonnel(projectId, { name: name.trim(), title: title.trim(), startDate, endDate })
       toast.success("Personnel added")
       setOpen(false)
       resetForm()
@@ -153,11 +161,11 @@ export function PersonnelPanel({ projectId }) {
               </Field>
               <Field>
                 <FieldLabel htmlFor="per-end">End date</FieldLabel>
-                <Input id="per-end" type="date" value={endDate} onChange={(event) => setEndDate(event.target.value)} />
+                <Input id="per-end" type="date" min={startDate || undefined} value={endDate} onChange={(event) => setEndDate(event.target.value)} />
               </Field>
             </FieldGroup>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); resetForm() }}>
                 Cancel
               </Button>
               <Button type="submit" disabled={pending}>

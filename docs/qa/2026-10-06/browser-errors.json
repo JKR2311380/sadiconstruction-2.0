@@ -1,0 +1,115 @@
+[
+  {
+    "context": "guest",
+    "type": "console",
+    "message": "Failed to load resource: the server responded with a status of 400 ()"
+  },
+  {
+    "context": "guest",
+    "type": "http",
+    "status": 400,
+    "url": "https://zopdmznnwtzngedyzoei.supabase.co/auth/v1/token",
+    "body": "{\"code\":\"invalid_credentials\",\"message\":\"Invalid login credentials\"}"
+  },
+  {
+    "context": "live",
+    "type": "console",
+    "message": "Failed to load resource: the server responded with a status of 409 ()"
+  },
+  {
+    "context": "live",
+    "type": "pageerror",
+    "message": "Object"
+  },
+  {
+    "context": "live",
+    "type": "http",
+    "status": 409,
+    "url": "https://zopdmznnwtzngedyzoei.supabase.co/rest/v1/schedule_nodes",
+    "body": "{\"code\":\"23503\",\"details\":\"Key is not present in table \\\"schedule_nodes\\\".\",\"hint\":null,\"message\":\"insert or update on table \\\"schedule_nodes\\\" violates foreign key constraint \\\"schedule_nodes_parent_id_fkey\\\"\"}"
+  },
+  {
+    "context": "live",
+    "type": "console",
+    "message": "Failed to load resource: the server responded with a status of 409 ()"
+  },
+  {
+    "context": "live",
+    "type": "http",
+    "status": 409,
+    "url": "https://zopdmznnwtzngedyzoei.supabase.co/rest/v1/dependencies",
+    "body": "{\"code\":\"23503\",\"details\":\"Key is not present in table \\\"schedule_nodes\\\".\",\"hint\":null,\"message\":\"insert or update on table \\\"dependencies\\\" violates foreign key constraint \\\"dependencies_predecessor_id_fkey\\\"\"}"
+  },
+  {
+    "context": "mock",
+    "type": "pageerror",
+    "message": "Cannot read properties of undefined (reading 'subscribe')"
+  },
+  {
+    "context": "mock",
+    "type": "pageerror",
+    "message": "Cannot read properties of undefined (reading 'subscribe')"
+  },
+  {
+    "context": "mock",
+    "type": "pageerror",
+    "message": "Cannot read properties of undefined (reading 'subscribe')"
+  },
+  {
+    "context": "mock",
+    "type": "network",
+    "url": "http://127.0.0.1:5175/projects",
+    "message": "net::ERR_ABORTED"
+  },
+  {
+    "context": "demo",
+    "type": "network",
+    "url": "http://127.0.0.1:5174/projects",
+    "message": "net::ERR_ABORTED"
+  },
+  {
+    "context": "mobile",
+    "type": "pageerror",
+    "message": "Cannot read properties of undefined (reading 'subscribe')"
+  },
+  {
+    "context": "preview",
+    "type": "pageerror",
+    "message": "Cannot read properties of undefined (reading 'subscribe')"
+  },
+  {
+    "context": "mock",
+    "type": "network",
+    "url": "http://127.0.0.1:5175/projects",
+    "message": "net::ERR_ABORTED"
+  },
+  {
+    "context": "preview",
+    "type": "console",
+    "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+  },
+  {
+    "context": "preview",
+    "type": "http",
+    "status": 503,
+    "url": "https://zopdmznnwtzngedyzoei.supabase.co/rest/v1/schedule_nodes",
+    "body": "{\"message\":\"QA injected unavailable service\",\"code\":\"QA503\"}"
+  },
+  {
+    "context": "preview",
+    "type": "pageerror",
+    "message": "Object"
+  },
+  {
+    "context": "signupLive",
+    "type": "console",
+    "message": "Failed to load resource: the server responded with a status of 400 ()"
+  },
+  {
+    "context": "signupLive",
+    "type": "http",
+    "status": 400,
+    "url": "https://zopdmznnwtzngedyzoei.supabase.co/auth/v1/signup",
+    "body": "{\"code\":\"email_address_invalid\",\"message\":\"Email address \\\"qa.beta.20261006@example.com\\\" is invalid\"}"
+  }
+]

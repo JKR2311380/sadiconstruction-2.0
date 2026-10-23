@@ -1,4 +1,5 @@
 import { mapCalendar, mapDependency, mapNode, nodeWritePayload } from "@/data/map"
+import { orderNodes } from "@/lib/wbs"
 import { isSupabaseConfigured, supabase } from "@/lib/supabaseClient"
 
 export async function loadNetwork(projectId) {
@@ -28,7 +29,8 @@ export async function loadNetwork(projectId) {
           hoursPerDay: 8,
           exceptions: [],
         },
-    nodes: (nodeRows ?? []).map(mapNode),
+    // sort_order is per sibling, so rows must be arranged into tree order here.
+    nodes: orderNodes((nodeRows ?? []).map(mapNode)),
     dependencies: (depRows ?? []).map(mapDependency),
     baseline: baselineRow
       ? {
@@ -41,6 +43,31 @@ export async function loadNetwork(projectId) {
   }
 }
 
+/** Leaf rows of every listed project, for directory progress. Paged: requests return at most 1000 rows. */
+export async function loadLeafProgress(projectIds) {
+  if (!projectIds.length) return []
+  const rows = []
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await supabase
+      .from("schedule_nodes")
+      .select("id, project_id, is_loe, duration_days, progress_pct")
+      .in("project_id", projectIds)
+      .eq("node_kind", "leaf")
+      .order("id")
+      .range(from, from + 999)
+    if (error) throw error
+    rows.push(...data)
+    if (data.length < 1000) break
+  }
+  return rows.map((row) => ({
+    projectId: row.project_id,
+    kind: "leaf",
+    isLoe: Boolean(row.is_loe),
+    durationDays: Number(row.duration_days ?? 0),
+    progressPct: Number(row.progress_pct ?? 0),
+  }))
+}
+
 export async function syncPhaseRoots(projectId) {
   const { error } = await supabase.rpc("sync_phase_roots", { p_project_id: projectId })
   if (error) throw error
@@ -50,6 +77,16 @@ export async function saveNode(projectId, node) {
   const { error } = await supabase.from("schedule_nodes").upsert(nodeWritePayload(projectId, node), {
     onConflict: "id",
   })
+  if (error) throw error
+}
+
+/** Writes only the given columns, so two quick edits to one node cannot overwrite each other. */
+export async function updateNode(projectId, nodeId, patch) {
+  const { error } = await supabase
+    .from("schedule_nodes")
+    .update(patch)
+    .eq("project_id", projectId)
+    .eq("id", nodeId)
   if (error) throw error
 }
 

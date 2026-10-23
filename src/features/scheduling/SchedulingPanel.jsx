@@ -27,7 +27,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { recalculate } from "@/features/scheduling/engine"
+import { ConfirmDialog } from "@/components/ConfirmDialog"
+import { NeuSkeleton } from "@/components/NeuSkeleton"
 import { can } from "@/lib/permissions"
+import { MAX_DAYS } from "@/lib/utils"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
 import { activityCode, activityLabel as labelOf, WEEK_WIDTHS } from "./ganttHelpers"
@@ -52,12 +55,22 @@ export function SchedulingPanel({ projectId }) {
   const project = useWorkspaceStore((state) =>
     state.projects.find((row) => row.id === projectId),
   )
+  const networkStatus = useWorkspaceStore(
+    (state) => state.networkStatusByProject[projectId],
+  )
+  const ensureNetwork = useWorkspaceStore((state) => state.ensureNetwork)
   const toggleNodeOpen = useWorkspaceStore((state) => state.toggleNodeOpen)
   const selectNode = useWorkspaceStore((state) => state.selectNode)
   const setDuration = useWorkspaceStore((state) => state.setDuration)
   const setProgress = useWorkspaceStore((state) => state.setProgress)
   const setBaseline = useWorkspaceStore((state) => state.setBaseline)
   const addScheduleNode = useWorkspaceStore((state) => state.addScheduleNode)
+  const renameScheduleNode = useWorkspaceStore(
+    (state) => state.renameScheduleNode,
+  )
+  const deleteScheduleNode = useWorkspaceStore(
+    (state) => state.deleteScheduleNode,
+  )
   const addDependency = useWorkspaceStore((state) => state.addDependency)
   const removeDependency = useWorkspaceStore((state) => state.removeDependency)
   const clearDependencies = useWorkspaceStore(
@@ -74,6 +87,12 @@ export function SchedulingPanel({ projectId }) {
   const [addParent, setAddParent] = useState("")
   const [addName, setAddName] = useState("")
   const [addDur, setAddDur] = useState("5")
+  const [addSaving, setAddSaving] = useState(false)
+  const [renameOpen, setRenameOpen] = useState(false)
+  const [renameName, setRenameName] = useState("")
+  const [renameSaving, setRenameSaving] = useState(false)
+  const [confirm, setConfirm] = useState(null)
+  const [baselineSaving, setBaselineSaving] = useState(false)
   const [predOpen, setPredOpen] = useState(false)
   const [predTarget, setPredTarget] = useState(null)
   const [predId, setPredId] = useState("")
@@ -93,16 +112,31 @@ export function SchedulingPanel({ projectId }) {
     [schedule],
   )
 
-  if (!schedule)
+  if (!schedule && networkStatus === "error")
     return (
       <Empty>
         <EmptyHeader>
-          <EmptyTitle>No schedule yet</EmptyTitle>
+          <EmptyTitle>Could not load the schedule</EmptyTitle>
           <EmptyDescription>
-            Load an approved BOQ to establish project phases.
+            The schedule is unchanged. Check your connection and try again.
           </EmptyDescription>
         </EmptyHeader>
+        <Button type="button" onClick={() => void ensureNetwork(projectId)}>
+          Retry
+        </Button>
       </Empty>
+    )
+  if (!schedule)
+    return (
+      <div
+        className="flex flex-col gap-2 p-4"
+        aria-busy="true"
+        aria-label="Loading schedule"
+      >
+        <NeuSkeleton className="h-11" />
+        <NeuSkeleton className="h-11" />
+        <NeuSkeleton className="h-11" />
+      </div>
     )
   const roots = schedule.nodes.filter((node) => node.kind === "phase_root")
   const byId = new Map(schedule.nodes.map((node) => [node.id, node]))
@@ -157,6 +191,51 @@ export function SchedulingPanel({ projectId }) {
       (!criticalOnly ||
         (cycle ? node.kind === "phase_root" : hasCritical(node))),
   )
+  const selected = byId.get(schedule.selectedId)
+  const canChangeSelected =
+    Boolean(selected) && !selected.locked && selected.kind !== "phase_root"
+  // The demo cycle is hard-coded to two Clearwater seed activities.
+  const hasDemoNetwork = byId.has("B.2") && byId.has("B.3")
+  function askDelete() {
+    const ids = new Set([selected.id])
+    let grew = true
+    while (grew) {
+      grew = false
+      for (const node of nodes) {
+        if (ids.has(node.parentId) && !ids.has(node.id)) {
+          ids.add(node.id)
+          grew = true
+        }
+      }
+    }
+    const links = schedule.dependencies.filter(
+      (dep) => ids.has(dep.predecessorId) || ids.has(dep.successorId),
+    ).length
+    const id = selected.id
+    setConfirm({
+      title: `Delete ${labelOf(selected)}?`,
+      description: `This permanently deletes it${ids.size > 1 ? `, the ${ids.size - 1} activities under it` : ""}${links ? ` and ${links} dependency ${links === 1 ? "link" : "links"}` : ""}. This cannot be undone.`,
+      label: "Delete",
+      run: () =>
+        deleteScheduleNode(projectId, id)
+          .then(() => toast.success("Activity deleted"))
+          .catch(() => toast.error("Activity was not deleted. Try again.")),
+    })
+  }
+  async function submitRename(event) {
+    event.preventDefault()
+    if (renameSaving) return
+    setRenameSaving(true)
+    try {
+      await renameScheduleNode(projectId, selected.id, renameName)
+      setRenameOpen(false)
+      toast.success("Activity renamed")
+    } catch {
+      toast.error("The new name was not saved. Try again.")
+    } finally {
+      setRenameSaving(false)
+    }
+  }
   function openAdd(mode) {
     setAddMode(mode)
     setAddName("")
@@ -213,8 +292,14 @@ export function SchedulingPanel({ projectId }) {
     editable,
     onSelect: (id) => selectNode(projectId, id),
     onToggle: (id) => toggleNodeOpen(projectId, id),
-    onDuration: (id, value) => setDuration(projectId, id, value),
-    onProgress: (id, value) => setProgress(projectId, id, value),
+    onDuration: (id, value) =>
+      setDuration(projectId, id, value).catch(() =>
+        toast.error("Duration was not saved. The previous value is restored."),
+      ),
+    onProgress: (id, value) =>
+      setProgress(projectId, id, value).catch(() =>
+        toast.error("Progress was not saved. The previous value is restored."),
+      ),
     onEditPred: openPred,
     daysPerWeek,
     weekPx: WEEK_WIDTHS[zoom],
@@ -234,6 +319,37 @@ export function SchedulingPanel({ projectId }) {
       )
     } finally {
       setPredSaving(false)
+    }
+  }
+  async function saveBaseline(next, message) {
+    if (baselineSaving) return
+    setBaselineSaving(true)
+    try {
+      await setBaseline(projectId, next)
+      toast.success(message)
+    } catch {
+      toast.error("Baseline was not saved. Try again.")
+    } finally {
+      setBaselineSaving(false)
+    }
+  }
+  async function submitAdd(event) {
+    event.preventDefault()
+    if (addSaving) return
+    setAddSaving(true)
+    try {
+      await addScheduleNode(projectId, {
+        parentId: addParent,
+        kind: addMode,
+        name: addName.trim(),
+        durationDays: Number(addDur),
+      })
+      setAddOpen(false)
+      toast.success("Activity added")
+    } catch {
+      toast.error("Activity was not saved. Try again.")
+    } finally {
+      setAddSaving(false)
     }
   }
   return (
@@ -313,7 +429,7 @@ export function SchedulingPanel({ projectId }) {
           </Button>
           {editable ? (
             <>
-              {demo ? (
+              {demo && hasDemoNetwork ? (
                 <Button
                   size="sm"
                   variant="outline"
@@ -325,15 +441,17 @@ export function SchedulingPanel({ projectId }) {
               <Button
                 size="sm"
                 variant="outline"
-                disabled={Boolean(cycle) || !leaves.length}
+                disabled={Boolean(cycle) || !leaves.length || baselineSaving}
                 onClick={() => {
-                  setBaseline(
-                    projectId,
-                    makeBaseline(metrics, result.projectDurationDays),
-                  )
-                  toast.success(
-                    baseline ? "Baseline replaced" : "Baseline saved",
-                  )
+                  const next = makeBaseline(metrics, result.projectDurationDays)
+                  if (!baseline) return saveBaseline(next, "Baseline saved")
+                  setConfirm({
+                    title: "Replace the baseline?",
+                    description:
+                      "The current baseline is overwritten with the dates shown now. There is only one baseline and this cannot be undone.",
+                    label: "Re-baseline",
+                    run: () => saveBaseline(next, "Baseline replaced"),
+                  })
                 }}
               >
                 {baseline ? "Re-baseline" : "Set baseline"}
@@ -342,11 +460,42 @@ export function SchedulingPanel({ projectId }) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => setBaseline(projectId, null)}
+                  disabled={baselineSaving}
+                  onClick={() =>
+                    setConfirm({
+                      title: "Clear the baseline?",
+                      description:
+                        "Baseline bars and finish variances are removed. This cannot be undone.",
+                      label: "Clear baseline",
+                      run: () => saveBaseline(null, "Baseline cleared"),
+                    })
+                  }
                 >
                   Clear baseline
                 </Button>
               ) : null}
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={!canChangeSelected}
+                title="Select an activity or summary first"
+                onClick={() => {
+                  setRenameName(selected.name)
+                  setRenameOpen(true)
+                }}
+              >
+                Rename
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-destructive"
+                disabled={!canChangeSelected}
+                title="Select an activity or summary first"
+                onClick={askDelete}
+              >
+                Delete
+              </Button>
               <Button
                 size="sm"
                 variant="outline"
@@ -388,11 +537,19 @@ export function SchedulingPanel({ projectId }) {
                 </Button>
               ))}
             </span>
-            {editable && demo ? (
+            {editable && demo && hasDemoNetwork ? (
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => restoreClearwaterNetwork(projectId)}
+                onClick={() =>
+                  setConfirm({
+                    title: "Restore the demo schedule?",
+                    description:
+                      "The whole schedule is replaced with the Clearwater seed. Activities and links you added are removed.",
+                    label: "Fix network",
+                    run: () => restoreClearwaterNetwork(projectId),
+                  })
+                }
               >
                 Fix network
               </Button>
@@ -464,20 +621,7 @@ export function SchedulingPanel({ projectId }) {
               {addMode === "summary" ? "Add nested summary" : "Add activity"}
             </DialogTitle>
           </DialogHeader>
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={(event) => {
-              event.preventDefault()
-              addScheduleNode(projectId, {
-                parentId: addParent,
-                kind: addMode,
-                name: addName.trim(),
-                durationDays: Number(addDur),
-              })
-              setAddOpen(false)
-              toast.success("Activity added")
-            }}
-          >
+          <form className="flex flex-col gap-4" onSubmit={submitAdd}>
             <FieldGroup>
               <Field>
                 <FieldLabel>Under</FieldLabel>
@@ -515,6 +659,8 @@ export function SchedulingPanel({ projectId }) {
                     required
                     type="number"
                     min="0"
+                    max={MAX_DAYS}
+                    step="1"
                     value={addDur}
                     onChange={(event) => setAddDur(event.target.value)}
                   />
@@ -529,13 +675,62 @@ export function SchedulingPanel({ projectId }) {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={!addParent || !addName.trim()}>
-                Add
+              <Button
+                type="submit"
+                disabled={!addParent || !addName.trim() || addSaving}
+              >
+                {addSaving ? "Adding..." : "Add"}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
+      <Dialog open={renameOpen} onOpenChange={setRenameOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Rename activity</DialogTitle>
+          </DialogHeader>
+          <form className="flex flex-col gap-4" onSubmit={submitRename}>
+            <Field>
+              <FieldLabel htmlFor="rename-name">Name</FieldLabel>
+              <Input
+                id="rename-name"
+                required
+                value={renameName}
+                onChange={(event) => setRenameName(event.target.value)}
+              />
+            </Field>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setRenameOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={!renameName.trim() || renameSaving}
+              >
+                {renameSaving ? "Saving..." : "Save"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <ConfirmDialog
+        open={Boolean(confirm)}
+        onOpenChange={(open) => {
+          if (!open) setConfirm(null)
+        }}
+        title={confirm?.title}
+        description={confirm?.description}
+        confirmLabel={confirm?.label}
+        onConfirm={() => {
+          confirm?.run()
+          setConfirm(null)
+        }}
+      />
       <Dialog
         open={predOpen}
         onOpenChange={(open) => {
@@ -626,11 +821,14 @@ export function SchedulingPanel({ projectId }) {
                 id="pred-lag"
                 type="number"
                 step="1"
+                min={-MAX_DAYS}
+                max={MAX_DAYS}
                 value={predLag}
                 onChange={(event) => setPredLag(event.target.value)}
               />
               <p className="text-xs text-muted-foreground">
-                Positive values delay the link; negative values allow overlap.
+                Whole days. Positive values delay the link; negative values
+                allow overlap.
               </p>
             </Field>
           </FieldGroup>
@@ -662,7 +860,8 @@ export function SchedulingPanel({ projectId }) {
                 predSaving ||
                 !predId ||
                 !predLag.trim() ||
-                !Number.isFinite(Number(predLag)) ||
+                !Number.isInteger(Number(predLag)) ||
+                Math.abs(Number(predLag)) > MAX_DAYS ||
                 incoming.some(
                   (dep) =>
                     dep.predecessorId === predId && dep.type === predType,

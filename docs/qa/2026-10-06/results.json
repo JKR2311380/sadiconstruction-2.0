@@ -1,0 +1,900 @@
+[
+  {
+    "id": "AUTH-DEMO-PLANNER",
+    "status": "PASS",
+    "details": {
+      "url": "http://127.0.0.1:5174/projects",
+      "evidence": "evidence/demo-projects.png"
+    }
+  },
+  {
+    "id": "LIVE-AUTH-PLANNER",
+    "status": "PASS",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects",
+      "evidence": "evidence/live-project-directory.png"
+    }
+  },
+  {
+    "id": "LIVE-DIRECTORY-SEARCH",
+    "status": "PASS",
+    "details": "Search narrowed six projects to Clearwater"
+  },
+  {
+    "id": "LIVE-TAB-Overview",
+    "status": "OBSERVED",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects/c1ea7a7e-2024-0008-a000-000000000001/overview",
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nCritical path finish\nNo activities\nSchedule complete\nNo activities\nBudget\n₱395,105,259\nApproved BOQ\n₱158,989,757\nBudget versus BOQ\n\n₱236,115,502 remaining against the approved BOQ.\n\nExpenditure: ₱158,989,757 / Derived from BOQ lines / 7 personnel\n\nPlano, TX / PH delivery team\n\nNext actions\nAdd activities and predecessor links\nUpcoming critical activities\n\nAdd activities to calculate the critical path.",
+      "evidence": "evidence/live-overview.png"
+    }
+  },
+  {
+    "id": "LIVE-TAB-Key Personnel",
+    "status": "OBSERVED",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects/c1ea7a7e-2024-0008-a000-000000000001/personnel",
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nAdd person\nNAME\tROLE ON PROJECT\tSTART\tEND\t\nEmhil Joseph\tProject Manager\t2025-11-01\t—\tRemove\nNina Santos\tQuantity Surveyor\t2025-12-01\t—\tRemove\nMarco Dela Peña\tSafety Officer\t2026-01-15\t—\tRemove\nLara Cruz\tSite Engineer\t2026-01-15\t—\tRemove\nOwen Reyes\tDocument Controller\t2026-02-01\t—\tRemove\nPriya Tan\tScheduler\t2026-03-01\t—\tRemove\nQuinn Lim\tQA/QC\t2026-04-01\t—\tRemove",
+      "evidence": "evidence/live-key-personnel.png"
+    }
+  },
+  {
+    "id": "LIVE-TAB-Documents",
+    "status": "OBSERVED",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects/c1ea7a7e-2024-0008-a000-000000000001/documents",
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nUpload document\nDOCUMENT\tTYPE\tUPDATED\t\nCompsor1.pdf\tEngineering\t2026-10-03\tOpenArchive\nStructural plans – Rev C\tEngineering\t2026-09-19\tOpenArchive\nBuilding permit BP-8821\tPermit\t2026-09-19\tOpenArchive\nSafety plan SP-04\tHSE\t2026-09-19\tOpenArchive\nApproved BOQ PDF\tCommercial\t2026-09-19\tOpenArchive",
+      "evidence": "evidence/live-documents.png"
+    }
+  },
+  {
+    "id": "LIVE-TAB-Bill of Quantities",
+    "status": "OBSERVED",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects/c1ea7a7e-2024-0008-a000-000000000001/boq",
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\n\nView-only · Grand total ₱158,989,757\n\nReplace via CSV\nITEM\tDESCRIPTION\tUNIT\tQTY\tAMOUNT\nPart A – General Requirements & Preliminaries\t₱13,843,422\nA.1\tMobilization & Demobilization\tlot\t1\t₱1,835,414\nA.2\tTemporary Facilities & Site Office\tlot\t1\t₱834,391\nA.3\tProject Signage & Safety Barricades\tlot\t1\t₱345,159\nA.4\tProject Management & Supervision\tmo\t18\t₱10,828,458\nPart B – Site Works & Earthworks\t₱9,619,035\nB.1\tSite Clearing & Grubbing\tm²\t9,027\t₱767,295\nB.2\tExcavation Works (Bulk)\tm³\t15,176\t₱4,856,320\nB.3\tBackfilling & Compaction\tm³\t4,298\t₱1,283,440\nB.4\tGravel Fill Bedding (100mm)\tm³\t1,689\t₱2,449,050\nB.5\tDewatering Works\tlot\t1\t₱262,930\nPart C – Concrete Works\t₱135,527,300\nC\tConcrete Works (package aggregate)\tlot\t1\t₱135,527,300",
+      "evidence": "evidence/live-bill-of-quantities.png"
+    }
+  },
+  {
+    "id": "LIVE-TAB-Scheduling",
+    "status": "OBSERVED",
+    "details": {
+      "url": "http://127.0.0.1:5173/projects/c1ea7a7e-2024-0008-a000-000000000001/scheduling",
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nRetained Logic / Mon-Sat / 13 holidays\nA – General Requirements & Preliminaries\nB – Site Works & Earthworks\nC – Concrete Works\nCritical\nCritical only\nExport CSV\nPrint\nSet baseline\n+ Nested summary\n+ Activity\nWBS / NAME\tDUR\tPRED\tES\tEF\tTF\t%\tCRIT\t\nJan 5\nJan 12\nJan 19\nJan 26\nFeb 2\nFeb 9\nFeb 16\nFeb 23\nMar 2\nMar 9\nMar 16\nMar 23\nMar 30\nApr 8\nApr 16\nApr 23\nApr 30\nMay 8\nMay 15\nMay 22\nMay 29\nJun 5\nJun 13\nJun 20\nJun 27\nJul 4\nJul 11\nJul 18\nJul 25\nAug 1\nAug 8\nAug 15\nAug 24\nSep 1\nSep 8\nSep 15\nSep 22\nSep 29\nOct 6\nOct 13\n\n\nC.pkg C Concrete package (aggregate)\n\t\t\nB.4 FS, B.5 FS\n\t112\t232\t0\t\tYES\t\n\n\nB.1 Site Clearing & Grubbing\n\t\t\nA.2 FS, A.3 FS\n\t25\t37\t0\t\tYES\t\n\n\nB.0 Earthworks package\n\t–\t–\t25\t112\t–\t0%\t–\t\n\n\nA.1 Mobilization & Demobilization\n\t\t\n–\n\t0\t10\t0\t\tYES\t\n\n\nA – General Requirements & Preliminaries\nLOCKED\n\t–\t–\t0\t25\t–\t0%\t–\t\n\n\nB.2 Excavation Works (Bulk)\n\t\t\nB.1 FS\n\t37\t82\t0\t\tYES\t\n\n\nB – Site Works & Earthworks\nLOCKED\n\t–\t–\t25\t112\t–\t0%\t–\t\n\n\nA.2 Temporary Facilities\n\t\t\nA.1 FS\n\t10\t25\t0\t\tYES\t\n\n\nB.3 Backfilling & Compaction\n\t\t\nB.2 FS\n\t82\t102\t0\t\tYES\t\n\n\nA.3 Signage & Barricades\n\t\t\nA.1 FS\n\t10\t15\t10\t\t–\t\n\n\nC – Concrete Works\nLOCKED\n\t–\t–\t112\t232\t–\t0%\t–\t\n\n\nB.4 Gravel Fill Bedding\n\t\t\nB.3 FS\n\t102\t112\t0\t\tYES\t\n\n\nA.4 Supervision (LOE)\n\thammock\tSS/FF span\t0\t0\t–\t–\t–\t\n\n\nB.5 Dewatering Works\n\t\t\nB.1 FS\n\t37\t57\t55\t\t–\t\nToday\nDuration 232 working days\nComplete 0%\nLongest path A.1 / A.2 / B.1 / B.2 / B.3 / B.4 / C.pkg",
+      "evidence": "evidence/live-scheduling.png"
+    }
+  },
+  {
+    "id": "MOCK-AUTH-PLANNER",
+    "status": "PASS",
+    "details": "Mock confirmed by banner and absence of Supabase auth storage"
+  },
+  {
+    "id": "LIVE-AUTH-ADMIN",
+    "status": "PASS",
+    "details": "Seeded Admin reaches Projects"
+  },
+  {
+    "id": "AUTH-PROTECTED-REDIRECT",
+    "status": "PASS",
+    "details": "Guest /settings redirects to /login"
+  },
+  {
+    "id": "AUTH-INVALID-LOGIN",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/invalid-login.png"
+    }
+  },
+  {
+    "id": "AUTH-EMAIL-VALIDATION",
+    "status": "PASS",
+    "details": "Malformed email blocked"
+  },
+  {
+    "id": "AUTH-PASSWORD-VISIBILITY",
+    "status": "PASS",
+    "details": "Show/hide works"
+  },
+  {
+    "id": "PUBLIC-LANDING",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/landing-desktop.png",
+      "buttons": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        " Replay",
+        "",
+        ""
+      ]
+    }
+  },
+  {
+    "id": "PUBLIC-SIGNUP-CTA",
+    "status": "PASS",
+    "details": "Landing signup CTA navigates correctly"
+  },
+  {
+    "id": "PUBLIC-SIGNUP-REQUIRED",
+    "status": "PASS",
+    "details": "Empty fields fail validation"
+  },
+  {
+    "id": "MOCK-FILTER-Active",
+    "status": "PASS",
+    "details": "2 projects"
+  },
+  {
+    "id": "MOCK-FILTER-Delayed",
+    "status": "PASS",
+    "details": "1 projects"
+  },
+  {
+    "id": "MOCK-FILTER-Planning",
+    "status": "PASS",
+    "details": "1 projects"
+  },
+  {
+    "id": "MOCK-FILTER-On Hold",
+    "status": "PASS",
+    "details": "1 projects"
+  },
+  {
+    "id": "MOCK-FILTER-Completed",
+    "status": "PASS",
+    "details": "1 projects"
+  },
+  {
+    "id": "MOCK-FILTER-All",
+    "status": "PASS",
+    "details": "6 projects"
+  },
+  {
+    "id": "MOCK-DIRECTORY-NOMATCH",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('No projects match', { exact: true }) to be visible\u001b[22m\n\u001b[2m    - waiting for \"http://127.0.0.1:5175/projects\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5175/projects\"\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-OVERVIEW-AFTER-NETWORK",
+    "status": "PASS",
+    "details": {
+      "text": "← All projects\nClearwater Medical Center\n\nPRJ-2024-008 · HealthFirst Systems – Plano, TX · Updated Sep 20, 2026\n\nACTIVE\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nCritical path finish\nOct 9, 2026\nSchedule complete\n0%\nBudget\n₱395,105,259\nApproved BOQ\n₱158,989,757\nBudget versus BOQ\n\n₱236,115,502 remaining against the approved BOQ.\n\nExpenditure: ₱158,989,757 / Derived from BOQ lines / 7 personnel\n\nPlano, TX / PH delivery team\n\nNext actions\nCapture a baseline before tracking schedule changes\nUpcoming critical activities\nA.1 Mobilization & Demobilization\n0%\nA.2 Temporary Facilities\n0%\nB.1 Site Clearing & Grubbing\n0%",
+      "evidence": "evidence/live-overview-loaded.png"
+    }
+  },
+  {
+    "id": "LIVE-PROJECT-CREATE-VALIDATION",
+    "status": "PASS",
+    "details": "Missing project name blocked"
+  },
+  {
+    "id": "LIVE-PROJECT-CREATE",
+    "status": "PASS",
+    "details": {
+      "projectId": "9de4aee3-2efc-4805-929b-c462b12b04fd",
+      "text": "← All projects\nQA Beta 2026-10-06 - disposable\n\nPRJ-2026-006 · Playwright QA · Updated Oct 6, 2026\n\nPLANNING\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nCritical path finish\nNo activities\nSchedule complete\nNo activities\nBudget\n₱0\nApproved BOQ\nNot loaded\nBudget versus BOQ\n\nLoad a BOQ and set a budget to compare costs.\n\nExpenditure: ₱0 / Derived from BOQ lines / 0 personnel\n\nNext actions\nLoad an approved BOQ to establish project phases\nAdd activities and predecessor links\nSet the project start date in project details\nAssign key project personnel\nUpcoming critical activities\n\nAdd activities to calculate the critical path.",
+      "evidence": "evidence/qa-new-project.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-BOQ-GATE",
+    "status": "PASS",
+    "details": "No BOQ blocks activity creation"
+  },
+  {
+    "id": "LIVE-BOQ-MALFORMED",
+    "status": "PASS",
+    "details": "Malformed header rejected"
+  },
+  {
+    "id": "LIVE-BOQ-NEGATIVE",
+    "status": "PASS",
+    "details": "Negative quantity rejected"
+  },
+  {
+    "id": "LIVE-BOQ-PREVIEW",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-boq-preview.png"
+    }
+  },
+  {
+    "id": "LIVE-BOQ-IMPORT",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-boq-imported.png"
+    }
+  },
+  {
+    "id": "LIVE-BOQ-SEEDS-ROOTS",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-phase-roots.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-ADD-SUMMARY",
+    "status": "PASS",
+    "details": "Nested summary created under Phase A"
+  },
+  {
+    "id": "LIVE-SCHEDULE-ADD-LEAF",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-activities-created.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-FS-LAG",
+    "status": "FAIL",
+    "details": "locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByRole('button', { name: 'Done', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled data-slot=\"button\" data-size=\"default\" data-variant=\"outline\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-2xl bg-clip-padding text-sm font-medium whitespace-nowrap outline-none select-none transition-[background-color,box-shadow,color] duration-160 focus-visible:ring-2 focus-visible:ring-ring/55 disabled:pointer-events-none disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-destructive/30 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([…>Done</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    13 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SCHEDULE-BASELINE",
+    "status": "FAIL",
+    "details": "locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Set baseline', exact: true })\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SCHEDULE-DURATION-RECALC",
+    "status": "FAIL",
+    "details": "locator.fill: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: /QA Foundation duration in working days/ })\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SCHEDULE-PROGRESS",
+    "status": "FAIL",
+    "details": "locator.fill: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('spinbutton', { name: /QA Foundation progress/ })\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SCHEDULE-PERSIST-RELOAD",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Re-baseline', exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SCHEDULE-CRITICAL-FILTER",
+    "status": "PASS",
+    "details": "Critical-only toggles"
+  },
+  {
+    "id": "LIVE-SCHEDULE-COLLAPSE",
+    "status": "FAIL",
+    "details": "Expanded child missing"
+  },
+  {
+    "id": "LIVE-SCHEDULE-ZOOM",
+    "status": "PASS",
+    "details": {
+      "before": 976,
+      "after": 1080
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-RAPID-ADD-DATALOSS",
+    "status": "FAIL",
+    "details": {
+      "evidence": "evidence/qa-after-rapid-add-reload.png",
+      "body": "← All projects\nQA Beta 2026-10-06 - disposable\n\nPRJ-2026-006 · Playwright QA · Updated Oct 6, 2026\n\nPLANNING\nOverview\nKey Personnel\nDocuments\nBill of Quantities\nScheduling\nRetained Logic / Mon-Sat / 13 holidays\nA – QA Phase A\nB – QA Phase B\nCritical\nCritical only\nExport CSV\nPrint\nSet baseline\n+ Nested summary\n+ Activity\nWBS / NAME\tDUR\tPRED\tES\tEF\tTF\t%\tCRIT\t\nWeek 1\nWeek 2\n\n\nA.1 A.QA Package\n\t–\t–\t0\t3\t–\t0%\t–\t\n\n\nA – QA Phase A\nLOCKED\n\t–\t–\t0\t3\t–\t0%\t–\t\n\n\nB – QA Phase B\nLOCKED\n\t–\t–\t0\t0\t–\t0%\t–\t\nDuration 3 working days\nComplete 0%\nLongest path A.1.2",
+      "reason": "Rapidly adding summary then children showed success, but one child failed parent foreign key and disappeared after reload."
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-ADD-PERSISTED",
+    "status": "PASS",
+    "details": "Waiting for server response before proceeding preserves new activity"
+  },
+  {
+    "id": "LIVE-SCHEDULE-FS-LAG",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-fs-lag-persisted.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-BASELINE",
+    "status": "PASS",
+    "details": "Baseline captured at 10 days"
+  },
+  {
+    "id": "LIVE-SCHEDULE-DURATION-RECALC",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-duration-baseline-persisted.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-PROGRESS",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-progress-persisted.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-PERSIST-RELOAD",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-schedule-reloaded.png"
+    }
+  },
+  {
+    "id": "LIVE-ADMIN-STAFF-LIST",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/live-admin-settings.png",
+      "staffCount": 2
+    }
+  },
+  {
+    "id": "MOCK-DIRECTORY-NOMATCH",
+    "status": "PASS",
+    "details": "No-match state passes after dev-server reload stabilized"
+  },
+  {
+    "id": "SHELL-COMMAND-KEYBOARD",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog') to be visible\u001b[22m\n\u001b[2m    - waiting for \"http://127.0.0.1:5175/projects\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5175/projects\"\u001b[22m\n"
+  },
+  {
+    "id": "SHELL-THEME-PERSIST",
+    "status": "PASS",
+    "details": "Theme survives reload"
+  },
+  {
+    "id": "SHELL-HELP-FAQ",
+    "status": "PASS",
+    "details": "Help opens, FAQ expands, full FAQ navigates"
+  },
+  {
+    "id": "PLANNER-ROLE-CONTROLS-HIDDEN",
+    "status": "PASS",
+    "details": "Planner Settings has no role editor"
+  },
+  {
+    "id": "MOCK-ADMIN-LOGIN",
+    "status": "PASS",
+    "details": "Mock Admin sign-in works"
+  },
+  {
+    "id": "MOCK-LAST-ADMIN-PROTECTION",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/last-admin-protection.png"
+    }
+  },
+  {
+    "id": "MOCK-ROLE-PROMOTE-DEMOTE",
+    "status": "PASS",
+    "details": "Promotion and demotion work in isolated mock"
+  },
+  {
+    "id": "LIVE-PERSONNEL-EMPTY",
+    "status": "PASS",
+    "details": "Empty personnel state shown"
+  },
+  {
+    "id": "LIVE-PERSONNEL-REQUIRED",
+    "status": "PASS",
+    "details": "Missing name blocks submit"
+  },
+  {
+    "id": "LIVE-PERSONNEL-ADD",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('cell', { name: 'QA Person', exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-PERSONNEL-DATE-ORDER",
+    "status": "FAIL",
+    "details": "Accepted end date Oct 1 before start date Oct 30; evidence/qa-personnel-reversed-dates.png"
+  },
+  {
+    "id": "LIVE-PERSONNEL-REMOVE-CANCEL",
+    "status": "FAIL",
+    "details": "Cancel removed person"
+  },
+  {
+    "id": "LIVE-PERSONNEL-REMOVE",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('No key personnel yet', { exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-DOCS-EMPTY",
+    "status": "PASS",
+    "details": "Empty document state shown"
+  },
+  {
+    "id": "LIVE-DOCS-REQUIRED",
+    "status": "PASS",
+    "details": "Upload disabled without file"
+  },
+  {
+    "id": "LIVE-DOCS-50MB-CAP",
+    "status": "FAIL",
+    "details": "Cannot set buffer larger than 50Mb, please write it to a file and pass its path instead."
+  },
+  {
+    "id": "LIVE-DOCS-UPLOAD",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-document-uploaded.png"
+    }
+  },
+  {
+    "id": "LIVE-DOCS-OPEN",
+    "status": "PASS",
+    "details": "Signed private-storage URL opens actual uploaded bytes"
+  },
+  {
+    "id": "LIVE-LAST-ADMIN-PROTECTION",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/live-last-admin-protection.png"
+    }
+  },
+  {
+    "id": "LIVE-DOCS-ARCHIVE-CANCEL",
+    "status": "FAIL",
+    "details": "Cancel archived file"
+  },
+  {
+    "id": "LIVE-DOCS-ARCHIVE",
+    "status": "PASS",
+    "details": "Archive persists after reload"
+  },
+  {
+    "id": "LIVE-ROLE-PROMOTE-DEMOTE",
+    "status": "PASS",
+    "details": "Live promotion and demotion persist; original role restored"
+  },
+  {
+    "id": "SHELL-COMMAND-KEYBOARD",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog') to be visible\u001b[22m\n\u001b[2m    - waiting for \"http://127.0.0.1:5175/settings\" navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:5175/settings\"\u001b[22m\n"
+  },
+  {
+    "id": "MOCK-PROJECT-WHITESPACE-NAME",
+    "status": "FAIL",
+    "details": "Whitespace-only project name accepted; evidence/qa-whitespace-project.png"
+  },
+  {
+    "id": "MOCK-RESET-CANCEL",
+    "status": "PASS",
+    "details": "Reset confirmation can be cancelled"
+  },
+  {
+    "id": "MOCK-RESET-CONFIRM",
+    "status": "PASS",
+    "details": "Reset restores six projects and retains Admin session"
+  },
+  {
+    "id": "MOCK-SIGNUP-SUCCESS",
+    "status": "FAIL",
+    "details": "locator.innerText: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog')\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-PERSONNEL-ADD",
+    "status": "PASS",
+    "details": "QA Person present after reload and revisit; initial timed wait was inconclusive"
+  },
+  {
+    "id": "LIVE-PERSONNEL-REMOVE-CANCEL",
+    "status": "PASS",
+    "details": "Cancel preserves person after modal finishes closing"
+  },
+  {
+    "id": "LIVE-PERSONNEL-REMOVE",
+    "status": "FAIL",
+    "details": "page.waitForResponse: Timeout 7000ms exceeded while waiting for event \"response\""
+  },
+  {
+    "id": "LIVE-PERSONNEL-REMOVE",
+    "status": "PASS",
+    "details": "QA personnel removed and verified after reload"
+  },
+  {
+    "id": "SHELL-COMMAND-CLICK",
+    "status": "FAIL",
+    "details": {
+      "url": "http://127.0.0.1:5175/projects",
+      "text": "",
+      "errors": [
+        {
+          "context": "mock",
+          "type": "pageerror",
+          "message": "Cannot read properties of undefined (reading 'subscribe')"
+        }
+      ],
+      "evidence": "evidence/command-palette-crash.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-COLLAPSE",
+    "status": "PASS",
+    "details": "Collapse and expand work with persisted nodes"
+  },
+  {
+    "id": "LIVE-SCHEDULE-SS-LAG2",
+    "status": "FAIL",
+    "details": "Unexpected ES/EF undefined/undefined"
+  },
+  {
+    "id": "LIVE-SCHEDULE-FF-LAG2",
+    "status": "FAIL",
+    "details": "Unexpected ES/EF undefined/undefined"
+  },
+  {
+    "id": "LIVE-SCHEDULE-SF-LAG2",
+    "status": "FAIL",
+    "details": "Unexpected ES/EF undefined/undefined"
+  },
+  {
+    "id": "LIVE-SCHEDULE-FS-LAG-2",
+    "status": "FAIL",
+    "details": "Unexpected ES/EF undefined/undefined"
+  },
+  {
+    "id": "LIVE-SCHEDULE-DUPLICATE-LINK",
+    "status": "PASS",
+    "details": "Duplicate dependency blocked"
+  },
+  {
+    "id": "LIVE-SCHEDULE-SELF-LINK",
+    "status": "PASS",
+    "details": "Self-link unavailable"
+  },
+  {
+    "id": "LIVE-SCHEDULE-CYCLE",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-dependency-cycle.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-CYCLE-RELOAD",
+    "status": "PASS",
+    "details": "Cycle persists, calculation remains blocked after reload"
+  },
+  {
+    "id": "LIVE-SCHEDULE-CYCLE-RECOVERY",
+    "status": "PASS",
+    "details": "Removing cyclic link restores CPM"
+  },
+  {
+    "id": "LIVE-SCHEDULE-EXPORT",
+    "status": "PASS",
+    "details": {
+      "filename": "PRJ-2026-006-schedule.csv",
+      "evidence": "evidence/qa-schedule.csv"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-PRINT",
+    "status": "PASS",
+    "details": "Print invokes browser print; Playwright PDF captured (native dialog not tested)"
+  },
+  {
+    "id": "LIVE-SCHEDULE-CLEAR-BASELINE",
+    "status": "PASS",
+    "details": "Baseline removal persists"
+  },
+  {
+    "id": "MOBILE-LANDING",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-landing.png"
+    }
+  },
+  {
+    "id": "LANDING-ROLE-TABS",
+    "status": "PASS",
+    "details": "Role tab click and arrow key update content"
+  },
+  {
+    "id": "LANDING-PROOF-CONTROL",
+    "status": "PASS",
+    "details": "Stepper recalculates, enforces maximum, resets"
+  },
+  {
+    "id": "LANDING-PRODUCT-TABS",
+    "status": "FAIL",
+    "details": "locator.allTextContents: Execution context was destroyed, most likely because of a navigation"
+  },
+  {
+    "id": "LIVE-SCHEDULE-SS-LAG2",
+    "status": "PASS",
+    "details": {
+      "es": 2,
+      "ef": 5,
+      "total": 8
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-FF-LAG2",
+    "status": "PASS",
+    "details": {
+      "es": 7,
+      "ef": 10,
+      "total": 10
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-SF-LAG2",
+    "status": "PASS",
+    "details": {
+      "es": 0,
+      "ef": 3,
+      "total": 8
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-FS-LAG-2",
+    "status": "PASS",
+    "details": {
+      "es": 6,
+      "ef": 9,
+      "total": 9
+    }
+  },
+  {
+    "id": "LIVE-PROJECT-START-DATE-CONTROL",
+    "status": "FAIL",
+    "details": "Start-date setup link returns to directory with no date/edit control; evidence/qa-start-date-deadend.png"
+  },
+  {
+    "id": "LIVE-PROJECT-PROGRESS-CONSISTENCY",
+    "status": "FAIL",
+    "details": "Directory reports 0% while saved schedule reports 36%; evidence/qa-directory-stale-progress.png"
+  },
+  {
+    "id": "LIVE-SCHEDULE-UNIQUE-WBS",
+    "status": "FAIL",
+    "details": "Duplicate WBS codes [\"A\",\"A.1\",\"B\",\"A.1.2\",\"A.1.2\"]; evidence/qa-duplicate-wbs.png"
+  },
+  {
+    "id": "MOBILE-LANDING",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-landing.png"
+    }
+  },
+  {
+    "id": "LANDING-ROLE-TABS",
+    "status": "PASS",
+    "details": "Role tab click and arrow key update content"
+  },
+  {
+    "id": "LANDING-PROOF-CONTROL",
+    "status": "PASS",
+    "details": "Stepper recalculates, enforces maximum, resets"
+  },
+  {
+    "id": "LANDING-PRODUCT-TABS",
+    "status": "PASS",
+    "details": {
+      "tabs": [
+        "ProjectsThe record: code, site, people, documents.",
+        "BOQThe approved bill, read-only. Its phases become locked WBS roots.",
+        "SchedulingActivities nest under those roots. The engine finds the Longest Path.",
+        "Planner",
+        "Project Manager"
+      ]
+    }
+  },
+  {
+    "id": "MOBILE-DIRECTORY",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-directory.png"
+    }
+  },
+  {
+    "id": "MOBILE-NAVIGATION",
+    "status": "PASS",
+    "details": "Mobile drawer navigates and closes"
+  },
+  {
+    "id": "MOBILE-TAB-Overview",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-overview.png"
+    }
+  },
+  {
+    "id": "MOBILE-TAB-Key Personnel",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-key-personnel.png"
+    }
+  },
+  {
+    "id": "MOBILE-TAB-Documents",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-documents.png"
+    }
+  },
+  {
+    "id": "MOBILE-TAB-Bill of Quantities",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-bill-of-quantities.png"
+    }
+  },
+  {
+    "id": "MOBILE-TAB-Scheduling",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 390,
+        "scrollWidth": 390
+      },
+      "evidence": "evidence/mobile-scheduling.png"
+    }
+  },
+  {
+    "id": "MOBILE-SCHEDULE-EDIT",
+    "status": "PASS",
+    "details": "Mobile cards allow duration and predecessor editing"
+  },
+  {
+    "id": "MOBILE-COMMAND-PALETTE",
+    "status": "FAIL",
+    "details": "Mobile palette crashes: [{\"context\":\"mobile\",\"type\":\"pageerror\",\"message\":\"Cannot read properties of undefined (reading 'subscribe')\"}]"
+  },
+  {
+    "id": "TABLET-SCHEDULE",
+    "status": "PASS",
+    "details": {
+      "size": {
+        "viewport": 768,
+        "scrollWidth": 768
+      },
+      "cards": 14
+    }
+  },
+  {
+    "id": "PRODUCTION-LIVE-LOGIN",
+    "status": "PASS",
+    "details": "Production Planner login works"
+  },
+  {
+    "id": "PRODUCTION-LIVE-COMMAND-CRASH",
+    "status": "FAIL",
+    "details": "Production command palette throws and blanks the app; evidence/production-command-crash.png"
+  },
+  {
+    "id": "LIVE-DOCS-50MB-CAP",
+    "status": "PASS",
+    "details": {
+      "evidence": "evidence/qa-file-size-validation.png"
+    }
+  },
+  {
+    "id": "LIVE-DOCS-OVERSIZE-AFTER-VALID",
+    "status": "FAIL",
+    "details": "locator.waitFor: Error: strict mode violation: getByText('File exceeds the 50 MB Free-tier maximum.', { exact: true }) resolved to 2 elements:\n    1) <div class=\"\" data-title=\"\">File exceeds the 50 MB Free-tier maximum.</div> aka getByText('File exceeds the 50 MB Free-').first()\n    2) <div class=\"\" data-title=\"\">File exceeds the 50 MB Free-tier maximum.</div> aka getByText('File exceeds the 50 MB Free-').nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByText('File exceeds the 50 MB Free-tier maximum.', { exact: true }) to be visible\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-DOCS-ARCHIVE-CANCEL",
+    "status": "PASS",
+    "details": "Archive cancel preserves uploaded document"
+  },
+  {
+    "id": "LIVE-SCHEDULE-SAVE-FAILURE-ROLLBACK",
+    "status": "OBSERVED",
+    "details": {
+      "before": "8",
+      "after": "8",
+      "evidence": "evidence/qa-save-failure-no-feedback.png"
+    }
+  },
+  {
+    "id": "LIVE-SCHEDULE-SAVE-FAILURE-FEEDBACK",
+    "status": "FAIL",
+    "details": "Injected HTTP 503 has no visible error; optimistic 20-day edit reverts to 8 on reload"
+  },
+  {
+    "id": "LIVE-BOQ-MULTILINE-CSV",
+    "status": "FAIL",
+    "details": "Valid quoted multiline CSV rejected: Every row needs phase_code and phase_name.; evidence/qa-multiline-csv-rejected.png"
+  },
+  {
+    "id": "LIVE-DOCS-OVERSIZE-AFTER-VALID",
+    "status": "FAIL",
+    "details": "Input is empty but Upload remains enabled for previous file; evidence/qa-stale-file-selection.png"
+  },
+  {
+    "id": "MOBILE-TAB-HORIZONTAL-CLIPPING",
+    "status": "FAIL",
+    "details": "Selecting Scheduling shifts entire main content left: {\"geom\":{\"clientWidth\":390,\"scrollWidth\":587,\"scrollLeft\":197},\"firstCard\":{\"x\":-169,\"y\":622.5,\"width\":334,\"height\":198}}; evidence/mobile-schedule-clipped.png"
+  },
+  {
+    "id": "MOCK-SIGNUP-SUCCESS",
+    "status": "PASS",
+    "details": "Signup creates a Planner and reaches Projects; success dialog was transient"
+  },
+  {
+    "id": "MOCK-SIGNUP-DUPLICATE",
+    "status": "PASS",
+    "details": "Duplicate signup rejected"
+  },
+  {
+    "id": "MOCK-SIGNUP-WHITESPACE-NAME",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Enter a full name.', { exact: true }).first() to be visible\u001b[22m\n"
+  },
+  {
+    "id": "MOCK-NEW-ACCOUNT-LOGIN",
+    "status": "FAIL",
+    "details": "locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Sign in', exact: true })\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-SIGNUP-RESULT",
+    "status": "OBSERVED",
+    "details": {
+      "text": "Skip to content\nSadiconstruction\nSign in\nSign up\n\nPublic Sign-up with email and password. No email verification. New accounts are Planners.\n\nFull name\nEmail\nPassword\n\nEmail address \"qa.beta.20261006@example.com\" is invalid\n\nSign up\nEmail address \"qa.beta.20261006@example.com\" is invalid",
+      "evidence": "evidence/qa-live-signup-result.png"
+    }
+  },
+  {
+    "id": "LIVE-SIGNUP-SUCCESS",
+    "status": "FAIL",
+    "details": "Live new-account signup did not reach Projects; inspect LIVE-SIGNUP-RESULT"
+  },
+  {
+    "id": "LIVE-BOQ-PREVIEW-CANCEL",
+    "status": "PASS",
+    "details": "Preview cancellation preserves existing BOQ"
+  },
+  {
+    "id": "LIVE-BOQ-RETENTION-REMOVAL",
+    "status": "FAIL",
+    "details": "locator.waitFor: Timeout 25000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog') to be hidden\u001b[22m\n\u001b[2m    52 × locator resolved to visible <div role=\"dialog\" tabindex=\"-1\" id=\"radix-_r_g_\" data-state=\"open\" data-slot=\"dialog-content\" aria-labelledby=\"radix-_r_h_\" class=\"fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl border border-border bg-popover p-6 text-sm text-popover-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 max-h-[90dvh] over…>…</div>\u001b[22m\n"
+  },
+  {
+    "id": "LIVE-BOQ-RENAME-SYNC",
+    "status": "FAIL",
+    "details": "Phase rename absent from scheduling"
+  },
+  {
+    "id": "LIVE-SCHEDULE-ROOT-LOCK",
+    "status": "PASS",
+    "details": "BOQ root has no authoring inputs or delete controls"
+  },
+  {
+    "id": "LIVE-BASELINE-REPLACE",
+    "status": "FAIL",
+    "details": "locator.click: Timeout 7000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Set baseline', exact: true })\u001b[22m\n"
+  }
+]

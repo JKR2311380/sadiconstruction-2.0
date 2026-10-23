@@ -1,0 +1,117 @@
+[
+  {
+    "id": "LIVE-LOGIN-PROFILE-FAILURE",
+    "status": "OBSERVED",
+    "details": "button=\"Sign in\" url=/login message shown=true"
+  },
+  {
+    "id": "LIVE-WORKSPACE-LOAD-FAILURE",
+    "status": "PASS",
+    "details": "Load error surfaced"
+  },
+  {
+    "id": "LIVE-DIRECTORY-SNAPSHOT",
+    "status": "OBSERVED",
+    "details": "7 projects: QA Beta 2026-10-06 - disposable Playwright QA PRJ-2026-006 ON HOLD Med || Clearwater Medical Center HealthFirst Systems – Plano, TX PRJ-2024-008 || Clownfall Joshua Karl Roperoga PRJ-2026-002 PLANNING Medium – ₱26.9M || Clownfall Joshua Karl Roperoga PRJ-2026-005 PLANNING Medium – ₱0 || Clownfall Joshua Karl Roperoga PRJ-2026-004 PLANNING Medium – ₱0 || Clownfall Joshua Karl Roperoga PRJ-2026-003 PLANNING Medium – ₱0 || Emhil Residences Emhil Joseph Copino PRJ-2026-001 PLANNING Medium – ₱2"
+  },
+  {
+    "id": "LIVE-CLEARWATER-BOQ-INTACT",
+    "status": "OBSERVED",
+    "details": "Clearwater BOQ phases (3): Part A – General Requirements & Prelimin | Part B – Site Works & Earthworks ₱9,619, | Part C – Concrete Works ₱135,527,300"
+  },
+  {
+    "id": "LIVE-CLEARWATER-SCHEDULE-ORDER-LOE",
+    "status": "OBSERVED",
+    "details": "first phase root at row 1 of 14; order: A,A.1,A.2,A.3,A.4,B,B.0,B.1,B.2,B.3,B.4,B.5,C,C.pkg; LOE cells: [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"0\",\"–\"]; footer: Duration 238 working days Complete 0% Finish vs baseline on baseline Longest path A.1 / A.2 / B.1 / B.2 / B.3 "
+  },
+  {
+    "id": "LIVE-CLEARWATER-PROGRESS-MISMATCH",
+    "status": "PASS",
+    "details": "Both 0%"
+  },
+  {
+    "id": "LIVE-TAB-REFOCUS-REHYDRATE",
+    "status": "OBSERVED",
+    "details": "Dialog survived tab refocus; project-list requests triggered=0"
+  },
+  {
+    "id": "LIVE-QA-PROJECT-STATE",
+    "status": "OBSERVED",
+    "details": "← All projects QA Beta 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bill of Quantities Scheduling Critical path finish Set start date Schedule complete 36% Budget Not set Approved BOQ ₱200 Budget versus BOQ Load a BOQ and set a budget to compare costs. Expenditure: ₱200 / Derived from BOQ lines / 0 personnel Next actions Set the project start date in project details Capture a baseline before tracking schedule changes Assign key project personnel Upcoming critical activities A.1.2 A.1.QA Durable Foundation 50% "
+  },
+  {
+    "id": "LIVE-OVERVIEW-BUDGET-FALSE-OVERRUN",
+    "status": "OBSERVED",
+    "details": "budget=Not over=undefined action=false"
+  },
+  {
+    "id": "LIVE-OVERVIEW-START-DATE-DEADEND",
+    "status": "OBSERVED",
+    "details": "url=/projects/9de4aee3-2efc-4805-929b-c462b12b04fd/overview date inputs=2"
+  },
+  {
+    "id": "LIVE-QA-SCHEDULE-STATE",
+    "status": "OBSERVED",
+    "details": "rows: [\"A – QA Renamed Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Followup\",\"A.1.2 A.1.QA Durable Foundation\"] | Duration 9 working days Complete 36% Longest path A.1.2 / A.1.2"
+  },
+  {
+    "id": "LIVE-SCHEDULE-LOADING-STATE",
+    "status": "OBSERVED",
+    "details": " 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bill of Quantities Scheduling"
+  },
+  {
+    "id": "LIVE-SCHEDULE-LOAD-FAILURE",
+    "status": "OBSERVED",
+    "details": "← All projects QA Beta 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026 ON HOLD Edit details Overview Key Personnel Documents Bill of Quantities Scheduling"
+  },
+  {
+    "id": "LIVE-ADD-ACTIVITY-SAVE-FAILURE",
+    "status": "OBSERVED",
+    "details": "success toast=0 error toast=1 rows 4→4 afterReload=false"
+  },
+  {
+    "id": "LIVE-PROGRESS-SAVE-FAILURE",
+    "status": "OBSERVED",
+    "details": "errToast=1 shown=0 persisted=0 (was 0)"
+  },
+  {
+    "id": "LIVE-BASELINE-SAVE-FAILURE",
+    "status": "OBSERVED",
+    "details": "ok=0 err=1"
+  },
+  {
+    "id": "LIVE-DEPENDENCY-SAVE-FAILURE",
+    "status": "PASS",
+    "details": "Dependency failure surfaced in dialog: \"QA injected failure\""
+  },
+  {
+    "id": "LIVE-PERSONNEL-SAVE-FAILURE",
+    "status": "PASS",
+    "details": "Personnel save failure shows a toast and keeps the dialog open"
+  },
+  {
+    "id": "LIVE-CREATE-PROJECT-FAILURE",
+    "status": "PASS",
+    "details": "Error surfaced"
+  },
+  {
+    "id": "LIVE-CREATE-PROJECT-NO-PENDING-STATE",
+    "status": "FAIL",
+    "details": "Create button is not disabled while saving; three quick clicks sent 2 insert requests, disabled=false (would create duplicate projects on a slow connection)"
+  },
+  {
+    "id": "LIVE-SETTINGS-RESET-DEMO-NOOP",
+    "status": "PASS",
+    "details": "Reset demo data is not offered on the live build"
+  },
+  {
+    "id": "LIVE-BANNER-WORDING",
+    "status": "OBSERVED",
+    "details": "Live build banner: \"Synthetic demo data · Supabase session · CPM runs in the browser\""
+  },
+  {
+    "id": "LIVE-SESSION-EXPIRED",
+    "status": "PASS",
+    "details": "Missing session redirects to login"
+  }
+]

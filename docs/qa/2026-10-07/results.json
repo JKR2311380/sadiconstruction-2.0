@@ -1,0 +1,677 @@
+[
+  {
+    "id": "ROUTE-UNKNOWN-SIGNED-OUT",
+    "status": "OBSERVED",
+    "details": "Unknown URL silently redirects to landing; no 404 page"
+  },
+  {
+    "id": "ROUTE-DEEPLINK-RETURN",
+    "status": "PASS",
+    "details": "Deep link restored after login"
+  },
+  {
+    "id": "ROUTE-DEEPLINK-QUERY-LOST",
+    "status": "FAIL",
+    "details": "?new=1 dropped by login redirect (only pathname is kept); Add Project dialog did not open"
+  },
+  {
+    "id": "AUTH-SIGNOUT-BACK",
+    "status": "PASS",
+    "details": "Back after sign-out stays on login"
+  },
+  {
+    "id": "AUTH-LOGIN-WRONG-PASSWORD",
+    "status": "PASS",
+    "details": "Wrong password rejected with message"
+  },
+  {
+    "id": "AUTH-LOGIN-EMAIL-CASE-SPACE",
+    "status": "PASS",
+    "details": "Upper-case email accepted"
+  },
+  {
+    "id": "AUTH-LOGIN-PREFILLED",
+    "status": "OBSERVED",
+    "details": "Login form prefilled email=\"planner@sadicon.local\" password length=7; seeded credentials panel visible=true"
+  },
+  {
+    "id": "AUTH-SIGNUP-WHITESPACE-NAME",
+    "status": "PASS",
+    "details": "Whitespace-only name rejected"
+  },
+  {
+    "id": "AUTH-SIGNUP-SHORT-PASSWORD-SPACES",
+    "status": "PASS",
+    "details": "rejected"
+  },
+  {
+    "id": "AUTH-SIGNUP-DIALOG-DISMISS",
+    "status": "PASS",
+    "details": "Escape on success dialog continues to projects"
+  },
+  {
+    "id": "AUTH-SIGNUP-RELOGIN",
+    "status": "PASS",
+    "details": "New mock account can sign in again"
+  },
+  {
+    "id": "AUTH-LOGIN-PAGE-WHEN-SIGNED-IN",
+    "status": "PASS",
+    "details": "Signed-in user redirected away from login/signup"
+  },
+  {
+    "id": "SHELL-COMMAND-PALETTE",
+    "status": "FAIL",
+    "details": "Command palette crashes app: Cannot read properties of undefined (reading 'subscribe'); app shell unmounted=true"
+  },
+  {
+    "id": "SHELL-NAV-ACTIVE-AND-LINKS",
+    "status": "PASS",
+    "details": "Rail links navigate"
+  },
+  {
+    "id": "SHELL-HELP-FAQ-LINK-FROM-PROJECTS",
+    "status": "PASS",
+    "details": "FAQ scrolled into view"
+  },
+  {
+    "id": "SHELL-HELP-FAQ-LINK-FROM-SETTINGS",
+    "status": "FAIL",
+    "details": "\"Full FAQ in Settings\" does nothing when already on Settings (FAQ top=980px, viewport 500px)"
+  },
+  {
+    "id": "SHELL-HELP-COPY-EMAIL",
+    "status": "PASS",
+    "details": "Copied"
+  },
+  {
+    "id": "SHELL-THEME-PERSIST",
+    "status": "PASS",
+    "details": "Dark theme persists"
+  },
+  {
+    "id": "DIR-CREATE-WHITESPACE-NAME",
+    "status": "FAIL",
+    "details": "Whitespace-only project name accepted; project created with blank heading"
+  },
+  {
+    "id": "DIR-CREATE-DOUBLE-SUBMIT",
+    "status": "PASS",
+    "details": "One project created (rows before 7)"
+  },
+  {
+    "id": "DIR-CREATE-LONG-NAME",
+    "status": "OBSERVED",
+    "details": "600-char project name accepted (no length limit); page horizontal overflow=false"
+  },
+  {
+    "id": "DIR-NEW-PROJECT-DEFAULTS",
+    "status": "OBSERVED",
+    "details": "New project subtitle: \"PRJ-2026-002 · · Updated Oct 7, 2026\" | Budget card: ₱0 | finish: No activities"
+  },
+  {
+    "id": "DIR-NO-EDIT-ARCHIVE-STAGE-UI",
+    "status": "FAIL",
+    "details": "Project page offers no way to edit name/client/stage/priority/budget/start date or archive the project. Buttons present: ← All projects"
+  },
+  {
+    "id": "DIR-SEARCH-FILTER",
+    "status": "PASS",
+    "details": "Search + stage filter combine"
+  },
+  {
+    "id": "DIR-ROW-KEYBOARD-ACCESS",
+    "status": "FAIL",
+    "details": "Project rows are click-only <tr> (no link/button/tabindex) — a keyboard user cannot open a project from the directory"
+  },
+  {
+    "id": "DIR-SORT-CONTROLS",
+    "status": "OBSERVED",
+    "details": "Directory has no sort controls (name/stage/priority/progress)"
+  },
+  {
+    "id": "PROJ-INVALID-ID",
+    "status": "OBSERVED",
+    "details": "Unknown project id redirects to /projects with no explanation"
+  },
+  {
+    "id": "PROJ-INVALID-TAB",
+    "status": "OBSERVED",
+    "details": "/projects/:id/bogus renders tab \"Overview\" while URL stays /projects/prj-clearwater/bogus"
+  },
+  {
+    "id": "PROJ-TAB-BACK-BUTTON",
+    "status": "FAIL",
+    "details": "Back selected Bill of Quantities"
+  },
+  {
+    "id": "OVERVIEW-CLEARWATER",
+    "status": "FAIL",
+    "details": "Directory progress 34% vs Overview \"Schedule complete\" 0% for the same project"
+  },
+  {
+    "id": "OVERVIEW-CRITICAL-LINK",
+    "status": "PASS",
+    "details": "Critical activity \"A.1 Mobilization & Demobilization\" selected in schedule"
+  },
+  {
+    "id": "SETTINGS-ROLE-CHANGE-AND-LAST-ADMIN",
+    "status": "PASS",
+    "details": "Last admin protected; select reverted"
+  },
+  {
+    "id": "SETTINGS-SELF-DEMOTE-WITH-TWO-ADMINS",
+    "status": "OBSERVED",
+    "details": "Admin can demote self with no confirmation; role table still visible=false; admin-only notice=true"
+  },
+  {
+    "id": "SETTINGS-STALE-ROLE-OTHER-SESSION",
+    "status": "OBSERVED",
+    "details": "Second tab after self-demotion shows: Signed in as Planner. Changing Staff Member Roles is Admin-only."
+  },
+  {
+    "id": "SETTINGS-RESET-DEMO",
+    "status": "ERROR",
+    "details": "locator.click: Error: strict mode violation: getByRole('button', { name: 'Reset demo data' }) resolved to 2 elements:"
+  },
+  {
+    "id": "PROJ-TAB-BACK-BUTTON-RETEST",
+    "status": "FAIL",
+    "details": "After Back: url tab=boq, selected tab=Bill of Quantities"
+  },
+  {
+    "id": "PERSONNEL-WHITESPACE",
+    "status": "FAIL",
+    "details": "Whitespace-only name and title accepted; blank roster row created"
+  },
+  {
+    "id": "PERSONNEL-REVERSED-DATES",
+    "status": "FAIL",
+    "details": "End date before start date accepted (2026-10-30 → 2026-10-01)"
+  },
+  {
+    "id": "PERSONNEL-DUPLICATE",
+    "status": "OBSERVED",
+    "details": "Identical person can be added 2 times (no duplicate warning)"
+  },
+  {
+    "id": "PERSONNEL-NO-EDIT",
+    "status": "OBSERVED",
+    "details": "Roster rows only offer: Remove — fixing a typo or setting an end date requires remove + re-add"
+  },
+  {
+    "id": "PERSONNEL-REMOVE-AND-PERSIST",
+    "status": "PASS",
+    "details": "Removal persisted across reload"
+  },
+  {
+    "id": "DOCS-OVERSIZE-AFTER-VALID",
+    "status": "FAIL",
+    "details": "After the oversize rejection the file input is empty=true but Upload stays enabled with stale title \"small.txt\"; clicking Upload is blocked by native required validation"
+  },
+  {
+    "id": "DOCS-EMPTY-FILE-AND-BLANK-TITLE",
+    "status": "FAIL",
+    "details": "0-byte file with whitespace-only title and empty type accepted; document row has no visible title"
+  },
+  {
+    "id": "DOCS-OPEN-MOCK",
+    "status": "OBSERVED",
+    "details": "Mock mode: Open shows 'No stored file in this mock session' (documents are metadata-only without Supabase)"
+  },
+  {
+    "id": "DOCS-SEEDED-OPEN",
+    "status": "OBSERVED",
+    "details": "Clearwater seed lists 4 documents; none can be opened in mock mode"
+  },
+  {
+    "id": "DOCS-ARCHIVE-PERSIST-NO-RESTORE",
+    "status": "OBSERVED",
+    "details": "Archive persisted (1→0); no archived-documents view or restore control exists (0 matches)"
+  },
+  {
+    "id": "BOQ-ERROR-STICKS-AFTER-CANCEL",
+    "status": "FAIL",
+    "details": "Reopening the dialog after Cancel still shows the previous error (\"CSV needs a header row and at least one line item.\") and the rejected text \"bogus\""
+  },
+  {
+    "id": "BOQ-MULTILINE-QUOTED",
+    "status": "FAIL",
+    "details": "Valid CSV with a quoted multi-line description rejected: \"Every row needs phase_code and phase_name.\""
+  },
+  {
+    "id": "BOQ-THOUSANDS-SEPARATOR",
+    "status": "FAIL",
+    "details": "Quoted amounts with thousands separators (\"1,000,000\") rejected: \"Invalid quantity, rate or amount for A.1. Use non-negative numbers.\""
+  },
+  {
+    "id": "BOQ-CURRENCY-SYMBOL",
+    "status": "OBSERVED",
+    "details": "Amounts with currency symbol → preview=false \"Invalid quantity, rate or amount for A.1. Use non-negative numbers.\""
+  },
+  {
+    "id": "BOQ-AMOUNT-MISMATCH",
+    "status": "FAIL",
+    "details": "quantity 2 × rate 100 with amount 999999 accepted without any warning (preview: 1 phases / 1 line items / ₱999,999)"
+  },
+  {
+    "id": "BOQ-ZERO-AMOUNT-FALLBACK",
+    "status": "OBSERVED",
+    "details": "amount 0 → 1 phases / 1 line items / ₱0"
+  },
+  {
+    "id": "BOQ-BLANK-ITEM-AND-DESCRIPTION",
+    "status": "FAIL",
+    "details": "Row with no item code, description, unit, quantity, rate or amount accepted (1 phases / 1 line items / ₱0)"
+  },
+  {
+    "id": "BOQ-INCONSISTENT-PHASE-NAME",
+    "status": "OBSERVED",
+    "details": "Same phase_code with two different phase_name values accepted; first name wins silently (1 phases / 2 line items / ₱2)"
+  },
+  {
+    "id": "BOQ-DUPLICATE-ITEM-CODES",
+    "status": "OBSERVED",
+    "details": "Duplicate item_code within a phase accepted without warning"
+  },
+  {
+    "id": "BOQ-CASE-COLLISION",
+    "status": "PASS",
+    "details": "Two phases, two roots"
+  },
+  {
+    "id": "BOQ-SEMICOLON-DELIMITER",
+    "status": "OBSERVED",
+    "details": "Semicolon-delimited CSV (Excel regional export) → \"Missing columns: phase_code, phase_name, item_code, description, unit, quantity, rate, amount.\""
+  },
+  {
+    "id": "BOQ-NON-CSV-FILE",
+    "status": "OBSERVED",
+    "details": "Binary file chosen as CSV is loaded into the textarea as text (10 chars); preview error: \"CSV needs a header row and at least one line item.\""
+  },
+  {
+    "id": "BOQ-FILE-RESELECT-SAME",
+    "status": "PASS",
+    "details": "CSV file loads and imports"
+  },
+  {
+    "id": "BOQ-REPLACE-DEFAULT-TEMPLATE-RISK",
+    "status": "OBSERVED",
+    "details": "Replace dialog on a project with a real BOQ opens pre-filled with the 2-line sample template (3 lines), not the current BOQ; no export/download of the current BOQ exists. Preview: 2 phases / 2 line items / ₱1,040,000 | "
+  },
+  {
+    "id": "PROJ-TAB-BACK-PROBE",
+    "status": "FAIL",
+    "details": "Browser Back from BOQ tab ends on \"boq\" instead of \"documents\". History length 3→5→7→7; navigations after Back: boq (tab strip re-pushes the focused tab)"
+  },
+  {
+    "id": "SCHED-NO-BOQ-GATE",
+    "status": "OBSERVED",
+    "details": "Activity buttons disabled without BOQ. \"Simulate cycle\" demo button visible=true"
+  },
+  {
+    "id": "SCHED-SIMULATE-CYCLE-DEAD-BUTTON",
+    "status": "FAIL",
+    "details": "\"Simulate cycle\" does nothing on any project except the Clearwater seed (hard-coded to activities B.2/B.3) — no feedback"
+  },
+  {
+    "id": "SCHED-ADD-AND-LABELS",
+    "status": "FAIL",
+    "details": "New activities display random generated ids as their WBS code in mock mode: [\"A – Alpha LOCKED\",\"A.cdsc Substructure\",\"A.cdsc.1 A.cdsc.Excavation\",\"A.cdsc.2 A.cdsc.Footings\",\"B – Bravo LOCKED\",\"B.c5ol Framing\",\"C – Charlie LOCKED\"]"
+  },
+  {
+    "id": "SCHED-SUMMARY-TOAST-WORDING",
+    "status": "OBSERVED",
+    "details": "Adding a nested summary toasts \"Activity added\""
+  },
+  {
+    "id": "SCHED-DUPLICATE-NAMES",
+    "status": "OBSERVED",
+    "details": "Two activities with the same name under one parent accepted: [\"B.c5ol Framing\",\"B.5gsk Framing\"]"
+  },
+  {
+    "id": "SCHED-ADD-DECIMAL-AND-HUGE-DURATION-FORM",
+    "status": "OBSERVED",
+    "details": "Add-activity form with duration 2.5 → blocked by native step validation"
+  },
+  {
+    "id": "SCHED-INLINE-DECIMAL-DURATION",
+    "status": "FAIL",
+    "details": "Inline duration accepts fractional working days (2.5) although the add form enforces whole days; footer: Duration 6 working days Complete 0% Longest path B.c5ol Demo"
+  },
+  {
+    "id": "SCHED-INLINE-NEGATIVE-AND-TEXT",
+    "status": "OBSERVED",
+    "details": "Typing -4 silently becomes 0 (no validation message)"
+  },
+  {
+    "id": "SCHED-PROGRESS-BOUNDS",
+    "status": "PASS",
+    "details": "Progress clamped to 0–100 (silently)"
+  },
+  {
+    "id": "SCHED-LINK-FS-AND-METRICS",
+    "status": "PASS",
+    "details": "FS link computed: Duration 9 working days Complete 15% Longest path A.cdsc.1 / A.cdsc.2 Demo / syn"
+  },
+  {
+    "id": "SCHED-LINK-DECIMAL-LAG",
+    "status": "FAIL",
+    "details": "Fractional lag 1.5 accepted (input step=1 is not enforced); footer: Duration 16.5 working days Complete 15% Longest path A.cdsc.1 / A.cdsc"
+  },
+  {
+    "id": "SCHED-LINK-HUGE-LAG",
+    "status": "OBSERVED",
+    "details": "Lag -9999 accepted=true; footer: Duration 9 working days Complete 15% Longest path None Demo / synthetic project data"
+  },
+  {
+    "id": "SCHED-CYCLE-CREATE-AND-RECOVER",
+    "status": "FAIL",
+    "details": "The predecessor picker offers a successor (Framing) as a predecessor of Excavation (options=2) and saves the link, putting the whole schedule into a cycle state instead of refusing it. \"Fix network\" button shown=true, resolves the cycle=false. Manual recovery worked=true"
+  },
+  {
+    "id": "SCHED-BASELINE-FLOW",
+    "status": "OBSERVED",
+    "details": "Variance shown (Finish vs baseline +6 working days ). Re-baseline asks confirmation=false (after: Finish vs baseline on baseline ); Clear baseline asks confirmation=false, cleared immediately=true; no toast/undo on clear"
+  },
+  {
+    "id": "SCHED-NO-DELETE-RENAME",
+    "status": "FAIL",
+    "details": "Schedule has no UI to delete, rename, move or reorder an activity or summary once added (store has deleteScheduleNode but nothing calls it); a mistaken or duplicate activity is permanent short of deleting its whole BOQ phase"
+  },
+  {
+    "id": "BOQ-REPLACE-RETAIN-REMOVE-RENAME",
+    "status": "OBSERVED",
+    "details": "Retain/remove/rename OK. Row order: A,A.cdsc,A.cdsc.1,A.cdsc.2,C,D. Footer after phase removal: Duration 15 working days Complete 17% Finish vs baseline -6 working days Longest path A.cdsc.1 / A.cdsc.2 Demo / synthet"
+  },
+  {
+    "id": "BOQ-REPLACE-PHASE-ORDER",
+    "status": "FAIL",
+    "details": "After re-ordering phases in the CSV the BOQ tab shows D,A,C but Scheduling still lists phase roots as A,C,D"
+  },
+  {
+    "id": "SCHED-CSV-EXPORT-CONTENT",
+    "status": "FAIL",
+    "details": "Export writes activity names starting with \"=\" unescaped (CSV/formula injection when opened in Excel): D.mgxw,1,\"=HYPERLINK(\"\"http://x\"\",\"\"click\"\")\",leaf,3,,2026-10-06,2026-10-08,2026-10-20,202. Quote/comma escaping correct=true. File name: PRJ-2026-001-schedule.csv"
+  },
+  {
+    "id": "SCHED-HUGE-DURATION-PERF",
+    "status": "ERROR",
+    "details": "locator.press: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-RELOAD-PERSIST",
+    "status": "ERROR",
+    "details": "page.reload: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "ERROR",
+    "details": "page.goto: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "ERROR",
+    "details": "locator.allInnerTexts: Target page, context or browser has been closed"
+  },
+  {
+    "id": "SCHED-CRITICAL-ONLY-AND-COLLAPSE",
+    "status": "ERROR",
+    "details": "locator.allInnerTexts: Target page, context or browser has been closed"
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "FAIL",
+    "details": "\"Fix network\" restores the entire seed schedule: an activity added before the cycle was silently deleted, with no confirmation"
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "OBSERVED",
+    "details": "Seed LOE row cells (name,dur,pred,ES,EF,TF): [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"232\",\"–\"]"
+  },
+  {
+    "id": "SCHED-COLLAPSE-STATE",
+    "status": "OBSERVED",
+    "details": "rows all=14 criticalOnly=11 collapsedA=10"
+  },
+  {
+    "id": "SCHED-ADD-UNDER-COLLAPSED-PARENT-DEFAULT",
+    "status": "OBSERVED",
+    "details": "\"+ Activity\" default parent=\"A – General Requirements\"; after selecting a row under another phase default parent=\"A – General Requirements\" (always the first phase, ignores selection)"
+  },
+  {
+    "id": "SCHED-TODAY-LINE-AND-START",
+    "status": "OBSERVED",
+    "details": "Today line visible=true; axis starts: Jan 5 | Jan 12 | Jan 19"
+  },
+  {
+    "id": "PROJ-NEW-START-DATE-TZ",
+    "status": "FAIL",
+    "details": "Mock project start date uses the UTC date: stored 2026-10-06 while the local date is 2026-10-07 (Asia/Manila) — off by one day before 08:00 PH time. Same pattern in TodayLine and document \"Updated\" dates (toISOString().slice(0,10))"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-1000",
+    "status": "OBSERVED",
+    "details": "Duration 1000 days: 313 ms, 168 week cells"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-5000",
+    "status": "FAIL",
+    "details": "Duration 5000 days: UI blocked 5544 ms, 835 week cells rendered"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-20000",
+    "status": "ERROR",
+    "details": "locator.press: Timeout 60000ms exceeded."
+  },
+  {
+    "id": "SCHED-DURATION-200000-FREEZE",
+    "status": "FAIL",
+    "details": "Typing duration 200000 freezes the tab (commit hung=true after 30000 ms). The value is saved, so reopening Scheduling for that project hangs again (hung=true, 30094 ms); Overview loads=true. No upper bound on duration."
+  },
+  {
+    "id": "MOBILE-TAB-STRIP-OVERFLOW",
+    "status": "FAIL",
+    "details": "Phone 390px: main region scrolls sideways (client 390px, scroll 587px, offset 197px) after opening Scheduling tab"
+  },
+  {
+    "id": "MOBILE-DIRECTORY-TABLE",
+    "status": "OBSERVED",
+    "details": "Directory at 390px: main 390/390px, table 824px in 356px wrapper"
+  },
+  {
+    "id": "MOBILE-NAV-DRAWER-SIGNOUT",
+    "status": "FAIL",
+    "details": "Drawer stays open after navigating"
+  },
+  {
+    "id": "LIVE-LOGIN-PROFILE-FAILURE",
+    "status": "FAIL",
+    "details": "When the profile lookup fails after a valid password, the form stays on \"Signing in…\" forever with no error (url /login); the user must reload"
+  },
+  {
+    "id": "LIVE-WORKSPACE-LOAD-FAILURE",
+    "status": "FAIL",
+    "details": "When the project list request fails, the directory renders as if the workspace were empty with no error or retry: \"Projects Directory · ₱0 expenditure across 0 jobs All Active Delayed Planning On Hold Completed Add Project No projects match Clear the stage filter o\""
+  },
+  {
+    "id": "LIVE-DIRECTORY-SNAPSHOT",
+    "status": "OBSERVED",
+    "details": "7 projects: QA Beta 2026-10-06 - disposable Playwright QA PRJ-2026-006 PLANNING Me || Clownfall Joshua Karl Roperoga PRJ-2026-002 PLANNING Medium 0% ₱26.9M || Clownfall Joshua Karl Roperoga PRJ-2026-005 PLANNING Medium 0% ₱0 || Clownfall Joshua Karl Roperoga PRJ-2026-004 PLANNING Medium 0% ₱0 || Clownfall Joshua Karl Roperoga PRJ-2026-003 PLANNING Medium 0% ₱0 || Emhil Residences Emhil Joseph Copino PRJ-2026-001 PLANNING Medium 0% ₱ || Clearwater Medical Center HealthFirst Systems – Plano, TX PRJ-2024-008"
+  },
+  {
+    "id": "LIVE-CLEARWATER-BOQ-INTACT",
+    "status": "OBSERVED",
+    "details": "Clearwater BOQ phases (3): Part A – General Requirements & Prelimin | Part B – Site Works & Earthworks ₱9,619, | Part C – Concrete Works ₱135,527,300"
+  },
+  {
+    "id": "LIVE-CLEARWATER-SCHEDULE-ORDER-LOE",
+    "status": "FAIL",
+    "details": "Live schedule rows are not in hierarchy order — first phase root at row 5 of 14; order: C.pkg,B.1,B.0,A.1,A,B.2,B,A.2,B.3,A.3,C,B.4,A.4,B.5; LOE cells: [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"0\",\"–\"]; footer: Duration 232 working days Complete 0% Longest path A.1 / A.2 / B.1 / B.2 / B.3 / B.4 / C.pkg"
+  },
+  {
+    "id": "LIVE-CLEARWATER-PROGRESS-MISMATCH",
+    "status": "FAIL",
+    "details": "Directory shows 34% progress for Clearwater; its schedule reports 0% complete"
+  },
+  {
+    "id": "LIVE-TAB-REFOCUS-REHYDRATE",
+    "status": "OBSERVED",
+    "details": "Dialog survived tab refocus; project-list requests triggered=0"
+  },
+  {
+    "id": "LIVE-QA-PROJECT-STATE",
+    "status": "OBSERVED",
+    "details": "← All projects QA Beta 2026-10-06 - disposable PRJ-2026-006 · Playwright QA · Updated Oct 6, 2026 PLANNING Overview Key Personnel Documents Bill of Quantities Scheduling Critical path finish Set start date Schedule complete 36% Budget ₱0 Approved BOQ ₱200 Budget versus BOQ ₱200 over budget. Expenditure: ₱200 / Derived from BOQ lines / 0 personnel Next actions Set the project start date in project details Capture a baseline before tracking schedule changes Assign key project personnel Review the BOQ exceeding the project budget Upcoming critical activities A.1.2 A.1.QA Durable Foundation 50% A."
+  },
+  {
+    "id": "LIVE-OVERVIEW-BUDGET-FALSE-OVERRUN",
+    "status": "FAIL",
+    "details": "A project with no budget set shows Budget \"₱0\", \"₱200 over budget\" and the next action \"Review the BOQ exceeding the project budget\"=true — unset budget is treated as zero"
+  },
+  {
+    "id": "LIVE-OVERVIEW-START-DATE-DEADEND",
+    "status": "FAIL",
+    "details": "\"Set the project start date in project details\" leads to the project directory; no start-date control exists anywhere"
+  },
+  {
+    "id": "LIVE-QA-SCHEDULE-STATE",
+    "status": "OBSERVED",
+    "details": "rows: [] | "
+  },
+  {
+    "id": "LIVE-SCHEDULE-LOADING-STATE",
+    "status": "FAIL",
+    "details": "While the schedule is still loading the tab states \"No schedule yet — Load an approved BOQ to establish project phases\" (no loading indicator) even though the project has a BOQ and activities"
+  },
+  {
+    "id": "LIVE-SCHEDULE-LOAD-FAILURE",
+    "status": "FAIL",
+    "details": "When the schedule request fails the tab permanently shows \"No schedule yet — Load an approved BOQ…\" with no error or retry; Overview then reports \"No activities\" / \"No activities\" and suggests \"Add activities and predecessor links\""
+  },
+  {
+    "id": "LIVE-ADD-ACTIVITY-SAVE-FAILURE",
+    "status": "FAIL",
+    "details": "Server rejects the new activity (HTTP 503) yet the UI toasts \"Activity added\" and keeps the row; it vanishes on reload. No error is shown."
+  },
+  {
+    "id": "LIVE-PROGRESS-SAVE-FAILURE",
+    "status": "FAIL",
+    "details": "Progress edit (50→77%) rejected by the server shows no error; UI keeps 77% until reload restores 50%"
+  },
+  {
+    "id": "LIVE-BASELINE-SAVE-FAILURE",
+    "status": "FAIL",
+    "details": "\"Set baseline\" toasts success although the server rejected the baseline write (HTTP 503); nothing is saved and no error appears"
+  },
+  {
+    "id": "LIVE-DEPENDENCY-SAVE-FAILURE",
+    "status": "PASS",
+    "details": "Dependency failure surfaced in dialog: \"QA injected failure\""
+  },
+  {
+    "id": "LIVE-PERSONNEL-SAVE-FAILURE",
+    "status": "PASS",
+    "details": "Personnel save failure shows a toast and keeps the dialog open"
+  },
+  {
+    "id": "LIVE-CREATE-PROJECT-FAILURE",
+    "status": "FAIL",
+    "details": "Create Project fails silently when the server rejects it: dialog stays open (open=true, button \"Create\") with no error message; an unhandled promise rejection is logged"
+  },
+  {
+    "id": "LIVE-CREATE-PROJECT-NO-PENDING-STATE",
+    "status": "FAIL",
+    "details": "Create button is not disabled while saving; three quick clicks sent 3 insert requests (would create duplicate projects on a slow connection)"
+  },
+  {
+    "id": "LIVE-SETTINGS-RESET-DEMO-NOOP",
+    "status": "FAIL",
+    "details": "With the live backend, Settings still offers \"Reset demo data\"; confirming shows \"Demo data restored\" although nothing happens"
+  },
+  {
+    "id": "LIVE-BANNER-WORDING",
+    "status": "OBSERVED",
+    "details": "Live build banner: \"Synthetic demo data · Supabase session · CPM runs in the browser\""
+  },
+  {
+    "id": "LIVE-SESSION-EXPIRED",
+    "status": "PASS",
+    "details": "Missing session redirects to login"
+  },
+  {
+    "id": "LIVE-SIGNUP-EXISTING-EMAIL",
+    "status": "OBSERVED",
+    "details": "Sign-up with an existing email → url /signup; message: \"\""
+  },
+  {
+    "id": "LIVE-QA-BOQ-BEFORE",
+    "status": "OBSERVED",
+    "details": "Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200"
+  },
+  {
+    "id": "LIVE-QA-SCHEDULE-BEFORE",
+    "status": "OBSERVED",
+    "details": "[\"A – QA Renamed Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Durable Foundation\",\"A.1.2 A.1.QA Followup\"]"
+  },
+  {
+    "id": "LIVE-BOQ-RETENTION-REMOVAL-RENAME",
+    "status": "PASS",
+    "details": "OK — replace outcome=closed in 9252 ms; renamed=true activitiesKept=true removedPhaseGone=true newPhaseAdded=true; rows=[\"A – QA Phase A Renamed LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Durable Foundation\",\"A.1.2 A.1.QA Followup\",\"C – QA Phase C LOCKED\"]"
+  },
+  {
+    "id": "LIVE-BOQ-PROJECT-UPDATED-STAMP",
+    "status": "OBSERVED",
+    "details": "Project header after BOQ replacement: \"PRJ-2026-006 · Playwright QA · Updated Oct 6, 2026\" → after reload: \"PRJ-2026-006 · Playwright QA · Updated Oct 6, 2026\""
+  },
+  {
+    "id": "LIVE-BASELINE-SET-REPLACE-CLEAR",
+    "status": "PASS",
+    "details": "Baseline set → persisted → replaced → cleared (persisted across reloads)"
+  },
+  {
+    "id": "LIVE-QA-BOQ-RESTORE",
+    "status": "OBSERVED",
+    "details": "Restore outcome=closed in 9120 ms; rows=[\"A – QA Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Durable Foundation\",\"B – QA Phase B LOCKED\",\"A.1.2 A.1.QA Followup\"] (original BOQ rows were: Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200)"
+  },
+  {
+    "id": "LIVE-SIGNUP-EXISTING-EMAIL-DETAIL",
+    "status": "OBSERVED",
+    "details": "HTTP 200 {\"id\":\"1401f1f2-e21b-4c6a-9f65-7c4dfccfe22c\",\"aud\":\"authenticated\",\"role\":\"\",\"email\":\"planner@sadicon.local\",\"phone\":\"\",\"confirmation_sent_at\":\"2026-10-06T21:02 | form text: Sign up Public Sign-up with email and password. No email verification. New accounts are Planners. Full name Email Password No session after Sign-up. Turn off Auth → confirmations (working-app contract). Sign up"
+  },
+  {
+    "id": "LIVE-QA-BOQ-RESTORE-EXACT",
+    "status": "OBSERVED",
+    "details": "QA project restored: BOQ Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200; schedule [\"A – QA Renamed Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Durable Foundation\",\"A.1.2 A.1.QA Followup\"]; no baseline=true"
+  },
+  {
+    "id": "LANDING-LINKS",
+    "status": "OBSERVED",
+    "details": "5 links: Sign in→/login | Sign up→/signup | Sign in to open the workspace→/login"
+  },
+  {
+    "id": "LANDING-BUTTONS-WITHOUT-ACTION",
+    "status": "OBSERVED",
+    "details": "14 buttons: Show Foundations | Show Massing | Show Structure | Show Envelope | Show Fit-out | Pause build sequence | Projects The record: code, sit | BOQ The approved bill, read-on | Scheduling Activities nest und | Replay | Planner | Project Manager | Shorten by 2 days | Lengthen by 2 days"
+  },
+  {
+    "id": "LANDING-CONSOLE-ERRORS",
+    "status": "PASS",
+    "details": "No console errors on landing"
+  },
+  {
+    "id": "SHELL-CTRL-K",
+    "status": "FAIL",
+    "details": "Ctrl+K blanks the application (Cannot read properties of undefined (reading 'subscribe'))"
+  },
+  {
+    "id": "MOBILE-NAV-DRAWER-RETEST",
+    "status": "PASS",
+    "details": "Drawer closes after navigating"
+  },
+  {
+    "id": "MOBILE-BOQ-DIALOG-USABLE",
+    "status": "PASS",
+    "details": "Confirm reachable at 390px"
+  }
+]
