@@ -8,7 +8,7 @@ export { isSupabaseConfigured }
 const MIN_PASSWORD_LENGTH = 6
 
 export function mapStaff(profile) {
-  if (!profile || !isStaffRole(profile.role)) return null
+  if (!profile || !isStaffRole(profile.role) || profile.isActive === false) return null
   return {
     id: profile.id,
     email: profile.email,
@@ -69,8 +69,18 @@ export async function signIn(email, password) {
     password,
   })
   if (error) return { ok: false, error: error.message }
-  const staff = await staffFromUser(data.user)
-  if (!staff) return { ok: false, error: "No Staff Member profile for this session." }
+  let staff
+  try {
+    staff = await staffFromUser(data.user)
+  } catch {
+    // Do not leave a Supabase session open without a Staff Member behind it.
+    await supabase.auth.signOut()
+    return { ok: false, error: "Could not load your Staff Member profile. Try again." }
+  }
+  if (!staff) {
+    await supabase.auth.signOut()
+    return { ok: false, error: "This account has no active Staff Member profile. Ask an Admin for help." }
+  }
   return { ok: true, staff }
 }
 
@@ -103,12 +113,12 @@ export async function signUp({ email, password, fullName }) {
   })
   if (error) return { ok: false, error: error.message }
   if (!data.user) {
-    return { ok: false, error: "Sign-up did not return a Staff Member. Confirm Auth email confirmation is off." }
+    return { ok: false, error: "Sign-up could not be completed. Try again, or ask an Admin for help." }
   }
   if (!data.session) {
     return {
       ok: false,
-      error: "No session after Sign-up. Turn off Auth → confirmations (working-app contract).",
+      error: "Your account could not be signed in yet. If this email is already registered, sign in instead; otherwise ask an Admin for help.",
     }
   }
   const staff = await staffFromUser(data.user)

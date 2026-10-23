@@ -17,7 +17,6 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
@@ -44,12 +43,10 @@ export function CommandPalette({ open, onOpenChange }) {
           <CommandItem onSelect={() => go("/projects")}>
             <BriefcaseBusinessIcon />
             Projects
-            <CommandShortcut>G P</CommandShortcut>
           </CommandItem>
           <CommandItem onSelect={() => go("/settings")}>
             <Settings2Icon />
             Settings
-            <CommandShortcut>G S</CommandShortcut>
           </CommandItem>
           <CommandItem onSelect={() => go("/projects?new=1")}>
             <PlusIcon />

@@ -33,15 +33,21 @@ export function LoginPage() {
   async function handleSubmit(event) {
     event.preventDefault()
     setPending(true)
-    const result = await signIn(email, password)
-    setPending(false)
-    if (!result.ok) {
-      setError(result.error)
-      toast.error(result.error)
-      return
+    try {
+      const result = await signIn(email, password)
+      if (!result.ok) {
+        setError(result.error)
+        toast.error(result.error)
+        return
+      }
+      toast.success(`Signed in as ${result.staff.roleLabel}`)
+      navigate(location.state?.from || "/projects", { replace: true })
+    } catch {
+      setError("Could not sign in. Check your connection and try again.")
+      toast.error("Could not sign in. Check your connection and try again.")
+    } finally {
+      setPending(false)
     }
-    toast.success(`Signed in as ${result.staff.roleLabel}`)
-    navigate(location.state?.from || "/projects", { replace: true })
   }
 
   return (

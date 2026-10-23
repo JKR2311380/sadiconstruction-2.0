@@ -1,10 +1,13 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useEffect } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { StageBadge } from "@/shared/StageBadge"
+import { can } from "@/lib/permissions"
+import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
 import { OverviewPanel } from "./OverviewPanel"
+import { ProjectDetailsDialog } from "./ProjectDetailsDialog"
 import { PersonnelPanel } from "./PersonnelPanel"
 import { DocumentsPanel } from "@/features/documents/DocumentsPanel"
 import { BoqPanel } from "@/features/boq/BoqPanel"
@@ -21,6 +24,11 @@ const TABS = [
 export function ProjectDetail() {
   const { projectId, tab = "overview" } = useParams()
   const navigate = useNavigate()
+  const [params, setParams] = useSearchParams()
+  const role = useSessionStore((state) => state.staff?.role)
+  // The dialog state lives in the URL so "Set the project start date" can link to it.
+  const editOpen = params.get("edit") === "1" && can(role, "editProject")
+  const setEditOpen = (open) => setParams(open ? { edit: "1" } : {}, { replace: true })
   const project = useWorkspaceStore((state) =>
     state.projects.find((row) => row.id === projectId && !row.deletedAt),
   )
@@ -62,21 +70,33 @@ export function ProjectDetail() {
               })}
             </p>
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
             <StageBadge stage={project.stage} />
+            {can(role, "editProject") ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setEditOpen(true)}
+              >
+                Edit details
+              </Button>
+            ) : null}
           </div>
         </div>
+        {/* Manual activation: focus alone must not navigate, or each click adds two history entries. */}
         <Tabs
           value={activeTab}
+          activationMode="manual"
           onValueChange={(value) => navigate(`/projects/${project.id}/${value}`)}
           className="gap-0"
         >
-          <TabsList variant="line" className="h-auto w-full justify-start">
+          <TabsList variant="line" className="h-auto w-full justify-start overflow-x-auto">
             {TABS.map((item) => (
               <TabsTrigger
                 key={item.id}
                 value={item.id}
-                className="px-4 py-2.5 text-[13px]"
+                className="flex-none px-4 py-2.5 text-[13px]"
               >
                 {item.label}
               </TabsTrigger>
@@ -84,6 +104,10 @@ export function ProjectDetail() {
           </TabsList>
         </Tabs>
       </header>
+
+      {editOpen ? (
+        <ProjectDetailsDialog project={project} onClose={() => setEditOpen(false)} />
+      ) : null}
 
       {activeTab === "scheduling" ? (
         <SchedulingPanel projectId={project.id} />

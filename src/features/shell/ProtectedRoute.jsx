@@ -1,5 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { WorkspaceSkeleton } from "@/components/NeuSkeleton"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
@@ -22,7 +24,23 @@ export function ProtectedRoute() {
   }
 
   if (!staff) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />
+    return <Navigate to="/login" replace state={{ from: location.pathname + location.search + location.hash }} />
+  }
+
+  if (workspaceStatus === "error") {
+    return (
+      <Empty className="min-h-svh">
+        <EmptyHeader>
+          <EmptyTitle>Could not load the workspace</EmptyTitle>
+          <EmptyDescription>
+            Your projects are safe. Check your connection and try again.
+          </EmptyDescription>
+        </EmptyHeader>
+        <Button type="button" onClick={() => void hydrateWorkspace()}>
+          Retry
+        </Button>
+      </Empty>
+    )
   }
 
   if (workspaceStatus !== "ready") {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
 import { useTheme } from "next-themes"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
@@ -15,6 +16,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog"
 import { FaqAccordion } from "@/components/FaqAccordion"
 import { NeuSkeleton } from "@/components/NeuSkeleton"
 import { can, ROLE_LABELS } from "@/lib/permissions"
+import { isSupabaseConfigured } from "@/lib/supabaseClient"
 import { listStaff, updateStaffRole } from "@/data/profiles"
 import { useSessionStore } from "@/store/session"
 import { useWorkspaceStore } from "@/store/workspace"
@@ -32,10 +34,15 @@ const FAQ = [
     q: "How does dark mode work?",
     a: "It swaps the clay highlight and shadow pair used by Soft UI controls. Light source stays top-left in both themes.",
   },
-  {
-    q: "What does Reset demo data do?",
-    a: "It restores the Clearwater seed and wipes local edits. Signed-in Staff Member is unchanged. It no-ops when Supabase owns domain data.",
-  },
+  // Demo reset only exists in the browser-local mock workspace.
+  ...(isSupabaseConfigured
+    ? []
+    : [
+        {
+          q: "What does Reset demo data do?",
+          a: "It restores the Clearwater seed and wipes local edits. Signed-in Staff Member is unchanged.",
+        },
+      ]),
 ]
 
 export function SettingsPage() {
@@ -46,13 +53,16 @@ export function SettingsPage() {
   const setDarkMode = useWorkspaceStore((state) => state.setDarkMode)
   const [rows, setRows] = useState(null)
   const [confirmReset, setConfirmReset] = useState(false)
+  const [confirmDemote, setConfirmDemote] = useState(false)
+  const location = useLocation()
   const canChangeRole = can(staff.role, "changeRole")
 
+  // Runs on every navigation to #faq, including one made while already on this page.
   useEffect(() => {
-    if (window.location.hash === "#faq") {
+    if (location.hash === "#faq") {
       document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })
     }
-  }, [])
+  }, [location])
 
   useEffect(() => {
     if (!canChangeRole) return undefined
@@ -119,15 +129,17 @@ export function SettingsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
-          <h2 className="mb-2 text-sm font-semibold">Demo workspace</h2>
-          <p className="mb-3 text-sm text-muted-foreground">
-            Restore Clearwater seed and wipe local edits. Signed-in Staff Member is unchanged. No-ops when Supabase owns domain data.
-          </p>
-          <Button type="button" variant="outline" onClick={() => setConfirmReset(true)}>
-            Reset demo data
-          </Button>
-        </div>
+        {isSupabaseConfigured ? null : (
+          <div className="rounded-2xl border border-border bg-card px-4 py-3.5 shadow-sm">
+            <h2 className="mb-2 text-sm font-semibold">Demo workspace</h2>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Restore Clearwater seed and wipe local edits. Signed-in Staff Member is unchanged.
+            </p>
+            <Button type="button" variant="outline" onClick={() => setConfirmReset(true)}>
+              Reset demo data
+            </Button>
+          </div>
+        )}
       </div>
 
       {canChangeRole ? (
@@ -162,7 +174,10 @@ export function SettingsPage() {
                         value={row.role}
                         aria-label={`Role for ${row.email}`}
                         onChange={(event) => {
-                          void handleRoleChange(row.id, event.target.value)
+                          // The last Admin is refused outright, so only ask when the demotion can go through.
+                          const otherAdmin = rows.some((item) => item.role === "admin" && item.id !== staff.id)
+                          if (row.id === staff.id && event.target.value !== "admin" && otherAdmin) setConfirmDemote(true)
+                          else void handleRoleChange(row.id, event.target.value)
                         }}
                       >
                         <option value="planner">Planner</option>
@@ -188,6 +203,15 @@ export function SettingsPage() {
         <h2 className="mb-3 text-sm font-semibold">FAQ</h2>
         <FaqAccordion items={FAQ} />
       </section>
+
+      <ConfirmDialog
+        open={confirmDemote}
+        onOpenChange={setConfirmDemote}
+        title="Remove your own Admin role?"
+        description="You will become a Planner and lose access to Staff Roles straight away. Another Admin would have to promote you again."
+        confirmLabel="Make me a Planner"
+        onConfirm={() => void handleRoleChange(staff.id, "planner")}
+      />
 
       <ConfirmDialog
         open={confirmReset}
