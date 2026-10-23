@@ -12,7 +12,7 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
   const toast = (text) => page.getByText(text, { exact: false }).first()
   const fail = (pattern, method, status = 503) =>
     context.route(pattern, (route) => {
-      if (method && route.request().method() !== method) return route.fallback()
+      if (method && ![].concat(method).includes(route.request().method())) return route.fallback()
       return route.fulfill({ status, contentType: "application/json", body: JSON.stringify({ message: "QA injected failure", code: "QA503" }) })
     })
   const rowNames = async () => (await page.locator("section[aria-label='Activity schedule and Gantt chart'] tbody tr td:first-child").allInnerTexts()).map((t) => t.replace(/\s+/g, " ").trim())
@@ -24,7 +24,8 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
     await page.locator("#email").fill("planner@sadicon.local")
     await page.locator("#password").fill("demo123")
     await page.getByRole("button", { name: "Sign in", exact: true }).click()
-    await page.waitForTimeout(4000)
+    // The data client retries a 503 GET with back-off (about 7 s) before it reports the error.
+    await page.waitForTimeout(12000)
     const label = await page.locator("form button[type=submit]").innerText().catch(() => "?")
     const url = new URL(page.url()).pathname
     const msg = await page.getByText(/QA injected|could not|failed|try again/i).count()
@@ -45,8 +46,9 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
     await page.locator("#password").fill("demo123")
     await page.getByRole("button", { name: "Sign in", exact: true }).click()
     await page.waitForURL(/\/projects/)
-    await page.waitForTimeout(2500)
-    const text = (await page.locator("#app-main").innerText()).replace(/\s+/g, " ")
+    await page.waitForTimeout(12000)
+    // A failed load now replaces the app shell with an error screen, so read the whole page.
+    const text = (await page.locator("body").innerText()).replace(/\s+/g, " ")
     await snap("s05-workspace-load-failure")
     await context.unroute("**/rest/v1/projects**")
     const err = /error|could not|failed|retry|try again/i.test(text)
@@ -199,7 +201,7 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
   await page.waitForTimeout(800)
 
   await check("LIVE-ADD-ACTIVITY-SAVE-FAILURE", async () => {
-    await fail("**/rest/v1/schedule_nodes**", "POST")
+    await fail("**/rest/v1/schedule_nodes**", ["POST", "PATCH"])
     const before = (await rowNames()).length
     await page.getByRole("button", { name: "+ Activity" }).click()
     const dlg = page.getByRole("dialog")
@@ -220,7 +222,8 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
       : note(`success toast=${success} error toast=${errToast} rows ${before}→${after} afterReload=${reloaded}`)
   })
   await check("LIVE-PROGRESS-SAVE-FAILURE", async () => {
-    await fail("**/rest/v1/schedule_nodes**", "POST")
+    // Inline edits send PATCH (one column), adds send POST: block both so nothing is written.
+    await fail("**/rest/v1/schedule_nodes**", ["POST", "PATCH"])
     const input = page.locator("input[aria-label$='percent complete']").first()
     const label = await input.getAttribute("aria-label")
     const old = await input.inputValue()
@@ -315,21 +318,25 @@ const QA_ID = "9de4aee3-2efc-4805-929b-c462b12b04fd"
       await new Promise((r) => setTimeout(r, 1500))
       return route.fulfill({ status: 503, contentType: "application/json", body: '{"message":"QA injected failure"}' })
     })
+    // Let the previous dialog finish closing so only one Create button exists.
+    await page.getByRole("dialog").waitFor({ state: "detached", timeout: 3000 }).catch(() => {})
     await page.getByRole("button", { name: "Add Project" }).click()
     await page.locator("#proj-name").fill("QA never created 2")
-    const create = page.getByRole("button", { name: "Create" })
+    const create = page.getByRole("button", { name: /^Create/ })
     await create.click()
     await page.waitForTimeout(300)
     const disabled = await create.isDisabled()
-    await create.click().catch(() => {})
-    await create.click().catch(() => {})
+    // A disabled button makes click() wait for it to re-enable; give up at once instead.
+    await create.click({ timeout: 300 }).catch(() => {})
+    await create.click({ timeout: 300 }).catch(() => {})
     await page.waitForTimeout(3500)
     await context.unroute("**/rest/v1/projects**")
     await page.getByRole("button", { name: "Cancel" }).click().catch(() => {})
-    return !disabled && hits > 1 ? bug(`Create button is not disabled while saving; three quick clicks sent ${hits} insert requests (would create duplicate projects on a slow connection)`) : note(`disabled=${disabled} inserts=${hits}`)
+    return !disabled && hits > 1 ? bug(`Create button is not disabled while saving; three quick clicks sent ${hits} insert requests, disabled=${disabled} (would create duplicate projects on a slow connection)`) : note(`disabled=${disabled} inserts=${hits}`)
   })
   await check("LIVE-SETTINGS-RESET-DEMO-NOOP", async () => {
     await page.goto(`${BASE}/settings`)
+    if (!(await page.getByRole("button", { name: "Reset demo data" }).count())) return "Reset demo data is not offered on the live build"
     await page.getByRole("button", { name: "Reset demo data" }).first().click()
     await page.getByRole("alertdialog").getByRole("button", { name: "Reset demo data" }).click()
     const ok = await toast("Demo data restored").count()

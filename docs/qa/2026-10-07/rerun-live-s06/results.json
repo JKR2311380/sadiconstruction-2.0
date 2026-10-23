@@ -1,0 +1,47 @@
+[
+  {
+    "id": "LIVE-SIGNUP-EXISTING-EMAIL",
+    "status": "OBSERVED",
+    "details": "Sign-up with an existing email → url /signup; message: \"Your account could not be signed in yet. If this email is already registered, sign in instead; otherwise ask an Admin for help.\""
+  },
+  {
+    "id": "LIVE-QA-BOQ-BEFORE",
+    "status": "OBSERVED",
+    "details": "Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200"
+  },
+  {
+    "id": "LIVE-QA-SCHEDULE-BEFORE",
+    "status": "OBSERVED",
+    "details": "[\"A – QA Renamed Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Followup\",\"A.1.2 A.1.QA Durable Foundation\"]"
+  },
+  {
+    "id": "LIVE-BOQ-RETENTION-REMOVAL-RENAME",
+    "status": "PASS",
+    "details": "OK — replace outcome=closed in 9112 ms; renamed=true activitiesKept=true removedPhaseGone=true newPhaseAdded=true; rows=[\"A – QA Phase A Renamed LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Followup\",\"A.1.2 A.1.QA Durable Foundation\",\"C – QA Phase C LOCKED\"]"
+  },
+  {
+    "id": "LIVE-BOQ-PROJECT-UPDATED-STAMP",
+    "status": "OBSERVED",
+    "details": "Project header after BOQ replacement: \"PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026\" → after reload: \"PRJ-2026-006 · Playwright QA · Updated Oct 23, 2026\""
+  },
+  {
+    "id": "LIVE-BASELINE-SET-REPLACE-CLEAR",
+    "status": "PASS",
+    "details": "Baseline set → persisted → replaced → cleared (persisted across reloads)"
+  },
+  {
+    "id": "LIVE-QA-BOQ-RESTORE",
+    "status": "OBSERVED",
+    "details": "Restore outcome=closed in 9121 ms; rows=[\"A – QA Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Followup\",\"A.1.2 A.1.QA Durable Foundation\",\"B – QA Phase B LOCKED\"] (original BOQ rows were: Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200)"
+  },
+  {
+    "id": "LIVE-SIGNUP-EXISTING-EMAIL-DETAIL",
+    "status": "OBSERVED",
+    "details": "HTTP 200 {\"id\":\"498e810f-d3c4-46d4-9aac-79a3d35db691\",\"aud\":\"authenticated\",\"role\":\"\",\"email\":\"planner@sadicon.local\",\"phone\":\"\",\"confirmation_sent_at\":\"2026-10-23T12:14 | form text: password. No email verification. New accounts are Planners. Full name Email Password Your account could not be signed in yet. If this email is already registered, sign in instead; otherwise ask an Admin for help. Sign up"
+  },
+  {
+    "id": "LIVE-QA-BOQ-RESTORE-EXACT",
+    "status": "OBSERVED",
+    "details": "QA project restored: BOQ Part A – QA Renamed Phase A ₱200 || A.1 QA item retained lot 2 ₱200; schedule [\"A – QA Renamed Phase A LOCKED\",\"A.1 A.QA Package\",\"A.1.2 A.1.QA Followup\",\"A.1.2 A.1.QA Durable Foundation\"]; no baseline=true"
+  }
+]

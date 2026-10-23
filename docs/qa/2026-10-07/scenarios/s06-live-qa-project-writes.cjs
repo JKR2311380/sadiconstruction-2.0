@@ -107,9 +107,12 @@ const HEADER = "phase_code,phase_name,item_code,description,unit,quantity,rate,a
     await sched()
     const persisted = await page.getByRole("button", { name: "Re-baseline" }).count()
     await page.getByRole("button", { name: "Re-baseline" }).click()
+    // Re-baseline now asks for confirmation.
+    await page.getByRole("alertdialog").getByRole("button", { name: "Re-baseline" }).click()
     await toast("Baseline replaced").waitFor()
     await page.waitForTimeout(1500)
     await page.getByRole("button", { name: "Clear baseline" }).click()
+    await page.getByRole("alertdialog").getByRole("button", { name: "Clear baseline" }).click()
     await page.waitForTimeout(1500)
     await sched()
     const cleared = (await page.getByRole("button", { name: "Set baseline", exact: true }).count()) === 1
