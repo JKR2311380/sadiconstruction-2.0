@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { clampDays, cn, MAX_DAYS } from "@/lib/utils"
 import { DependencyArrows, GanttAxis, GanttRow, TodayLine } from "./GanttChart"
 import {
   activityCode,
@@ -209,14 +209,14 @@ export function ActivityTree({
                         type="number"
                         aria-label={`${node.name} duration in working days`}
                         min="0"
+                        max={MAX_DAYS}
+                        step="1"
                         defaultValue={node.durationDays}
                         key={`${node.id}-${node.durationDays}`}
                         onKeyDown={commitKey}
                         onBlur={(event) => {
-                          const next = Math.max(
-                            0,
-                            Number(event.target.value) || 0,
-                          )
+                          const next = clampDays(event.target.value)
+                          event.target.value = next
                           if (next !== node.durationDays)
                             onDuration(node.id, next)
                         }}
@@ -422,10 +422,13 @@ export function ActivityCards({
                     key={`${node.id}-${node.durationDays}`}
                     type="number"
                     min="0"
+                    max={MAX_DAYS}
+                    step="1"
                     defaultValue={node.durationDays}
                     onKeyDown={commitKey}
                     onBlur={(e) => {
-                      const n = Math.max(0, Number(e.target.value) || 0)
+                      const n = clampDays(e.target.value)
+                      e.target.value = n
                       if (n !== node.durationDays) onDuration(node.id, n)
                     }}
                   />

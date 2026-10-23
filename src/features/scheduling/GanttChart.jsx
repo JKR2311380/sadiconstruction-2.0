@@ -1,6 +1,11 @@
 import { useId } from "react"
-import { cn } from "@/lib/utils"
-import { ganttScale, scheduleDate, workingDaysElapsed } from "./ganttHelpers"
+import { cn, todayIso } from "@/lib/utils"
+import {
+  ganttScale,
+  scheduleDate,
+  weekStartDates,
+  workingDaysElapsed,
+} from "./ganttHelpers"
 
 function shortDate(iso) {
   return new Intl.DateTimeFormat("en-PH", {
@@ -11,13 +16,13 @@ function shortDate(iso) {
 }
 
 export function GanttAxis({ scale, daysPerWeek, startDate, calendar }) {
+  const dates = weekStartDates(startDate, scale.weeks, daysPerWeek, calendar)
   return (
     <div
       className="grid h-11 text-center text-xs font-medium text-muted-foreground"
       style={{ gridTemplateColumns: `repeat(${scale.weeks}, 1fr)` }}
     >
-      {Array.from({ length: scale.weeks }, (_, i) => {
-        const date = scheduleDate(startDate, i * daysPerWeek, calendar)
+      {dates.map((date, i) => {
         return (
           <span
             key={i}
@@ -162,7 +167,7 @@ export function DependencyArrows({
 }
 
 export function TodayLine({ scale, left, startDate, calendar }) {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = todayIso()
   const elapsed = workingDaysElapsed(startDate, calendar, today)
   if (elapsed == null || elapsed > scale.totalDays) return null
   return (

@@ -17,6 +17,10 @@ export function OverviewPanel({ project }) {
   const schedule = useWorkspaceStore(
     (state) => state.scheduleByProject[project.id],
   )
+  const scheduleFailed = useWorkspaceStore(
+    (state) => state.networkStatusByProject[project.id] === "error",
+  )
+  const pendingLabel = scheduleFailed ? "Could not load" : "Loading…"
   const personnel = useWorkspaceStore(
     (state) => state.personnelByProject[project.id] ?? EMPTY_PERSONNEL,
   )
@@ -50,11 +54,13 @@ export function OverviewPanel({ project }) {
         year: "numeric",
         timeZone: "UTC",
       }).format(new Date(`${finish}T00:00:00Z`))
-    : result && !result.ok
-      ? "Resolve cycle"
-      : !hasActivities
-        ? "No activities"
-        : "Set start date"
+    : !schedule
+      ? pendingLabel
+      : result && !result.ok
+        ? "Resolve cycle"
+        : !hasActivities
+          ? "No activities"
+          : "Set start date"
   const spend = projectExpenditure(project, boq)
   const boqTotal = boqGrandTotal(boq)
   const budgetGap =
@@ -76,7 +82,7 @@ export function OverviewPanel({ project }) {
       "Load an approved BOQ to establish project phases",
       `${base}/boq`,
     ])
-  if (!hasActivities)
+  if (schedule && !hasActivities)
     actions.push(["Add activities and predecessor links", `${base}/scheduling`])
   if (result && !result.ok)
     actions.push([
@@ -84,7 +90,10 @@ export function OverviewPanel({ project }) {
       `${base}/scheduling`,
     ])
   if (!project.startDate)
-    actions.push(["Set the project start date in project details", "/projects"])
+    actions.push([
+      "Set the project start date in project details",
+      `${base}/overview?edit=1`,
+    ])
   if (hasActivities && !schedule?.baseline && result?.ok)
     actions.push([
       "Capture a baseline before tracking schedule changes",
@@ -101,7 +110,11 @@ export function OverviewPanel({ project }) {
           ["Critical path finish", finishLabel],
           [
             "Schedule complete",
-            completion == null ? "No activities" : `${completion}%`,
+            !schedule
+              ? pendingLabel
+              : completion == null
+                ? "No activities"
+                : `${completion}%`,
           ],
           [
             "Budget",
@@ -198,11 +211,15 @@ export function OverviewPanel({ project }) {
             </ul>
           ) : (
             <p className="text-sm text-muted-foreground">
-              {result && !result.ok
-                ? "Resolve the cycle to identify critical activities."
-                : hasActivities
-                  ? "No incomplete critical activities."
-                  : "Add activities to calculate the critical path."}
+              {!schedule
+                ? scheduleFailed
+                  ? "Could not load the schedule. Open Scheduling to retry."
+                  : "Loading schedule…"
+                : result && !result.ok
+                  ? "Resolve the cycle to identify critical activities."
+                  : hasActivities
+                    ? "No incomplete critical activities."
+                    : "Add activities to calculate the critical path."}
             </p>
           )}
         </section>
