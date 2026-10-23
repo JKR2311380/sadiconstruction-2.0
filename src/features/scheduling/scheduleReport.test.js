@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { computeProgress, finishVariance, makeBaseline, overallProgress, scheduleToCsv } from "./scheduleReport"
+import { computeProgress, finishVariance, makeBaseline, overallProgress, progressByProject, scheduleToCsv } from "./scheduleReport"
 
 const nodes = [
   { id: "P", parentId: null, kind: "phase_root", name: "A – Site", wbsCode: "A" },
@@ -37,6 +37,19 @@ describe("progress", () => {
   })
 })
 
+describe("progressByProject", () => {
+  it("weights each project's leaves by duration and skips projects without activities", () => {
+    const rows = [
+      { projectId: "p1", kind: "leaf", isLoe: false, durationDays: 8, progressPct: 50 },
+      { projectId: "p1", kind: "leaf", isLoe: false, durationDays: 3, progressPct: 0 },
+      { projectId: "p1", kind: "leaf", isLoe: true, durationDays: 0, progressPct: 0 },
+      { projectId: "p2", kind: "leaf", isLoe: false, durationDays: 5, progressPct: 100 },
+    ]
+    expect(progressByProject(rows)).toEqual({ p1: 36, p2: 100 })
+    expect(progressByProject([])).toEqual({})
+  })
+})
+
 describe("baseline", () => {
   it("snapshots es/ef and reports finish variance", () => {
     const baseline = makeBaseline(metrics, 9, "2026-10-01T00:00:00.000Z")
@@ -65,6 +78,20 @@ describe("scheduleToCsv", () => {
     expect(lines[3]).toContain("A.1FS+1")
     // a2 starts at working-day index 3 from Mon 2026-10-05 -> Thu 2026-10-08
     expect(lines[3]).toContain("2026-10-08")
+  })
+
+  it("neutralises text cells a spreadsheet would run as a formula, but not numbers", () => {
+    const risky = [
+      nodes[0],
+      { ...nodes[1], name: '=HYPERLINK("http://x","click")' },
+      { ...nodes[2], name: "+SUM(A1)", wbsCode: "@cmd" },
+    ]
+    const baseline = makeBaseline({ ...metrics, a2: { es: 3, ef: 12 } }, 12)
+    const lines = scheduleToCsv({ nodes: risky, dependencies, metrics, baseline, calendar, startDate: null }).trim().split("\r\n")
+    expect(lines[2]).toContain(`"'=HYPERLINK(""http://x"",""click"")"`)
+    expect(lines[3].startsWith("'@cmd,1,'+SUM(A1),")).toBe(true)
+    // finish variance is a real negative number and must stay one
+    expect(lines[3].endsWith(",-3")).toBe(true)
   })
 
   it("leaves dates blank when the project has no start date", () => {

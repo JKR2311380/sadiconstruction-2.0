@@ -16,33 +16,39 @@ export async function createProject({ name, client, stage = "planning", existing
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  const { data: code, error: codeError } = await supabase.rpc("next_project_code")
-  if (codeError) {
-    const fallback = nextProjectCode(existing)
+  // next_project_code is not atomic: retry once when another insert took the code.
+  for (let attempt = 0; ; attempt += 1) {
+    const { data: code, error: codeError } = await supabase.rpc("next_project_code")
     const { data, error } = await supabase
       .from("projects")
       .insert({
         name,
         client: client || null,
         stage,
-        code: fallback,
+        code: codeError ? nextProjectCode(existing) : code,
         created_by: user?.id ?? null,
       })
       .select("*")
       .single()
-    if (error) throw error
-    return mapProject(data)
+    if (!error) return mapProject(data)
+    if (error.code !== "23505" || attempt > 0) throw error
   }
+}
 
+export async function updateProject(projectId, fields) {
   const { data, error } = await supabase
     .from("projects")
-    .insert({
-      name,
-      client: client || null,
-      stage,
-      code,
-      created_by: user?.id ?? null,
+    .update({
+      name: fields.name,
+      client: fields.client || null,
+      site: fields.site || null,
+      stage: fields.stage,
+      priority: fields.priority,
+      budget: fields.budget,
+      start_date: fields.startDate || null,
+      target_end_date: fields.targetEndDate || null,
     })
+    .eq("id", projectId)
     .select("*")
     .single()
   if (error) throw error

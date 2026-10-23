@@ -7,6 +7,10 @@ import {
 import { nextProjectCode } from "@/lib/projectCode"
 import { parseBoqCsv } from "@/data/mock/csv"
 import { isSupabaseConfigured } from "@/lib/supabaseClient"
+import { clampDays, MAX_DAYS, todayIso } from "@/lib/utils"
+import { nextChildSlot, orderNodes } from "@/lib/wbs"
+import { recalculate } from "@/features/scheduling/engine"
+import { overallProgress, progressByProject } from "@/features/scheduling/scheduleReport"
 import * as projectsApi from "@/data/projects"
 import * as boqApi from "@/data/boq"
 import * as scheduleApi from "@/data/schedule"
@@ -23,6 +27,7 @@ const emptyWorkspace = {
   personnelByProject: {},
   documentsByProject: {},
   scheduleByProject: {},
+  progressByProject: {},
   settings: { darkMode: false },
 }
 
@@ -33,6 +38,14 @@ export function boqGrandTotal(boq) {
       sum + phase.lines.reduce((lineSum, line) => lineSum + Number(line.amount || 0), 0),
     0,
   )
+}
+
+/** Percent complete from the schedule (ADR 0004: metrics are recomputed, not stored). Null = no activities. */
+export function projectProgress(state, projectId) {
+  const schedule = state.scheduleByProject[projectId]
+  if (!schedule) return state.progressByProject[projectId] ?? null
+  const hasActivities = schedule.nodes.some((node) => node.kind === "leaf" && !node.isLoe)
+  return hasActivities ? overallProgress(schedule.nodes) : null
 }
 
 export function projectExpenditure(project, boq) {
@@ -51,6 +64,22 @@ function ensureSchedule(state, projectId) {
   }
   state.scheduleByProject[projectId] = next
   return next
+}
+
+function patchNode(state, projectId, nodeId, patch) {
+  const schedule = state.scheduleByProject[projectId]
+  if (!schedule) return {}
+  return {
+    scheduleByProject: {
+      ...state.scheduleByProject,
+      [projectId]: {
+        ...schedule,
+        nodes: schedule.nodes.map((node) =>
+          node.id === nodeId ? { ...node, ...patch } : node,
+        ),
+      },
+    },
+  }
 }
 
 function syncPhaseRootsInto(schedule, boq) {
@@ -88,11 +117,14 @@ function syncPhaseRootsInto(schedule, boq) {
     if (found && schedule.nodes.some((node) => node.id === found.id)) {
       found.name = `${phase.code} – ${phase.name}`
       found.phase = phase.colorToken
+      found.wbsCode = phase.code
+      found.sortOrder = phase.sortOrder
       continue
     }
     schedule.nodes.push({
       id: phase.code,
       name: `${phase.code} – ${phase.name}`,
+      wbsCode: phase.code,
       kind: "phase_root",
       parentId: null,
       boqPhaseId: phase.id,
@@ -106,6 +138,7 @@ function syncPhaseRootsInto(schedule, boq) {
       open: true,
     })
   }
+  schedule.nodes = orderNodes(schedule.nodes)
 }
 
 export const useWorkspaceStore = create(
@@ -113,6 +146,8 @@ export const useWorkspaceStore = create(
     (set, get) => ({
       ...(isSupabaseConfigured ? emptyWorkspace : createSeedState()),
       hydrateStatus: isSupabaseConfigured ? "idle" : "ready",
+      networkStatusByProject: {},
+      progressByProject: {},
 
       async hydrate() {
         if (!isSupabaseConfigured) {
@@ -128,22 +163,33 @@ export const useWorkspaceStore = create(
             documentsApi.loadAllDocuments(ids),
             personnelApi.loadAllPersonnel(ids),
           ])
+          // Directory progress is a convenience; a failure here must not block the workspace.
+          const leafRows = await scheduleApi.loadLeafProgress(ids).catch((error) => {
+            console.error("Directory progress load failed", error)
+            return []
+          })
           set({
             projects,
             boqByProject,
             documentsByProject,
             personnelByProject,
             scheduleByProject: {},
+            progressByProject: progressByProject(leafRows),
             hydrateStatus: "ready",
           })
         } catch (error) {
           console.error("Workspace hydrate failed", error)
-          set({ hydrateStatus: "ready" })
+          set({ hydrateStatus: "error" })
         }
       },
 
       async ensureNetwork(projectId) {
         if (get().scheduleByProject[projectId]) return
+        if (get().networkStatusByProject[projectId] === "loading") return
+        const setStatus = (status) =>
+          set((state) => ({
+            networkStatusByProject: { ...state.networkStatusByProject, [projectId]: status },
+          }))
         if (!isSupabaseConfigured) {
           set((state) => ({
             scheduleByProject: {
@@ -158,14 +204,17 @@ export const useWorkspaceStore = create(
           }))
           return
         }
+        setStatus("loading")
         try {
           await scheduleApi.syncPhaseRoots(projectId)
           const network = await scheduleApi.loadNetwork(projectId)
           set((state) => ({
             scheduleByProject: { ...state.scheduleByProject, [projectId]: network },
           }))
+          setStatus("ready")
         } catch (error) {
           console.error("ensureNetwork failed", error)
+          setStatus("error")
         }
       },
 
@@ -222,9 +271,9 @@ export const useWorkspaceStore = create(
           priority: 2,
           progressPct: 0,
           expenditureOverride: null,
-          budget: 0,
+          budget: null,
           currency: "PHP",
-          startDate: new Date().toISOString().slice(0, 10),
+          startDate: todayIso(),
           targetEndDate: null,
           updatedAt: new Date().toISOString(),
           deletedAt: null,
@@ -246,7 +295,22 @@ export const useWorkspaceStore = create(
         return project
       },
 
-      archiveProject(projectId) {
+      async updateProject(projectId, fields) {
+        const current = get().projects.find((project) => project.id === projectId)
+        const next = isSupabaseConfigured
+          ? await projectsApi.updateProject(projectId, { ...current, ...fields })
+          : { ...current, ...fields, updatedAt: new Date().toISOString() }
+        set((state) => ({
+          projects: state.projects.map((project) =>
+            project.id === projectId ? next : project,
+          ),
+        }))
+        return next
+      },
+
+      // Soft delete (ADR 0011). There is no restore screen yet.
+      async archiveProject(projectId) {
+        if (isSupabaseConfigured) await projectsApi.archiveProject(projectId)
         set((state) => ({
           projects: state.projects.map((project) =>
             project.id === projectId
@@ -254,8 +318,20 @@ export const useWorkspaceStore = create(
               : project,
           ),
         }))
+      },
+
+      touchProject(projectId) {
+        set((state) => ({
+          projects: state.projects.map((project) =>
+            project.id === projectId
+              ? { ...project, updatedAt: new Date().toISOString() }
+              : project,
+          ),
+        }))
         if (isSupabaseConfigured) {
-          void projectsApi.archiveProject(projectId)
+          void projectsApi
+            .touchProject(projectId)
+            .catch((error) => console.error("touchProject failed", error))
         }
       },
 
@@ -283,9 +359,11 @@ export const useWorkspaceStore = create(
         if (isSupabaseConfigured) {
           const result = await boqApi.replaceBoqFromCsv(projectId, csvText)
           if (!result.ok) return result
-          const boq = await boqApi.loadBoq(projectId)
-          await scheduleApi.syncPhaseRoots(projectId)
-          const network = await scheduleApi.loadNetwork(projectId)
+          // The BOQ reload does not depend on the phase-root sync, so they run side by side.
+          const [boq, network] = await Promise.all([
+            boqApi.loadBoq(projectId),
+            scheduleApi.syncPhaseRoots(projectId).then(() => scheduleApi.loadNetwork(projectId)),
+          ])
           set((state) => ({
             boqByProject: { ...state.boqByProject, [projectId]: boq },
             scheduleByProject: { ...state.scheduleByProject, [projectId]: network },
@@ -398,7 +476,7 @@ export const useWorkspaceStore = create(
           contentType,
           byteSize: file?.size ?? 0,
           storagePath: null,
-          updatedAt: new Date().toISOString().slice(0, 10),
+          updatedAt: todayIso(),
           deletedAt: null,
         }
         set((state) => ({
@@ -452,75 +530,78 @@ export const useWorkspaceStore = create(
         }))
       },
 
-      setDuration(projectId, nodeId, durationDays) {
-        set((state) => {
-          const schedule = structuredClone(state.scheduleByProject[projectId])
-          const node = schedule.nodes.find((row) => row.id === nodeId)
-          if (node && node.kind === "leaf" && !node.isLoe) {
-            node.durationDays = Math.max(0, durationDays)
-          }
-          return {
-            scheduleByProject: {
-              ...state.scheduleByProject,
-              [projectId]: schedule,
-            },
-          }
-        })
-        if (isSupabaseConfigured) {
-          const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
-          if (node) void scheduleApi.saveNode(projectId, node)
+      // Inline edits apply at once and roll back that one field if the save fails.
+      async setNodeField(projectId, nodeId, field, column, value) {
+        const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+        if (!node || node.kind !== "leaf" || node.isLoe) return
+        const previous = node[field]
+        set((state) => patchNode(state, projectId, nodeId, { [field]: value }))
+        if (!isSupabaseConfigured) return
+        try {
+          await scheduleApi.updateNode(projectId, nodeId, { [column]: value })
+        } catch (error) {
+          set((state) => {
+            const current = state.scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+            return current?.[field] === value
+              ? patchNode(state, projectId, nodeId, { [field]: previous })
+              : {}
+          })
+          throw error
         }
+      },
+
+      setDuration(projectId, nodeId, durationDays) {
+        return get().setNodeField(projectId, nodeId, "durationDays", "duration_days", clampDays(durationDays))
       },
 
       setProgress(projectId, nodeId, progressPct) {
-        set((state) => {
-          const schedule = structuredClone(state.scheduleByProject[projectId])
-          const node = schedule.nodes.find((row) => row.id === nodeId)
-          if (node && node.kind === "leaf" && !node.isLoe) {
-            node.progressPct = Math.min(100, Math.max(0, Math.round(Number(progressPct) || 0)))
-          }
-          return { scheduleByProject: { ...state.scheduleByProject, [projectId]: schedule } }
-        })
-        if (isSupabaseConfigured) {
-          const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
-          if (node) void scheduleApi.saveNode(projectId, node)
-        }
+        return get().setNodeField(
+          projectId,
+          nodeId,
+          "progressPct",
+          "progress_pct",
+          Math.min(100, Math.max(0, Math.round(Number(progressPct) || 0))),
+        )
       },
 
-      setBaseline(projectId, baseline) {
+      async setBaseline(projectId, baseline) {
+        if (isSupabaseConfigured) {
+          await (baseline ? scheduleApi.saveBaseline(projectId, baseline) : scheduleApi.clearBaseline(projectId))
+        }
         set((state) => ({
           scheduleByProject: {
             ...state.scheduleByProject,
             [projectId]: { ...state.scheduleByProject[projectId], baseline },
           },
         }))
-        if (isSupabaseConfigured) {
-          void (baseline ? scheduleApi.saveBaseline(projectId, baseline) : scheduleApi.clearBaseline(projectId))
-        }
       },
 
-      addScheduleNode(projectId, { parentId, kind, name, durationDays }) {
+      async addScheduleNode(projectId, { parentId, kind, name, durationDays }) {
+        const current = get().scheduleByProject[projectId]
+        const parent = current?.nodes.find((row) => row.id === parentId)
+        if (!parent) return
+        const id = isSupabaseConfigured ? crypto.randomUUID() : `${parentId}.${Math.random().toString(36).slice(2, 6)}`
+        const slot = nextChildSlot(parent, current.nodes.filter((row) => row.parentId === parentId))
+        const node = {
+          id,
+          name,
+          kind,
+          parentId,
+          boqPhaseId: parent.boqPhaseId ?? null,
+          phase: parent.phase,
+          locked: false,
+          durationDays: kind === "leaf" ? clampDays(durationDays) : 0,
+          isLoe: false,
+          wbsCode: slot.wbsCode,
+          spanStartId: null,
+          spanEndId: null,
+          sortOrder: slot.sortOrder,
+          open: true,
+        }
+        // The row must exist on the server before it can be picked as a parent.
+        if (isSupabaseConfigured) await scheduleApi.saveNode(projectId, node)
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])
-          const parent = schedule.nodes.find((row) => row.id === parentId)
-          if (!parent) return {}
-          const id = isSupabaseConfigured ? crypto.randomUUID() : `${parentId}.${Math.random().toString(36).slice(2, 6)}`
-          const node = {
-            id,
-            name: `${parent.wbsCode ? `${parent.wbsCode}.` : ""}${name}`,
-            kind,
-            parentId,
-            boqPhaseId: parent.boqPhaseId ?? null,
-            phase: parent.phase,
-            locked: false,
-            durationDays: kind === "leaf" ? durationDays || 0 : 0,
-            isLoe: false,
-            wbsCode: parent.wbsCode ? `${parent.wbsCode}.${schedule.nodes.filter((row) => row.parentId === parentId).length + 1}` : id,
-            spanStartId: null,
-            spanEndId: null,
-            sortOrder: schedule.nodes.filter((row) => row.parentId === parentId).length + 1,
-            open: true,
-          }
           const parentIndex = schedule.nodes.findIndex((row) => row.id === parentId)
           const isDescendant = (nodeId) => {
             let cursor = schedule.nodes.find((row) => row.id === nodeId)
@@ -539,7 +620,7 @@ export const useWorkspaceStore = create(
             insertAt += 1
           }
           schedule.nodes.splice(insertAt, 0, node)
-          parent.open = true
+          if (parentIndex >= 0) schedule.nodes[parentIndex].open = true
           schedule.selectedId = id
           return {
             scheduleByProject: {
@@ -548,18 +629,20 @@ export const useWorkspaceStore = create(
             },
           }
         })
-        if (isSupabaseConfigured) {
-          const schedule = get().scheduleByProject[projectId]
-          const node = schedule?.nodes.find((row) => row.id === schedule.selectedId)
-          if (node) void scheduleApi.saveNode(projectId, node)
-        }
+        return node
       },
 
-      async addDependency(projectId, { predecessorId, successorId, type, lagDays = 0 }) {
+      async addDependency(projectId, { predecessorId, successorId, type, lagDays: rawLag = 0 }) {
         const current = get().scheduleByProject[projectId]
-        if (predecessorId === successorId || !Number.isFinite(lagDays)) return
+        if (predecessorId === successorId || !Number.isFinite(rawLag)) return
+        const lagDays = clampDays(rawLag, -MAX_DAYS)
         if (current.dependencies.some((dep) => dep.predecessorId === predecessorId && dep.successorId === successorId && dep.type === type)) return
         const dep = { id: isSupabaseConfigured ? crypto.randomUUID() : uid("dep"), predecessorId, successorId, type, lagDays }
+        // Refuse a link that turns a valid network into a cycle; an existing cycle stays editable.
+        const network = (dependencies) => recalculate({ nodes: current.nodes, dependencies, calendar: current.calendar })
+        if (network(current.dependencies).ok && !network([...current.dependencies, dep]).ok) {
+          throw new Error("This link would create a dependency cycle. Pick a different predecessor.")
+        }
         if (isSupabaseConfigured) await scheduleApi.saveDependency(projectId, dep)
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])
@@ -593,11 +676,21 @@ export const useWorkspaceStore = create(
         })
       },
 
-      deleteScheduleNode(projectId, nodeId) {
+      async renameScheduleNode(projectId, nodeId, name) {
+        const node = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+        const next = name.trim()
+        if (!node || node.kind === "phase_root" || node.locked || !next) return
+        if (isSupabaseConfigured) await scheduleApi.updateNode(projectId, nodeId, { name: next })
+        set((state) => patchNode(state, projectId, nodeId, { name: next }))
+      },
+
+      // Hard delete (ADR 0011): the database cascades to children and links.
+      async deleteScheduleNode(projectId, nodeId) {
+        const target = get().scheduleByProject[projectId]?.nodes.find((row) => row.id === nodeId)
+        if (!target || target.kind === "phase_root" || target.locked) return
+        if (isSupabaseConfigured) await scheduleApi.deleteNode(projectId, nodeId)
         set((state) => {
           const schedule = structuredClone(state.scheduleByProject[projectId])
-          const target = schedule.nodes.find((row) => row.id === nodeId)
-          if (!target || target.kind === "phase_root" || target.locked) return {}
           const removeIds = new Set([nodeId])
           let grew = true
           while (grew) {
@@ -614,6 +707,10 @@ export const useWorkspaceStore = create(
             (dep) =>
               !removeIds.has(dep.predecessorId) && !removeIds.has(dep.successorId),
           )
+          for (const node of schedule.nodes) {
+            if (removeIds.has(node.spanStartId)) node.spanStartId = null
+            if (removeIds.has(node.spanEndId)) node.spanEndId = null
+          }
           if (removeIds.has(schedule.selectedId)) schedule.selectedId = null
           return {
             scheduleByProject: {
@@ -622,9 +719,6 @@ export const useWorkspaceStore = create(
             },
           }
         })
-        if (isSupabaseConfigured) {
-          void scheduleApi.deleteNode(projectId, nodeId)
-        }
       },
 
       simulateCycle(projectId) {
@@ -681,5 +775,34 @@ export const useWorkspaceStore = create(
             },
       migrate: () => ({ ...createSeedState(), hydrateStatus: "ready" }),
     },
+  ),
+)
+
+// Every successful change to a project's records also bumps its "Updated" stamp (QA-036).
+const TOUCHING = [
+  "replaceBoqFromCsv",
+  "addPersonnel",
+  "removePersonnel",
+  "addDocument",
+  "removeDocument",
+  "setNodeField",
+  "setBaseline",
+  "addScheduleNode",
+  "renameScheduleNode",
+  "deleteScheduleNode",
+  "addDependency",
+  "removeDependency",
+  "clearDependencies",
+]
+useWorkspaceStore.setState((state) =>
+  Object.fromEntries(
+    TOUCHING.map((name) => [
+      name,
+      async (projectId, ...args) => {
+        const result = await state[name](projectId, ...args)
+        if (result?.ok !== false) useWorkspaceStore.getState().touchProject(projectId)
+        return result
+      },
+    ]),
   ),
 )
