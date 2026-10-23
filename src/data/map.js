@@ -9,7 +9,7 @@ export function mapProject(row) {
     priority: row.priority,
     progressPct: Number(row.progress_pct ?? 0),
     expenditureOverride: row.expenditure == null ? null : Number(row.expenditure),
-    budget: Number(row.budget ?? 0),
+    budget: row.budget == null ? null : Number(row.budget),
     currency: row.currency || "PHP",
     startDate: row.start_date,
     targetEndDate: row.target_end_date,
@@ -82,6 +82,7 @@ export function mapNode(row) {
     spanStartId: null,
     spanEndId: null,
     sortOrder: row.sort_order ?? 0,
+    createdAt: row.created_at ?? null,
     open: true,
   }
 }
