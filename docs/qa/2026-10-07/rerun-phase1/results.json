@@ -1,0 +1,632 @@
+[
+  {
+    "id": "ROUTE-UNKNOWN-SIGNED-OUT",
+    "status": "OBSERVED",
+    "details": "Unknown URL silently redirects to landing; no 404 page"
+  },
+  {
+    "id": "ROUTE-DEEPLINK-RETURN",
+    "status": "PASS",
+    "details": "Deep link restored after login"
+  },
+  {
+    "id": "ROUTE-DEEPLINK-QUERY-LOST",
+    "status": "FAIL",
+    "details": "?new=1 dropped by login redirect (only pathname is kept); Add Project dialog did not open"
+  },
+  {
+    "id": "AUTH-SIGNOUT-BACK",
+    "status": "PASS",
+    "details": "Back after sign-out stays on login"
+  },
+  {
+    "id": "AUTH-LOGIN-WRONG-PASSWORD",
+    "status": "PASS",
+    "details": "Wrong password rejected with message"
+  },
+  {
+    "id": "AUTH-LOGIN-EMAIL-CASE-SPACE",
+    "status": "PASS",
+    "details": "Upper-case email accepted"
+  },
+  {
+    "id": "AUTH-LOGIN-PREFILLED",
+    "status": "OBSERVED",
+    "details": "Login form prefilled email=\"planner@sadicon.local\" password length=7; seeded credentials panel visible=true"
+  },
+  {
+    "id": "AUTH-SIGNUP-WHITESPACE-NAME",
+    "status": "PASS",
+    "details": "Whitespace-only name rejected"
+  },
+  {
+    "id": "AUTH-SIGNUP-SHORT-PASSWORD-SPACES",
+    "status": "PASS",
+    "details": "rejected"
+  },
+  {
+    "id": "AUTH-SIGNUP-DIALOG-DISMISS",
+    "status": "PASS",
+    "details": "Escape on success dialog continues to projects"
+  },
+  {
+    "id": "AUTH-SIGNUP-RELOGIN",
+    "status": "PASS",
+    "details": "New mock account can sign in again"
+  },
+  {
+    "id": "AUTH-LOGIN-PAGE-WHEN-SIGNED-IN",
+    "status": "PASS",
+    "details": "Signed-in user redirected away from login/signup"
+  },
+  {
+    "id": "SHELL-COMMAND-PALETTE",
+    "status": "PASS",
+    "details": "Palette opened"
+  },
+  {
+    "id": "SHELL-NAV-ACTIVE-AND-LINKS",
+    "status": "PASS",
+    "details": "Rail links navigate"
+  },
+  {
+    "id": "SHELL-HELP-FAQ-LINK-FROM-PROJECTS",
+    "status": "PASS",
+    "details": "FAQ scrolled into view"
+  },
+  {
+    "id": "SHELL-HELP-FAQ-LINK-FROM-SETTINGS",
+    "status": "FAIL",
+    "details": "\"Full FAQ in Settings\" does nothing when already on Settings (FAQ top=980px, viewport 500px)"
+  },
+  {
+    "id": "SHELL-HELP-COPY-EMAIL",
+    "status": "PASS",
+    "details": "Copied"
+  },
+  {
+    "id": "SHELL-THEME-PERSIST",
+    "status": "PASS",
+    "details": "Dark theme persists"
+  },
+  {
+    "id": "DIR-CREATE-WHITESPACE-NAME",
+    "status": "PASS",
+    "details": "rejected"
+  },
+  {
+    "id": "DIR-CREATE-DOUBLE-SUBMIT",
+    "status": "PASS",
+    "details": "One project created (rows before 6)"
+  },
+  {
+    "id": "DIR-CREATE-LONG-NAME",
+    "status": "OBSERVED",
+    "details": "600-char project name accepted (no length limit); page horizontal overflow=false"
+  },
+  {
+    "id": "DIR-NEW-PROJECT-DEFAULTS",
+    "status": "OBSERVED",
+    "details": "New project subtitle: \"\tPRJ-2026-002\t\" | Budget card: undefined | finish: undefined"
+  },
+  {
+    "id": "DIR-NO-EDIT-ARCHIVE-STAGE-UI",
+    "status": "FAIL",
+    "details": "Project page offers no way to edit name/client/stage/priority/budget/start date or archive the project. Buttons present: ← All projects"
+  },
+  {
+    "id": "DIR-SEARCH-FILTER",
+    "status": "PASS",
+    "details": "Search + stage filter combine"
+  },
+  {
+    "id": "DIR-ROW-KEYBOARD-ACCESS",
+    "status": "FAIL",
+    "details": "Project rows are click-only <tr> (no link/button/tabindex) — a keyboard user cannot open a project from the directory"
+  },
+  {
+    "id": "DIR-SORT-CONTROLS",
+    "status": "OBSERVED",
+    "details": "Directory has no sort controls (name/stage/priority/progress)"
+  },
+  {
+    "id": "PROJ-INVALID-ID",
+    "status": "OBSERVED",
+    "details": "Unknown project id redirects to /projects with no explanation"
+  },
+  {
+    "id": "PROJ-INVALID-TAB",
+    "status": "OBSERVED",
+    "details": "/projects/:id/bogus renders tab \"Overview\" while URL stays /projects/prj-clearwater/bogus"
+  },
+  {
+    "id": "PROJ-TAB-BACK-BUTTON",
+    "status": "FAIL",
+    "details": "Back selected Bill of Quantities"
+  },
+  {
+    "id": "OVERVIEW-CLEARWATER",
+    "status": "FAIL",
+    "details": "Directory progress 34% vs Overview \"Schedule complete\" 0% for the same project"
+  },
+  {
+    "id": "OVERVIEW-CRITICAL-LINK",
+    "status": "PASS",
+    "details": "Critical activity \"A.1 Mobilization & Demobilization\" selected in schedule"
+  },
+  {
+    "id": "SETTINGS-ROLE-CHANGE-AND-LAST-ADMIN",
+    "status": "PASS",
+    "details": "Last admin protected; select reverted"
+  },
+  {
+    "id": "SETTINGS-SELF-DEMOTE-WITH-TWO-ADMINS",
+    "status": "OBSERVED",
+    "details": "Admin can demote self with no confirmation; role table still visible=false; admin-only notice=true"
+  },
+  {
+    "id": "SETTINGS-STALE-ROLE-OTHER-SESSION",
+    "status": "OBSERVED",
+    "details": "Second tab after self-demotion shows: Signed in as Planner. Changing Staff Member Roles is Admin-only."
+  },
+  {
+    "id": "SETTINGS-RESET-DEMO",
+    "status": "ERROR",
+    "details": "locator.click: Error: strict mode violation: getByRole('button', { name: 'Reset demo data' }) resolved to 2 elements:"
+  },
+  {
+    "id": "PROJ-TAB-BACK-PROBE",
+    "status": "FAIL",
+    "details": "Browser Back from BOQ tab ends on \"boq\" instead of \"documents\". History length 3→5→7→7; navigations after Back: boq (tab strip re-pushes the focused tab)"
+  },
+  {
+    "id": "SCHED-NO-BOQ-GATE",
+    "status": "OBSERVED",
+    "details": "Activity buttons disabled without BOQ. \"Simulate cycle\" demo button visible=true"
+  },
+  {
+    "id": "SCHED-SIMULATE-CYCLE-DEAD-BUTTON",
+    "status": "FAIL",
+    "details": "\"Simulate cycle\" does nothing on any project except the Clearwater seed (hard-coded to activities B.2/B.3) — no feedback"
+  },
+  {
+    "id": "SCHED-ADD-AND-LABELS",
+    "status": "FAIL",
+    "details": "New activities display random generated ids as their WBS code in mock mode: [\"A – Alpha LOCKED\",\"A.ip0m Substructure\",\"A.ip0m.1 A.ip0m.Excavation\",\"A.ip0m.2 A.ip0m.Footings\",\"B – Bravo LOCKED\",\"B.0xrn Framing\",\"C – Charlie LOCKED\"]"
+  },
+  {
+    "id": "SCHED-SUMMARY-TOAST-WORDING",
+    "status": "OBSERVED",
+    "details": "Adding a nested summary toasts \"Activity added\""
+  },
+  {
+    "id": "SCHED-DUPLICATE-NAMES",
+    "status": "OBSERVED",
+    "details": "Two activities with the same name under one parent accepted: [\"B.0xrn Framing\",\"B.32mu Framing\"]"
+  },
+  {
+    "id": "SCHED-ADD-DECIMAL-AND-HUGE-DURATION-FORM",
+    "status": "OBSERVED",
+    "details": "Add-activity form with duration 2.5 → blocked by native step validation"
+  },
+  {
+    "id": "SCHED-INLINE-DECIMAL-DURATION",
+    "status": "PASS",
+    "details": "Stored 3"
+  },
+  {
+    "id": "SCHED-INLINE-NEGATIVE-AND-TEXT",
+    "status": "OBSERVED",
+    "details": "Typing -4 silently becomes 0 (no validation message)"
+  },
+  {
+    "id": "SCHED-PROGRESS-BOUNDS",
+    "status": "PASS",
+    "details": "Progress clamped to 0–100 (silently)"
+  },
+  {
+    "id": "SCHED-LINK-FS-AND-METRICS",
+    "status": "PASS",
+    "details": "FS link computed: Duration 9 working days Complete 15% Longest path A.ip0m.1 / A.ip0m.2 Demo / syn"
+  },
+  {
+    "id": "SCHED-LINK-DECIMAL-LAG",
+    "status": "PASS",
+    "details": "Blocked"
+  },
+  {
+    "id": "SCHED-LINK-HUGE-LAG",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-CYCLE-CREATE-AND-RECOVER",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-BASELINE-FLOW",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-NO-DELETE-RENAME",
+    "status": "FAIL",
+    "details": "Schedule has no UI to delete, rename, move or reorder an activity or summary once added (store has deleteScheduleNode but nothing calls it); a mistaken or duplicate activity is permanent short of deleting its whole BOQ phase"
+  },
+  {
+    "id": "BOQ-REPLACE-RETAIN-REMOVE-RENAME",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "BOQ-REPLACE-PHASE-ORDER",
+    "status": "FAIL",
+    "details": "After re-ordering phases in the CSV the BOQ tab shows D,A,C but Scheduling still lists phase roots as A,C,D"
+  },
+  {
+    "id": "SCHED-CSV-EXPORT-CONTENT",
+    "status": "FAIL",
+    "details": "Export writes activity names starting with \"=\" unescaped (CSV/formula injection when opened in Excel): D.b1qi,1,\"=HYPERLINK(\"\"http://x\"\",\"\"click\"\")\",leaf,3,,2026-10-07,2026-10-09,2026-10-14,202. Quote/comma escaping correct=true. File name: PRJ-2026-001-schedule.csv"
+  },
+  {
+    "id": "SCHED-HUGE-DURATION-PERF",
+    "status": "OBSERVED",
+    "details": "Duration 200000 handled in 171 ms, 610 axis cells"
+  },
+  {
+    "id": "SCHED-RELOAD-PERSIST",
+    "status": "PASS",
+    "details": "Schedule persists across reload (localStorage)"
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "FAIL",
+    "details": "\"Fix network\" restores the entire seed schedule: an activity added before the cycle was silently deleted, with no confirmation"
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "OBSERVED",
+    "details": "Seed LOE row cells (name,dur,pred,ES,EF,TF): [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"232\",\"–\"]"
+  },
+  {
+    "id": "SCHED-CRITICAL-ONLY-AND-COLLAPSE",
+    "status": "OBSERVED",
+    "details": "rows all=14 criticalOnly=11 collapsedA=10 afterReload=10"
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "FAIL",
+    "details": "\"Fix network\" restores the entire seed schedule: an activity added before the cycle was silently deleted, with no confirmation"
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "OBSERVED",
+    "details": "Seed LOE row cells (name,dur,pred,ES,EF,TF): [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"232\",\"–\"]"
+  },
+  {
+    "id": "SCHED-COLLAPSE-STATE",
+    "status": "OBSERVED",
+    "details": "rows all=14 criticalOnly=11 collapsedA=10"
+  },
+  {
+    "id": "SCHED-ADD-UNDER-COLLAPSED-PARENT-DEFAULT",
+    "status": "OBSERVED",
+    "details": "\"+ Activity\" default parent=\"A – General Requirements\"; after selecting a row under another phase default parent=\"A – General Requirements\" (always the first phase, ignores selection)"
+  },
+  {
+    "id": "SCHED-TODAY-LINE-AND-START",
+    "status": "OBSERVED",
+    "details": "Today line visible=true; axis starts: Jan 5 | Jan 12 | Jan 19"
+  },
+  {
+    "id": "PROJ-NEW-START-DATE-TZ",
+    "status": "PASS",
+    "details": "start 2026-10-07 matches local date"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-1000",
+    "status": "OBSERVED",
+    "details": "Duration 1000 days: 90 ms, 168 week cells"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-5000",
+    "status": "OBSERVED",
+    "details": "Duration 5000 days: 159 ms, 610 week cells"
+  },
+  {
+    "id": "SCHED-DURATION-PERF-20000",
+    "status": "OBSERVED",
+    "details": "Duration 20000 days: 47 ms, 610 week cells"
+  },
+  {
+    "id": "SCHED-DURATION-200000-FREEZE",
+    "status": "OBSERVED",
+    "details": "200000 handled: commit 13 ms, reopen 455 ms, overview ok=true"
+  },
+  {
+    "id": "MOBILE-TAB-STRIP-OVERFLOW",
+    "status": "FAIL",
+    "details": "Phone 390px: main region scrolls sideways (client 390px, scroll 587px, offset 197px) after opening Scheduling tab"
+  },
+  {
+    "id": "MOBILE-DIRECTORY-TABLE",
+    "status": "OBSERVED",
+    "details": "Directory at 390px: main 390/390px, table 824px in 356px wrapper"
+  },
+  {
+    "id": "MOBILE-NAV-DRAWER-SIGNOUT",
+    "status": "FAIL",
+    "details": "Drawer stays open after navigating"
+  },
+  {
+    "id": "LANDING-LINKS",
+    "status": "OBSERVED",
+    "details": "5 links: Sign in→/login | Sign up→/signup | Sign in to open the workspace→/login"
+  },
+  {
+    "id": "LANDING-BUTTONS-WITHOUT-ACTION",
+    "status": "OBSERVED",
+    "details": "14 buttons: Show Foundations | Show Massing | Show Structure | Show Envelope | Show Fit-out | Pause build sequence | Projects The record: code, sit | BOQ The approved bill, read-on | Scheduling Activities nest und | Replay | Planner | Project Manager | Shorten by 2 days | Lengthen by 2 days"
+  },
+  {
+    "id": "LANDING-CONSOLE-ERRORS",
+    "status": "PASS",
+    "details": "No console errors on landing"
+  },
+  {
+    "id": "SHELL-CTRL-K",
+    "status": "PASS",
+    "details": "ok"
+  },
+  {
+    "id": "MOBILE-NAV-DRAWER-RETEST",
+    "status": "PASS",
+    "details": "Drawer closes after navigating"
+  },
+  {
+    "id": "MOBILE-BOQ-DIALOG-USABLE",
+    "status": "PASS",
+    "details": "Confirm reachable at 390px"
+  },
+  {
+    "id": "PROJ-TAB-BACK-PROBE",
+    "status": "FAIL",
+    "details": "Browser Back from BOQ tab ends on \"boq\" instead of \"documents\". History length 3→5→7→7; navigations after Back: boq (tab strip re-pushes the focused tab)"
+  },
+  {
+    "id": "SCHED-NO-BOQ-GATE",
+    "status": "OBSERVED",
+    "details": "Activity buttons disabled without BOQ. \"Simulate cycle\" demo button visible=true"
+  },
+  {
+    "id": "SCHED-SIMULATE-CYCLE-DEAD-BUTTON",
+    "status": "FAIL",
+    "details": "\"Simulate cycle\" does nothing on any project except the Clearwater seed (hard-coded to activities B.2/B.3) — no feedback"
+  },
+  {
+    "id": "SCHED-ADD-AND-LABELS",
+    "status": "FAIL",
+    "details": "New activities display random generated ids as their WBS code in mock mode: [\"A – Alpha LOCKED\",\"A.241f Substructure\",\"A.241f.1 A.241f.Excavation\",\"A.241f.2 A.241f.Footings\",\"B – Bravo LOCKED\",\"B.tby5 Framing\",\"C – Charlie LOCKED\"]"
+  },
+  {
+    "id": "SCHED-SUMMARY-TOAST-WORDING",
+    "status": "OBSERVED",
+    "details": "Adding a nested summary toasts \"Activity added\""
+  },
+  {
+    "id": "SCHED-DUPLICATE-NAMES",
+    "status": "OBSERVED",
+    "details": "Two activities with the same name under one parent accepted: [\"B.tby5 Framing\",\"B.qij9 Framing\"]"
+  },
+  {
+    "id": "SCHED-ADD-DECIMAL-AND-HUGE-DURATION-FORM",
+    "status": "OBSERVED",
+    "details": "Add-activity form with duration 2.5 → blocked by native step validation"
+  },
+  {
+    "id": "SCHED-INLINE-DECIMAL-DURATION",
+    "status": "PASS",
+    "details": "Stored 3"
+  },
+  {
+    "id": "SCHED-INLINE-NEGATIVE-AND-TEXT",
+    "status": "OBSERVED",
+    "details": "Typing -4 silently becomes 0 (no validation message)"
+  },
+  {
+    "id": "SCHED-PROGRESS-BOUNDS",
+    "status": "PASS",
+    "details": "Progress clamped to 0–100 (silently)"
+  },
+  {
+    "id": "SCHED-LINK-FS-AND-METRICS",
+    "status": "PASS",
+    "details": "FS link computed: Duration 9 working days Complete 15% Longest path A.241f.1 / A.241f.2 Demo / syn"
+  },
+  {
+    "id": "SCHED-LINK-DECIMAL-LAG",
+    "status": "PASS",
+    "details": "Blocked"
+  },
+  {
+    "id": "SCHED-LINK-HUGE-LAG",
+    "status": "OBSERVED",
+    "details": "Lag -9999 accepted=false; footer: Duration 9 working days Complete 15% Longest path A.241f.1 / A.241f.2 Demo / synthetic pro"
+  },
+  {
+    "id": "SCHED-CYCLE-CREATE-AND-RECOVER",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-BASELINE-FLOW",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "SCHED-NO-DELETE-RENAME",
+    "status": "FAIL",
+    "details": "Schedule has no UI to delete, rename, move or reorder an activity or summary once added (store has deleteScheduleNode but nothing calls it); a mistaken or duplicate activity is permanent short of deleting its whole BOQ phase"
+  },
+  {
+    "id": "BOQ-REPLACE-RETAIN-REMOVE-RENAME",
+    "status": "ERROR",
+    "details": "locator.click: Timeout 8000ms exceeded."
+  },
+  {
+    "id": "BOQ-REPLACE-PHASE-ORDER",
+    "status": "FAIL",
+    "details": "After re-ordering phases in the CSV the BOQ tab shows D,A,C but Scheduling still lists phase roots as A,C,D"
+  },
+  {
+    "id": "SCHED-CSV-EXPORT-CONTENT",
+    "status": "FAIL",
+    "details": "Export writes activity names starting with \"=\" unescaped (CSV/formula injection when opened in Excel): D.c54z,1,\"=HYPERLINK(\"\"http://x\"\",\"\"click\"\")\",leaf,3,,2026-10-07,2026-10-09,2026-10-14,202. Quote/comma escaping correct=true. File name: PRJ-2026-001-schedule.csv"
+  },
+  {
+    "id": "SCHED-HUGE-DURATION-PERF",
+    "status": "OBSERVED",
+    "details": "Duration 200000 handled in 185 ms, 610 axis cells"
+  },
+  {
+    "id": "SCHED-RELOAD-PERSIST",
+    "status": "PASS",
+    "details": "Schedule persists across reload (localStorage)"
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "FAIL",
+    "details": "\"Fix network\" restores the entire seed schedule: an activity added before the cycle was silently deleted, with no confirmation"
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "OBSERVED",
+    "details": "Seed LOE row cells (name,dur,pred,ES,EF,TF): [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"232\",\"–\"]"
+  },
+  {
+    "id": "SCHED-CRITICAL-ONLY-AND-COLLAPSE",
+    "status": "OBSERVED",
+    "details": "rows all=14 criticalOnly=11 collapsedA=10 afterReload=10"
+  },
+  {
+    "id": "PROJ-TAB-BACK-PROBE",
+    "status": "FAIL",
+    "details": "Browser Back from BOQ tab ends on \"boq\" instead of \"documents\". History length 3→5→7→7; navigations after Back: boq (tab strip re-pushes the focused tab)"
+  },
+  {
+    "id": "SCHED-NO-BOQ-GATE",
+    "status": "OBSERVED",
+    "details": "Activity buttons disabled without BOQ. \"Simulate cycle\" demo button visible=true"
+  },
+  {
+    "id": "SCHED-SIMULATE-CYCLE-DEAD-BUTTON",
+    "status": "FAIL",
+    "details": "\"Simulate cycle\" does nothing on any project except the Clearwater seed (hard-coded to activities B.2/B.3) — no feedback"
+  },
+  {
+    "id": "SCHED-ADD-AND-LABELS",
+    "status": "FAIL",
+    "details": "New activities display random generated ids as their WBS code in mock mode: [\"A – Alpha LOCKED\",\"A.vv4p Substructure\",\"A.vv4p.1 A.vv4p.Excavation\",\"A.vv4p.2 A.vv4p.Footings\",\"B – Bravo LOCKED\",\"B.sa61 Framing\",\"C – Charlie LOCKED\"]"
+  },
+  {
+    "id": "SCHED-SUMMARY-TOAST-WORDING",
+    "status": "OBSERVED",
+    "details": "Adding a nested summary toasts \"Activity added\""
+  },
+  {
+    "id": "SCHED-DUPLICATE-NAMES",
+    "status": "OBSERVED",
+    "details": "Two activities with the same name under one parent accepted: [\"B.sa61 Framing\",\"B.kyf1 Framing\"]"
+  },
+  {
+    "id": "SCHED-ADD-DECIMAL-AND-HUGE-DURATION-FORM",
+    "status": "OBSERVED",
+    "details": "Add-activity form with duration 2.5 → blocked by native step validation"
+  },
+  {
+    "id": "SCHED-INLINE-DECIMAL-DURATION",
+    "status": "PASS",
+    "details": "Stored 3"
+  },
+  {
+    "id": "SCHED-INLINE-NEGATIVE-AND-TEXT",
+    "status": "OBSERVED",
+    "details": "Typing -4 silently becomes 0 (no validation message)"
+  },
+  {
+    "id": "SCHED-PROGRESS-BOUNDS",
+    "status": "PASS",
+    "details": "Progress clamped to 0–100 (silently)"
+  },
+  {
+    "id": "SCHED-LINK-FS-AND-METRICS",
+    "status": "PASS",
+    "details": "FS link computed: Duration 9 working days Complete 15% Longest path A.vv4p.1 / A.vv4p.2 Demo / syn"
+  },
+  {
+    "id": "SCHED-LINK-DECIMAL-LAG",
+    "status": "PASS",
+    "details": "Blocked"
+  },
+  {
+    "id": "SCHED-LINK-HUGE-LAG",
+    "status": "OBSERVED",
+    "details": "Lag -9999 accepted=false; footer: Duration 9 working days Complete 15% Longest path A.vv4p.1 / A.vv4p.2 Demo / synthetic pro"
+  },
+  {
+    "id": "SCHED-CYCLE-CREATE-AND-RECOVER",
+    "status": "FAIL",
+    "details": "The predecessor picker offers a successor (Framing) as a predecessor of Excavation (options=2) and saves the link, putting the whole schedule into a cycle state instead of refusing it. \"Fix network\" button shown=true, resolves the cycle=false. Manual recovery worked=true"
+  },
+  {
+    "id": "SCHED-BASELINE-FLOW",
+    "status": "OBSERVED",
+    "details": "Variance shown (Finish vs baseline +6 working days ). Re-baseline asks confirmation=false (after: Finish vs baseline on baseline ); Clear baseline asks confirmation=false, cleared immediately=true; no toast/undo on clear"
+  },
+  {
+    "id": "SCHED-NO-DELETE-RENAME",
+    "status": "FAIL",
+    "details": "Schedule has no UI to delete, rename, move or reorder an activity or summary once added (store has deleteScheduleNode but nothing calls it); a mistaken or duplicate activity is permanent short of deleting its whole BOQ phase"
+  },
+  {
+    "id": "BOQ-REPLACE-RETAIN-REMOVE-RENAME",
+    "status": "OBSERVED",
+    "details": "Retain/remove/rename OK. Row order: A,A.vv4p,A.vv4p.1,A.vv4p.2,C,D. Footer after phase removal: Duration 15 working days Complete 17% Finish vs baseline -6 working days Longest path A.vv4p.1 / A.vv4p.2 Demo / synthet"
+  },
+  {
+    "id": "BOQ-REPLACE-PHASE-ORDER",
+    "status": "FAIL",
+    "details": "After re-ordering phases in the CSV the BOQ tab shows D,A,C but Scheduling still lists phase roots as A,C,D"
+  },
+  {
+    "id": "SCHED-CSV-EXPORT-CONTENT",
+    "status": "FAIL",
+    "details": "Export writes activity names starting with \"=\" unescaped (CSV/formula injection when opened in Excel): D.o16o,1,\"=HYPERLINK(\"\"http://x\"\",\"\"click\"\")\",leaf,3,,2026-10-07,2026-10-09,2026-10-21,202. Quote/comma escaping correct=true. File name: PRJ-2026-001-schedule.csv"
+  },
+  {
+    "id": "SCHED-HUGE-DURATION-PERF",
+    "status": "FAIL",
+    "details": "Entering duration 200000 took 206 ms (hung=true); Gantt axis rendered 611 week cells — no upper bound on duration"
+  },
+  {
+    "id": "SCHED-RELOAD-PERSIST",
+    "status": "PASS",
+    "details": "Schedule persists across reload (localStorage)"
+  },
+  {
+    "id": "SCHED-FIX-NETWORK-WIPES-EDITS",
+    "status": "FAIL",
+    "details": "\"Fix network\" restores the entire seed schedule: an activity added before the cycle was silently deleted, with no confirmation"
+  },
+  {
+    "id": "SCHED-LOE-ROW",
+    "status": "OBSERVED",
+    "details": "Seed LOE row cells (name,dur,pred,ES,EF,TF): [\"A.4 Supervision (LOE)\",\"hammock\",\"SS/FF span\",\"0\",\"232\",\"–\"]"
+  },
+  {
+    "id": "SCHED-CRITICAL-ONLY-AND-COLLAPSE",
+    "status": "OBSERVED",
+    "details": "rows all=14 criticalOnly=11 collapsedA=10 afterReload=10"
+  }
+]

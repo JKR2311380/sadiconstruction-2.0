@@ -1,0 +1,9 @@
+﻿wbs,level,name,type,duration_days,predecessors,early_start,early_finish,late_start,late_finish,total_float,critical,percent_complete,baseline_finish,finish_variance_days
+D,0,D – Delta,phase_root,,,2026-10-07,2026-10-09,,,,,0,,
+D.1,1,"'=HYPERLINK(""http://x"",""click"")",leaf,3,,2026-10-07,2026-10-09,2026-10-21,2026-10-23,12,,0,,
+D.2,1,"Quote ""and"", comma",leaf,1,,2026-10-07,2026-10-07,2026-10-23,2026-10-23,14,,0,,
+A,0,A – Alpha Renamed,phase_root,,,2026-10-07,2026-10-23,,,,,17,2026-10-23,0
+A.1,1,Substructure,summary,,,2026-10-07,2026-10-23,,,,,17,2026-10-23,0
+A.1.1,2,Excavation,leaf,5,,2026-10-07,2026-10-12,2026-10-07,2026-10-12,0,yes,50,2026-10-12,0
+A.1.2,2,Footings,leaf,10,A.1.1FS,2026-10-13,2026-10-23,2026-10-13,2026-10-23,0,yes,0,2026-10-23,0
+C,0,C – Charlie,phase_root,,,2026-10-07,2026-10-07,,,,,0,2026-10-07,0

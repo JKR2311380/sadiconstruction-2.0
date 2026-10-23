@@ -1,0 +1,15 @@
+{
+  "pausedAt": "2026-10-06T06:51:46.528Z",
+  "projectId": "9de4aee3-2efc-4805-929b-c462b12b04fd",
+  "qaProjectName": "QA Beta 2026-10-06 - disposable",
+  "status": "Paused at user request; no further tests",
+  "remaining": [
+    "Finish production mock auth/public retests (scenario 16 not executed)",
+    "Investigate/retest BOQ phase replacement retaining activities (scenario 15 interrupted)",
+    "Finish workspace/auth failure simulations (scenario 15 not reached)",
+    "Retest remaining signup checks in stable production mock",
+    "Live new-account signup needs an approved disposable email",
+    "Review seeded LOE, UI feature gaps, cross-browser and final QA consolidation",
+    "Decide QA record cleanup after evidence review"
+  ]
+}

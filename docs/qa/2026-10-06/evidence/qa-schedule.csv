@@ -1,0 +1,6 @@
+﻿wbs,level,name,type,duration_days,predecessors,early_start,early_finish,late_start,late_finish,total_float,critical,percent_complete,baseline_finish,finish_variance_days
+A,0,A – QA Phase A,phase_root,,,,,,,,,36,10,-1
+A.1,1,A.QA Package,summary,,,,,,,,,36,10,-1
+B,0,B – QA Phase B,phase_root,,,,,,,,,0,0,0
+A.1.2,2,A.1.QA Durable Foundation,leaf,8,,,,,,0,yes,50,5,3
+A.1.2,2,A.1.QA Followup,leaf,3,A.1.2FS-2,,,,,0,yes,0,10,-1
